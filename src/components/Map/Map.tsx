@@ -7,7 +7,6 @@ import IFire from "../../types/fireType";
 import "./Map.css";
 
 
-
 const Map = (props : any) => {
     const [fireData, setFireData] = useState<IFire[]>([]);
     const defaultPosition: LatLngExpression = [36.7783, -119.4179]; // California position

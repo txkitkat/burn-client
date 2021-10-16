@@ -1,0 +1,35 @@
+[
+    {
+        "Year": "1910",
+        "Date": "1910-09-02",
+        "Name": "BLUFF CREEK WEST",
+        "Acres": "1194.875854",
+        "Lat": 41.27209224,
+        "Long": -123.7268299,
+        "BurnType": "",
+        "County": "Humboldt",
+        "Source": "CALFIRE"
+    },
+    {
+        "Year": "1911",
+        "Date": "1911-06-12",
+        "Name": "N/A",
+        "Acres": "4.97843504",
+        "Lat": 41.69495073,
+        "Long": -123.8597137,
+        "BurnType": "",
+        "County": "Del Norte",
+        "Source": "CALFIRE"
+    },
+    {
+        "Year": "1912",
+        "Date": "1912-04-15",
+        "Name": "N/A",
+        "Acres": "4.978283882",
+        "Lat": 41.8211544,
+        "Long": -123.9730173,
+        "BurnType": "",
+        "County": "Del Norte",
+        "Source": "CALFIRE"
+    }
+]
