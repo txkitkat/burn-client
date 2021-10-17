@@ -52,4 +52,30 @@ const Map = (props : any) => {
     );
 };
 
+class DropDownMenu extends L.Control{
+    onAdd(map: L.Map): HTMLImageElement {
+        console.log('reached in onAdd');
+        let img: HTMLImageElement = L.DomUtil.create('img') as HTMLImageElement;
+
+        img.src = './logo192.png';
+        img.style.width = '200px';
+        return img;
+    }
+
+    onRemove(map: L.Map) {
+        // Nothing to do here
+    }
+};
+
+export const putDropDownMenu = function() {
+    console.log('retuening new DropDown object');
+    let opts: any = { position: 'bottomleft' };
+    (new DropDownMenu(opts)).addTo(L.map('root'));
+}
+var m
+
+//map = L.map('root');
+
+//dropDownMenu({ position: 'bottomleft' }).addTo(map);
+
 export default Map;
