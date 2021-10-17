@@ -72,7 +72,6 @@ export const putDropDownMenu = function() {
     let opts: any = { position: 'bottomleft' };
     (new DropDownMenu(opts)).addTo(L.map('root'));
 }
-var m
 
 //map = L.map('root');
 
