@@ -3,6 +3,8 @@ import "./App.css";
 import {BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Map from "./components/Map/Map";
+import MapCalfire from "./components/Map/MapCalfire";
+
 
 function App() {
     return (
@@ -23,8 +25,9 @@ function App() {
                 <Route path="/" exact component={Map}></Route>
                 <Route path="/about" component={Map}></Route>
                 <Route path="/contact" exact component={Map}></Route>
-                <Route path="/email" exact component={Map}></Route>
-                <Route path="/locate" exact component={Map}></Route>
+                <Route path="/calfire" exact component={MapCalfire}></Route>
+                <Route path="/pfirs" exact component={Map}></Route>
+                <Route path="/mtbs" exact component={Map}></Route>
             </Switch>
         </Router>
 >>>>>>> f814fff (Added Navbar with Filtering Links)

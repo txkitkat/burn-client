@@ -57,7 +57,7 @@ const Map = (props : any) => {
                     </Popup>
                     </Marker>
                 </LayersControl.Overlay>
-                <LayersControl.Overlay checked name="Draw a circle">
+                <LayersControl.Overlay name="Draw a circle">
                     <LayerGroup>
                     <Circle
                         center={center as LatLngTuple}

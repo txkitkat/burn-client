@@ -22,20 +22,20 @@ export const navItems = [
 export const contactDropDown = [
     {
         id: 1,
-        title: "By County Name",
-        path: "./email",
+        title: "CALFIRE",
+        path: "./calfire",
         cName: "submenu-item",
     },
     {
         id: 2,
-        title: "By Dataset",
-        path: "./locate",
+        title: "PFIRS",
+        path: "./pfirs",
         cName: "submenu-item",
     },
     {
         id: 3,
-        title: "By Burn type",
-        path: "./locate",
+        title: "MTBS",
+        path: "./mtbs",
         cName: "submenu-item"
     }
 ];
