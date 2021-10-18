@@ -36,17 +36,58 @@ const Map = (props : any) => {
             <MapContainer
                 center={defaultPosition}
                 zoom={7}
-                style={{height: "100vh"}}
+                style={{height: "100%"}}
             >
                 <TileLayer
                     attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
+<<<<<<< HEAD
 
                 {fireData.map((fire, i) => <Fire key={i} latLon={[fire["latitude"], fire["longitude"]]}
                                                  burnArea={fire["acres"]}
                                                  name={fire["name"]} date={fire["date"]}/>)}
 
+=======
+                <LayersControl>
+                <LayersControl.Overlay name="Put a marker">
+                    <Marker position={center as LatLngTuple}>
+                    <Popup>
+                        A pretty CSS3 popup. <br /> Easily customizable.
+                    </Popup>
+                    </Marker>
+                </LayersControl.Overlay>
+                <LayersControl.Overlay checked name="Draw a circle">
+                    <LayerGroup>
+                    <Circle
+                        center={center as LatLngTuple}
+                        pathOptions={{ fillColor: 'blue' }}
+                        radius={200}
+                    />
+                    <Circle
+                        center={center as LatLngTuple}
+                        pathOptions={{ fillColor: 'red' }}
+                        radius={100}
+                        stroke={false}
+                    />
+                    <LayerGroup>
+                        <Circle
+                        center={[51.51, -0.08]}
+                        pathOptions={{ color: 'green', fillColor: 'green' }}
+                        radius={100}
+                        />
+                    </LayerGroup>
+                    </LayerGroup>
+                </LayersControl.Overlay>
+                <LayersControl.Overlay name="Draw rectangle">
+                    <FeatureGroup pathOptions={{ color: 'purple' }}>
+                    <Popup>Popup in FeatureGroup</Popup>
+                    <Circle center={[51.51, -0.06]} radius={200} />
+                    <Rectangle bounds={rectangle as LatLngBoundsLiteral} />
+                    </FeatureGroup>
+      </LayersControl.Overlay>
+                </LayersControl>
+>>>>>>> f814fff (Added Navbar with Filtering Links)
             </MapContainer>
         </div>
     );
