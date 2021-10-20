@@ -7,7 +7,7 @@ import SourceMap from "./components/Map/SourceMap";
 function App() {
     return (
         <main>
-         <SourceMap source={"PFIRS"}/>  
+         <Map />  
         </main>
     );
 }

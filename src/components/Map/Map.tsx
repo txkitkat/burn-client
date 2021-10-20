@@ -23,7 +23,7 @@ const Map = () => {
     useEffect(() => {
         fetchData();
     }, []);
-    
+
     return (
         <div className="map__container">
             <MapContainer
