@@ -17,7 +17,6 @@ const Map = () => {
             setFireData(fires);
         } catch (ex) {
             console.error(ex);
-            setFireData([]);
         }
     }
 
