@@ -2,12 +2,11 @@ import React from "react";
 import "./App.css";
 
 import Map from "./components/Map/Map";
-import SourceMap from "./components/Map/SourceMap";
 
 function App() {
     return (
         <main>
-         <Map />  
+         <Map method={"all"} params={[]} />  
         </main>
     );
 }

@@ -1,20 +1,28 @@
 import React, {useEffect, useState} from "react";
 import {LatLngExpression} from "leaflet";
 import {MapContainer, TileLayer} from "react-leaflet";
-import BurnService from "../../service/burnService";
+import callService from "../../service/CallService";
 import Fire from "../Fire";
 import IFire from "../../types/fireType";
 import "./Map.css";
 
-const Map = () => {
+
+
+const Map = (props : any) => {
     const [fireData, setFireData] = useState<IFire[]>([]);
     const defaultPosition: LatLngExpression = [36.7783, -119.4179]; // California position
+    let fires : any;
 
-    function fetchData() {
+     async function fetchData() {
         try {
-            const response: any = BurnService.getAll();
-            const fires = response.data._embedded.fires;
-            setFireData(fires);
+                const response: any = await callService(props.method, props.params);
+                   
+                if(response.data.hasOwnProperty("_embedded"))
+                    fires = response.data._embedded.fires;
+                else
+                    fires = response.data;  
+ 
+                setFireData(fires);
         } catch (ex) {
             console.error(ex);
         }
