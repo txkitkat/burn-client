@@ -6,7 +6,7 @@ import Map from "./components/Map/Map";
 function App() {
     return (
         <main>
-            <Map/>
+         <Map method={"all"} params={[]} />  
         </main>
     );
 }
