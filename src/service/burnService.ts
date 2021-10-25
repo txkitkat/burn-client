@@ -3,7 +3,7 @@ import http from "../http-common";
 class BurnService {
     getAll(param: any[]) {
         // @ts-ignore
-        return http.get(process.env.REACT_APP_FIRE_BACKEND);
+        return http.get(`/fires`);
     }
 
     getBySource(source : any[]){
@@ -25,8 +25,22 @@ class BurnService {
 
     }
 
+    getByRangeOfYears(years: any[]){
+        return http.get(`/fires/search/findByYearIsBetween?fromYear=${years[0]}&toYear=${years[1]}`)
+    }
+
     getByAcres(acres : any[]){
         return http.get(`/fires/search/findByAcres?acres=${acres[0]}`);
+
+    }
+
+    getByRangeOfAcres(acres : any[]){
+        return http.get(`/fires/search/findByAcresIsBetween?min=${acres[0]}&max=${acres[1]}`);
+
+    }
+
+    getByDates(dates : any[]){
+        return http.get(`/fires/search/findByDateIsBetween?fromDate=${dates[0]}&toDate=${dates[1]}`);
 
     }
 }
