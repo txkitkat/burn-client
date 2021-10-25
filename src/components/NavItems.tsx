@@ -13,7 +13,7 @@ export const navItems = [
     },
     {
         id: 3,
-        title: "Filter Data",
+        title: "Contact Us",
         path: "./contact",
         cName: "nav-item",
     }
@@ -22,20 +22,14 @@ export const navItems = [
 export const contactDropDown = [
     {
         id: 1,
-        title: "CALFIRE",
-        path: "./calfire",
+        title: "Email us",
+        path: "./email",
         cName: "submenu-item",
     },
     {
         id: 2,
-        title: "PFIRS",
-        path: "./pfirs",
+        title: "Reach us",
+        path: "./reach",
         cName: "submenu-item",
     },
-    {
-        id: 3,
-        title: "MTBS",
-        path: "./mtbs",
-        cName: "submenu-item"
-    }
 ];

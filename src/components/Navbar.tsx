@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
+import {Link} from "react-router-dom";
 import * as Icons from "react-icons/fa";
 import "./Navbar.css";
 import {navItems} from "./NavItems";
@@ -16,7 +16,7 @@ export default function Navbar(){
             </Link>
             <ul className="nav-items">
                 {navItems.map(item => {
-                    if (item.title == "Filter Data"){
+                    if (item.title === "Contact Us"){
                         return (
                             <li key={item.id} className={item.cName} onMouseEnter={()=> setDropDown(true)} onMouseLeave= {()=> setDropDown(false)}>
                                 <Link to={item.path}>{item.title}</Link> 
@@ -37,17 +37,6 @@ export default function Navbar(){
     );
 }
 
-function About() {
-    return <h2>Home</h2>
-}
-
-function Contact() {
-    return <h2>Contact Us</h2>
-}
-
-function Home() {
-    return <h2>Home</h2>
-}
 
 /*
 <Router>
