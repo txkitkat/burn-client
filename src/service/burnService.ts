@@ -6,7 +6,6 @@ class BurnService {
 
     getAll(param: any[]) {
         // @ts-ignore
-        console.log(this.host+`/fires`);
         return http.get(this.host+`/fires`);
     }
 
