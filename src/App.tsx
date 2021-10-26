@@ -1,9 +1,8 @@
 import React from "react";
 import "./App.css";
-import {BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
+import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Map from "./components/Map/Map";
-import MapCalfire from "./components/Map/MapCalfire";
 import TemporaryDrawer from "./components/Drawer/TemporaryDrawer";
 
 function App() {
@@ -23,12 +22,7 @@ function App() {
         </Router>
     );
 }
-/*
-            <main>
-                <Map/>
-            </main>
 
-            */
 function About() {
     return <h2>About</h2>
 }
