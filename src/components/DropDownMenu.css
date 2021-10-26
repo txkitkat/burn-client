@@ -1,0 +1,33 @@
+.contact-submenu {
+    width: 12rem;
+    list-style: none;
+    text-align: start;
+    position: absolute;
+    top: 67px;
+}
+
+.contact-submenu li {
+    background: #94c096;
+    text-align: center;
+    cursor: pointer;
+}
+
+.contact-submenu.clicked li {
+display: none;
+}
+
+.contact-submenu li a {
+    font-size: 1rem;
+}
+
+.submenu-item {
+    color:white;
+    display: block;
+    height: 100%;
+    width: 100%;
+    padding: 16px;
+    text-decoration: none;
+}
+.submenu-item:hover {
+background: #bd6a1c;
+}

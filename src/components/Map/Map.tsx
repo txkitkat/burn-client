@@ -1,12 +1,29 @@
-import React, {useEffect, useState} from "react";
-import {LatLngExpression} from "leaflet";
-import {MapContainer, TileLayer} from "react-leaflet";
+import React,{useEffect,useState} from "react";
+import {Icon, LatLngExpression} from "leaflet";
+import { MapContainer, TileLayer, useMap} from "react-leaflet";
 import callService from "../../service/CallService";
 import Fire from "../Fire";
 import IFire from "../../types/fireType";
+import MapLayerPickerControl from "./MapLayerPickerControl";
+
+//import * as fireData from "./data/Rxfires.json";
 import "./Map.css";
 
+export const icon = new Icon({                                                            
+    iconUrl: "/icon.jpg",
+    iconSize: [25,25]
+});
 
+
+function MyComponent() {
+//const map = useMapEvents({
+//    click: () => {map.getCenter()},
+//    locationfound: (location) => {console.log('location found: ', location)},
+//})
+const map = useMap()
+console.log('center of the map: ', map.getCenter())
+return null
+}
 
 const Map = (props : any) => {
     const [fireData, setFireData] = useState<IFire[]>([]);
@@ -37,7 +54,7 @@ const Map = (props : any) => {
             <MapContainer
                 center={defaultPosition}
                 zoom={7}
-                style={{height: "100vh"}}
+                style={{height: "100%"}}
             >
                 <TileLayer
                     attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -47,6 +64,9 @@ const Map = (props : any) => {
                 {fireData.map((fire, i) => <Fire key={i} latLon={[fire["latitude"], fire["longitude"]]}
                                                  burnArea={fire["acres"]}
                                                  name={fire["name"]} date={fire["date"]}/>)}
+
+                <MapLayerPickerControl/>
+                <MyComponent/> 
 
             </MapContainer>
         </div>

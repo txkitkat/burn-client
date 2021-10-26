@@ -1,4 +1,7 @@
 
 .map__container {
-  width: 100vw;
+  width: 97%;
+  height: 90vh;
+  z-index: 1;
+  float: left;
 }

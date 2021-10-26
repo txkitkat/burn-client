@@ -1,0 +1,8 @@
+.temporary-drawer {
+    float: right;
+    width: 3%;
+    height: 90vh;
+    border: 2px;
+    background-color: rgba(247, 247, 247, 0.687);
+    z-index: 1500;
+}
