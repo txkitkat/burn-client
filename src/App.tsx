@@ -8,15 +8,6 @@ import TemporaryDrawer from "./components/Drawer/TemporaryDrawer";
 
 function App() {
     return (
-<<<<<<< HEAD
-        <main>
-<<<<<<< HEAD
-         <Map method={"all"} params={[]} />  
-=======
-            <Map/>
->>>>>>> e619722 (added Layer picker overlay)
-        </main>
-=======
         <Router>
             <Navbar/>
                 {/* A <Switch> looks through its children <Route>s and
@@ -30,7 +21,6 @@ function App() {
             </Switch>
             <TemporaryDrawer/>
         </Router>
->>>>>>> f814fff (Added Navbar with Filtering Links)
     );
 }
 /*
