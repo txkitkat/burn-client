@@ -1,51 +1,46 @@
 import http from "../http-common";
+import IFire from "../types/fireType";
 
-class BurnService {
+const host = process.env.REACT_APP_FIRE_BACKEND;
 
-     host = process.env.REACT_APP_FIRE_BACKEND;
-
-    getAll(param: any[]) {
-        // @ts-ignore
-        return http.get(this.host+`/fires`);
-    }
-
-    getBySource(source : any[]){
-        return http.get(this.host+`/fires/search/findBySource?source=${source[0]}`);
-
-    }
-
-    getByCounty(county : any[]){
-        return http.get(this.host+`/fires/search/findByCounty?county=${county[0]}`);
-    }
-
-    getByBurntype(type : any[]){
-        return http.get(this.host+`/fires/search/findByBurnType?burnType=${type[0]}`);
-
-    }
-
-    getByYear(year : any[]){
-        return http.get(this.host+`/fires/search/findByYear?year=${year[0]}`);
-
-    }
-
-    getByRangeOfYears(years: any[]){
-        return http.get(this.host+`/fires/search/findByYearIsBetween?fromYear=${years[0]}&toYear=${years[1]}`)
-    }
-
-    getByAcres(acres : any[]){
-        return http.get(this.host+`/fires/search/findByAcres?acres=${acres[0]}`);
-
-    }
-
-    getByRangeOfAcres(acres : any[]){
-        return http.get(this.host+`/fires/search/findByAcresIsBetween?min=${acres[0]}&max=${acres[1]}`);
-
-    }
-
-    getByDates(dates : any[]){
-        return http.get(this.host+`/fires/search/findByDateIsBetween?fromDate=${dates[0]}&toDate=${dates[1]}`);
-
+interface IServerResp {
+    _embedded: {
+        fires: IFire[]
     }
 }
 
-export default new BurnService();
+export async function getAllFires(): Promise<IFire[]> {
+    return (await http.get<IFire[]>(host + `/fires`)).data;
+}
+
+export async function getFiresBySource(source: string) {
+    return (await http.get<IServerResp>(host + `/fires/search/findBySource?source=${source}`)).data._embedded.fires;
+}
+
+export async function getFiresByCounty(county: string) {
+    return (await http.get<IServerResp>(host + `/fires/search/findByCounty?county=${county}`)).data._embedded.fires;
+}
+
+export async function getFiresByBurnType(type: string) {
+    return (await http.get<IServerResp>(host + `/fires/search/findByBurnType?burnType=${type}`)).data._embedded.fires;
+}
+
+export async function getFiresByYear(year: number) {
+    return (await http.get<IServerResp>(host + `/fires/search/findByYear?year=${year}`)).data._embedded.fires;
+}
+
+export async function getFiresByRangeOfYears(fromYear: number, toYear: number) {
+    return (await http.get<IServerResp>(host + `/fires/search/findByYearIsBetween?fromYear=${fromYear}&toYear=${toYear}`)).data._embedded.fires;
+}
+
+export async function getFiresByAcres(acres: number) {
+    return (await http.get<IServerResp>(host + `/fires/search/findByAcres?acres=${acres}`)).data._embedded.fires;
+}
+
+export async function getFiresByRangeOfAcres(lower: number, upper: number): Promise<IFire[]> {
+    return (await http.get<IServerResp>(host + `/fires/search/findByAcresIsBetween?min=${lower}&max=${upper}`)).data._embedded.fires;
+}
+
+export async function getFiresByDates(fromDate: String, toDate: String) {
+    return (await http.get<IServerResp>(host + `/fires/search/findByDateIsBetween?fromDate=${fromDate}&toDate=${toDate}`)).data._embedded.fires;
+}

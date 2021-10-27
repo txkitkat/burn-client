@@ -1,53 +1,21 @@
-import React,{useEffect,useState} from "react";
-import {Icon, LatLngExpression} from "leaflet";
-import { MapContainer, TileLayer, useMap} from "react-leaflet";
-import callService from "../../service/CallService";
+import React from "react";
+import {LatLngExpression} from "leaflet";
+import {MapContainer, TileLayer} from "react-leaflet";
 import Fire from "../Fire";
 import IFire from "../../types/fireType";
 import MapLayerPickerControl from "./MapLayerPickerControl";
 
-//import * as fireData from "./data/Rxfires.json";
 import "./Map.css";
 
-export const icon = new Icon({                                                            
-    iconUrl: "/icon.jpg",
-    iconSize: [25,25]
-});
-
-
-function MyComponent() {
-//const map = useMapEvents({
-//    click: () => {map.getCenter()},
-//    locationfound: (location) => {console.log('location found: ', location)},
-//})
-const map = useMap()
-console.log('center of the map: ', map.getCenter())
-return null
+export interface MapProps {
+    fireData: IFire[];
+    setFireData: (fireData: IFire[]) => void;
 }
 
-const Map = (props : any) => {
-    const [fireData, setFireData] = useState<IFire[]>([]);
+const Map = (props: MapProps) => {
     const defaultPosition: LatLngExpression = [36.7783, -119.4179]; // California position
-    let fires : any;
 
-     async function fetchData() {
-        try {
-                const response: any = await callService(props.method, props.params);
-                   
-                if(response.data.hasOwnProperty("_embedded"))
-                    fires = response.data._embedded.fires;
-                else
-                    fires = response.data;  
- 
-                setFireData(fires);
-        } catch (ex) {
-            console.error(ex);
-        }
-    }
-
-    useEffect(() => {
-        fetchData();
-    }, []);
+    console.log(props.fireData);
 
     return (
         <div className="map__container">
@@ -61,13 +29,11 @@ const Map = (props : any) => {
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
 
-                {fireData.map((fire, i) => <Fire key={i} latLon={[fire["latitude"], fire["longitude"]]}
-                                                 burnArea={fire["acres"]}
-                                                 name={fire["name"]} date={fire["date"]}/>)}
+                {props.fireData.map((fire, i) => <Fire key={i} latLon={[fire["latitude"], fire["longitude"]]}
+                                                       burnArea={fire["acres"]}
+                                                       name={fire["name"]} date={fire["date"]}/>)}
 
                 <MapLayerPickerControl/>
-                <MyComponent/> 
-
             </MapContainer>
         </div>
     );
