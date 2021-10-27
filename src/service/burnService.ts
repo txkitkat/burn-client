@@ -3,6 +3,8 @@ import IFire from "../types/fireType";
 
 const host = process.env.REACT_APP_FIRE_BACKEND;
 
+console.log(host);
+
 interface IServerResp {
     _embedded: {
         fires: IFire[]
