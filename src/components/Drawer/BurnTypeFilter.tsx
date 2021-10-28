@@ -31,7 +31,7 @@ export default function BurnTypeFilter(props: IBurnTypeFilterProps) {
         <div>
             <Divider/>
             <ListItem button key={"Sort by Burn Type"} onClick={() => setDropDownBurnType(!dropDownBurnType)}>
-                <ListItemText primary={"Sort by Burn Type"} inset/>
+                <ListItemText primary={"Sort by Burn Type"}/>
                 {dropDownBurnType ? <ExpandLess/> : <ExpandMore/>}
             </ListItem>
             <Collapse in={dropDownBurnType} timeout="auto" unmountOnExit>
