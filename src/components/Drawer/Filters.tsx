@@ -10,6 +10,7 @@ import Typography from '@mui/material/Typography';
 import "./Filters.css";
 import IFire from "../../types/fireType";
 import SourceFilter from "./SourceFilter";
+import SizeFilter from "./SizeFilter";
 
 interface IFiltersProps {
     setFireData: (fireData: IFire[]) => void;
@@ -43,13 +44,14 @@ export default function Filters(props: IFiltersProps) {
         <Box
             sx={{width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250, height: '100%', bgcolor: 'grey.100'}}
             role="presentation"
-            onKeyDown={toggleDrawer(anchor, false)}
+            //onKeyDown={toggleDrawer(anchor, false)}
         >
             <List>
                 <Typography align="center">
                     <h3>All Filters</h3>
                 </Typography>
                 <SourceFilter setFireData={props.setFireData}/>
+                <SizeFilter setFireData={props.setFireData}/>
                 {/*TODO Add your filters here modelled after the SourceFilter*/}
 
                 <Divider/>

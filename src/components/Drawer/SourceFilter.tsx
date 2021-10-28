@@ -31,7 +31,7 @@ export default function SourceFilter(props: ISourceFilterProps) {
         <div>
             <Divider/>
             <ListItem button key={"Sort by Dataset"} onClick={() => setDropDownDataset(!dropDownDataset)}>
-                <ListItemText primary={"Sort by Dataset"} inset/>
+                <ListItemText primary={"Sort by Dataset"}/>
                 {dropDownDataset ? <ExpandLess/> : <ExpandMore/>}
             </ListItem>
             <Collapse in={dropDownDataset} timeout="auto" unmountOnExit>
