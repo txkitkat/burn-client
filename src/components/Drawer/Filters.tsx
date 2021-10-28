@@ -11,6 +11,7 @@ import "./Filters.css";
 import IFire from "../../types/fireType";
 import SourceFilter from "./SourceFilter";
 import SizeFilter from "./SizeFilter";
+import BurnTypeFilter from "./BurnTypeFilter";
 
 interface IFiltersProps {
     setFireData: (fireData: IFire[]) => void;
@@ -52,6 +53,7 @@ export default function Filters(props: IFiltersProps) {
                 </Typography>
                 <SourceFilter setFireData={props.setFireData}/>
                 <SizeFilter setFireData={props.setFireData}/>
+                <BurnTypeFilter setFireData={props.setFireData}/>
                 {/*TODO Add your filters here modelled after the SourceFilter*/}
 
                 <Divider/>
