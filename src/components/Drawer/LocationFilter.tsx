@@ -1,8 +1,4 @@
 import ListItem from "@mui/material/ListItem";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import Select, {SelectChangeEvent} from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
 import Collapse from "@mui/material/Collapse";
 import React, {useState} from "react";
 import {getFiresByCounty} from "../../service/burnService";

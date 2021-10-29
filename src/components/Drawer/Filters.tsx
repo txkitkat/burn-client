@@ -6,13 +6,13 @@ import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
-
 import "./Filters.css";
 import IFire from "../../types/fireType";
 import SourceFilter from "./SourceFilter";
 import SizeFilter from "./SizeFilter";
 import BurnTypeFilter from "./BurnTypeFilter";
 import LocationFilter from "./LocationFilter";
+import TimeFilter from "./TimeFilter";
 
 interface IFiltersProps {
     setFireData: (fireData: IFire[]) => void;
@@ -56,6 +56,7 @@ export default function Filters(props: IFiltersProps) {
                 <LocationFilter setFireData={props.setFireData}/>
                 <SizeFilter setFireData={props.setFireData}/>
                 <BurnTypeFilter setFireData={props.setFireData}/>
+                <TimeFilter setFireData={props.setFireData}/>
                 
                 {/*TODO Add your filters here modelled after the SourceFilter*/}
 
