@@ -12,6 +12,7 @@ import IFire from "../../types/fireType";
 import SourceFilter from "./SourceFilter";
 import SizeFilter from "./SizeFilter";
 import BurnTypeFilter from "./BurnTypeFilter";
+import LocationFilter from "./LocationFilter";
 
 interface IFiltersProps {
     setFireData: (fireData: IFire[]) => void;
@@ -52,8 +53,10 @@ export default function Filters(props: IFiltersProps) {
                     <h3>All Filters</h3>
                 </Typography>
                 <SourceFilter setFireData={props.setFireData}/>
+                <LocationFilter setFireData={props.setFireData}/>
                 <SizeFilter setFireData={props.setFireData}/>
                 <BurnTypeFilter setFireData={props.setFireData}/>
+                
                 {/*TODO Add your filters here modelled after the SourceFilter*/}
 
                 <Divider/>
