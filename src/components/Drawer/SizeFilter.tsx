@@ -38,8 +38,8 @@ export default function SizeFilter(props: ISizeFilterProps) {
     return (
         <div>
             <Divider/>
-            <ListItem button key={"Sort by Maximum Size"} onClick={() => setDropDownSize(!dropDownSize)}>
-                <ListItemText primary={"Sort by Maximum Size"}/>
+            <ListItem button key={"Sort by Size"} onClick={() => setDropDownSize(!dropDownSize)}>
+                <ListItemText primary={"Sort by Size"}/>
                 {dropDownSize ? <ExpandLess/> : <ExpandMore/>}
             </ListItem>
             <Collapse in={dropDownSize} timeout="auto" unmountOnExit>
