@@ -40,6 +40,7 @@ export default function LocationFilter(props: ILocationFilterProps) {
                 sx={{ width: 200 }}
                 renderInput={(params) => <TextField {...params} label="County" />}
                 onChange={handleChangeLocation}
+                value={location}
             />
             </Collapse>
         </div>
