@@ -47,7 +47,7 @@ export default function TimeFilter(props: ITimeFilterProps) {
             <LocalizationProvider dateAdapter={AdapterDateFns}>  
             <DatePicker
                 views={['year']}
-                label="Year"
+                label="Start Year"
                 minDate={new Date('1977')}
                 maxDate={new Date('2023')}
                 value={startYear}
@@ -58,9 +58,10 @@ export default function TimeFilter(props: ITimeFilterProps) {
           
           renderInput={(params) => <TextField {...params} helperText={null} />}
         />
+        <ListItemText primary={""}/>
            <DatePicker
                 views={['year']}
-                label="Year"
+                label="End Year"
                 minDate={new Date('1977')}
                 maxDate={new Date('2023')}
                 value={endYear}

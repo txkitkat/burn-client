@@ -13,6 +13,7 @@ import SizeFilter from "./SizeFilter";
 import BurnTypeFilter from "./BurnTypeFilter";
 import LocationFilter from "./LocationFilter";
 import TimeFilter from "./TimeFilter";
+import TimeMonthFilter from "./TimeMonthFilter";
 
 interface IFiltersProps {
     setFireData: (fireData: IFire[]) => void;
@@ -57,6 +58,7 @@ export default function Filters(props: IFiltersProps) {
                 <SizeFilter setFireData={props.setFireData}/>
                 <BurnTypeFilter setFireData={props.setFireData}/>
                 <TimeFilter setFireData={props.setFireData}/>
+                <TimeMonthFilter setFireData={props.setFireData}/>
                 
                 {/*TODO Add your filters here modelled after the SourceFilter*/}
 
