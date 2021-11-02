@@ -37,8 +37,7 @@ export default function SourceFilter(props: ISourceFilterProps) {
             <Collapse in={dropDownDataset} timeout="auto" unmountOnExit>
                 <ListItem alignItems="center">
                     <FormControl sx={{minWidth: 120}} variant="filled" color="primary">
-                        <InputLabel id="demo-si\
-                            mple-select-label">Dataset</InputLabel>
+                        <InputLabel id="source-select-label-input">Dataset</InputLabel>
                         <Select
                             labelId="dataset-select-label"
                             id="dataset-select"
