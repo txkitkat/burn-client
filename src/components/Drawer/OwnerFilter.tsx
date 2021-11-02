@@ -40,7 +40,7 @@ export default function OwnerFiler(props: IOwnerFilterProps) {
             </ListItem>
             <Collapse in={dropDownSize} timeout="auto" unmountOnExit>
                 <ListItem alignItems="center">
-                    <FormControl sx={{minWidth: 40}} variant="filled" color="primary">
+                    <FormControl sx={{minWidth: 120}} variant="filled" color="primary">
                         <InputLabel id="owner-select-label-input">Owner</InputLabel>
                         <Select
                             labelId="owner-select-label"
