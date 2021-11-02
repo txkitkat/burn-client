@@ -37,8 +37,7 @@ export default function BurnTypeFilter(props: IBurnTypeFilterProps) {
             <Collapse in={dropDownBurnType} timeout="auto" unmountOnExit>
                 <ListItem alignItems="center">
                     <FormControl sx={{minWidth: 120}} variant="filled" color="primary">
-                        <InputLabel id="demo-si\
-                            mple-select-label">Burn Type</InputLabel>
+                        <InputLabel id="demo-simple-select-label">Burn Type</InputLabel>
                         <Select
                             labelId="burnType-select-label"
                             id="burnType-select"

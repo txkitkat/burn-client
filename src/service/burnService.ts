@@ -46,3 +46,7 @@ export async function getFiresByRangeOfAcres(lower: number, upper: number): Prom
 export async function getFiresByDates(fromDate: String, toDate: String) {
     return (await http.get<IServerResp>(`${host}/fires/search/findByDateIsBetween?fromDate=${fromDate}&toDate=${toDate}`)).data._embedded.fires;
 }
+
+export async function getFiresByOwner(owner: String) {
+    return (await http.get<IServerResp>(`${host}/fires/search/findByOwner?owner=${owner}`)).data._embedded.fires;
+}
