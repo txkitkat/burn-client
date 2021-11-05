@@ -15,6 +15,7 @@ import LocationFilter from "./LocationFilter";
 import TimeFilter from "./TimeFilter";
 import TimeMonthFilter from "./TimeMonthFilter";
 import OwnerFiler from "./OwnerFilter";
+import IntensityFilter from "./IntensityFilter";
 
 interface IFiltersProps {
     setFireData: (fireData: IFire[]) => void;
@@ -61,6 +62,7 @@ export default function Filters(props: IFiltersProps) {
                 <TimeFilter setFireData={props.setFireData}/>
                 <TimeMonthFilter setFireData={props.setFireData}/>
                 <OwnerFiler setFireData={props.setFireData}/>
+                <IntensityFilter setFireData={props.setFireData}/>
                 {/*TODO Add your filters here modelled after the SourceFilter*/}
 
                 <Divider/>
