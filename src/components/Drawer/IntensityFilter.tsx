@@ -3,37 +3,31 @@ import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
 import Collapse from "@mui/material/Collapse";
 import React, {useState} from "react";
-import {getFiresByIntensity} from "../../service/burnService";
-import IFire from "../../types/fireType";
 import ListItemText from "@mui/material/ListItemText";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import {Divider} from "@mui/material";
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
+import {IFilterImplProps} from "./Filters";
 
-interface IIntensityFilterProps {
-    setFireData: (fireData: IFire[]) => void;
-}
-
-export default function IntensityFilter(props: IIntensityFilterProps) {
+export default function IntensityFilter(props: IFilterImplProps) {
     const [dropDownSize, setDropDownSize] = useState(false);
-    const [minIntensity, setMinIntensity] = React.useState(0);
-    const [maxIntensity, setMaxIntensity] = React.useState(0);
 
     const handleChangeMinIntensity = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const minIntensity = parseFloat(event.target.value);
-        (minIntensity >= 0) ? setMinIntensity(minIntensity) : setMinIntensity(0);
+        const newIntensity = parseFloat(event.target.value);
+        (newIntensity >= 0) ? updateState("minIntensity", newIntensity) : updateState("minIntensity", 0);
+        props.touchFilter("minIntensity");
     };
+
     const handleChangeMaxIntensity = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const maxIntensity = parseFloat(event.target.value);
-        maxIntensity >= 0 ? setMaxIntensity(maxIntensity) : setMaxIntensity(0);
+        const newIntensity = parseFloat(event.target.value);
+        (newIntensity >= 0) ? updateState("minIntensity", newIntensity) : updateState("minIntensity", 0);
+        props.touchFilter("maxIntensity");
     };
-    const handleIntensity = () => {
-        getFiresByIntensity(minIntensity, maxIntensity)
-            .then(fires => props.setFireData(fires))
-            .catch(err => console.error(err));
-    };
+
+    function updateState<Type>(key: string, newState: Type) {
+        props.setFilterState({...props.filterState, [key]: newState})
+    }
 
     return (
         <div>
@@ -56,7 +50,6 @@ export default function IntensityFilter(props: IIntensityFilterProps) {
                                    onChange={handleChangeMaxIntensity}/>
                     </FormControl>
                 </ListItem>
-                <Button variant="text" onClick={handleIntensity}>{"Apply Intensity"}</Button>
             </Collapse>
         </div>
     );

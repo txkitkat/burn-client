@@ -3,37 +3,37 @@ import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
 import Collapse from "@mui/material/Collapse";
 import React, {useState} from "react";
-import {getFiresByRangeOfAcres} from "../../service/burnService";
 import IFire from "../../types/fireType";
 import ListItemText from "@mui/material/ListItemText";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import {Divider} from "@mui/material";
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
+import {IFilterImplProps, IFiltersState} from "./Filters";
 
-interface ISizeFilterProps {
-    setFireData: (fireData: IFire[]) => void;
-}
+const MIN_FIRE_SIZE = 0;
+const MAX_FIRE_SIZE = 100000;
 
-export default function SizeFilter(props: ISizeFilterProps) {
+export default function SizeFilter(props: IFilterImplProps) {
     const [dropDownSize, setDropDownSize] = useState(false);
-    const [minSize, setMinSize] = React.useState(0);
-    const [maxSize, setMaxSize] = React.useState(0);
 
     const handleChangeMinSize = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const minSize = parseFloat(event.target.value);
-        (minSize >=0)? setMinSize(minSize): setMinSize(0);
+        const enteredSize = parseFloat(event.target.value);
+        if (enteredSize > props.filterState.maxAcres) updateState("minAcres", props.filterState.maxAcres)
+        else (enteredSize >= 0) ? updateState("minAcres", enteredSize) : updateState("minAcres", 0);
+        props.touchFilter("minAcres");
     };
+
     const handleChangeMaxSize = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const maxSize = parseFloat(event.target.value);
-        maxSize >=0 ? setMaxSize(maxSize): setMaxSize(0);
+        const enteredSize = parseFloat(event.target.value);
+        if (enteredSize < props.filterState.minAcres) updateState("maxAcres", props.filterState.minAcres)
+        else enteredSize >= 0 ? updateState("maxAcres", enteredSize) : updateState("maxAcres", 0);
+        props.touchFilter("maxAcres");
     };
-    const handleApplySize = () => {
-        getFiresByRangeOfAcres(minSize, maxSize)
-            .then(fires => props.setFireData(fires))
-            .catch(err => console.error(err));
-    };
+
+    function updateState<KeyStateType>(key: string, newState: KeyStateType) {
+        props.setFilterState({...props.filterState, [key]: newState})
+    }
 
     return (
         <div>
@@ -45,15 +45,18 @@ export default function SizeFilter(props: ISizeFilterProps) {
             <Collapse in={dropDownSize} timeout="auto" unmountOnExit>
                 <ListItem alignItems="center">
                     <FormControl sx={{minWidth: 40}} variant="filled" color="primary">
-                    <Typography variant="body2" gutterBottom align="center">
-                        Specify Fire size in Acres
-                    </Typography>
-                        <TextField id="min-size" label="Min Size" variant="standard" type="number" defaultValue="0" InputLabelProps={{shrink: true}} onChange={handleChangeMinSize}/>
+                        <Typography variant="body2" gutterBottom align="center">
+                            Specify Fire size in Acres
+                        </Typography>
+                        <TextField id="min-size" label="Min Size" variant="standard" type="number"
+                                   defaultValue={MIN_FIRE_SIZE} InputLabelProps={{shrink: true}}
+                                   onChange={handleChangeMinSize}/>
                         <ListItemText primary={""}/>
-                        <TextField id="max-size" required label="Max Size" variant="standard" type="number" defaultValue="1000" InputLabelProps={{shrink: true}} onChange={handleChangeMaxSize}/>
+                        <TextField id="max-size" required label="Max Size" variant="standard" type="number"
+                                   defaultValue={MAX_FIRE_SIZE} InputLabelProps={{shrink: true}}
+                                   onChange={handleChangeMaxSize}/>
                     </FormControl>
                 </ListItem>
-                <Button variant="text" onClick={handleApplySize}>{"Apply Size"}</Button>
             </Collapse>
         </div>
     );

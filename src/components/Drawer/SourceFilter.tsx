@@ -5,26 +5,21 @@ import Select, {SelectChangeEvent} from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import Collapse from "@mui/material/Collapse";
 import React, {useState} from "react";
-import {getFiresBySource} from "../../service/burnService";
-import IFire from "../../types/fireType";
 import ListItemText from "@mui/material/ListItemText";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import {Divider} from "@mui/material";
+import {IFilterImplProps} from "./Filters";
 
-interface ISourceFilterProps {
-    setFireData: (fireData: IFire[]) => void;
-}
-
-export default function SourceFilter(props: ISourceFilterProps) {
+export default function SourceFilter(props: IFilterImplProps) {
     const [dropDownDataset, setDropDownDataset] = useState(false);
-    const [dataset, setDataset] = React.useState('');
 
     const handleChangeDataset = (event: SelectChangeEvent) => {
-        setDataset(event.target.value as string);
-        getFiresBySource(event.target.value as string)
-            .then(fires => props.setFireData(fires))
-            .catch(err => console.error(err));
+        props.setFilterState({...props.filterState, source: event.target.value as string});
+        props.touchFilter("source");
+        // getFiresBySource(event.target.value as string)
+        //     .then(fires => props.setFireData(fires))
+        //     .catch(err => console.error(err));
     };
 
     return (
@@ -41,7 +36,7 @@ export default function SourceFilter(props: ISourceFilterProps) {
                         <Select
                             labelId="dataset-select-label"
                             id="dataset-select"
-                            value={dataset}
+                            value={props.filterState.source}
                             label="Dataset"
                             autoWidth
                             onChange={handleChangeDataset}

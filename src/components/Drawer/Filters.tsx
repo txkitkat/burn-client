@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import IconButton from "@mui/material/IconButton";
@@ -16,23 +16,83 @@ import TimeFilter from "./TimeFilter";
 import TimeMonthFilter from "./TimeMonthFilter";
 import OwnerFiler from "./OwnerFilter";
 import IntensityFilter from "./IntensityFilter";
+import Button from "@mui/material/Button";
+import {getFiresByFilters} from "../../service/burnService";
 
 interface IFiltersProps {
     setFireData: (fireData: IFire[]) => void;
 }
 
-type Anchor = 'top' | 'left' | 'bottom' | 'right';
+export interface IFilterImplProps {
+    setFilterState: (newState: IFiltersState) => void;
+    touchFilter: (key: string) => void;
+    filterState: IFiltersState
+}
+
+export interface IFiltersState {
+    source: string
+    county: string
+    minAcres: number
+    maxAcres: number
+    burnType: string
+    startYear: Date
+    endYear: Date
+    startMonth: Date
+    endMonth: Date
+    owner: string
+    minIntensity: number
+    maxIntensity: number
+}
+
+export interface IFiltersInteracted {
+    source: boolean
+    county: boolean
+    minAcres: boolean
+    maxAcres: boolean
+    burnType: boolean
+    startYear: boolean
+    endYear: boolean
+    startMonth: boolean
+    endMonth: boolean
+    owner: boolean
+    minIntensity: boolean
+    maxIntensity: boolean
+}
 
 export default function Filters(props: IFiltersProps) {
-    const [state, setState] = React.useState({
-        top: false,
-        left: false,
-        bottom: false,
-        right: false,
+    const [isOpen, setIsOpen] = useState(false);
+    const [state, setState] = useState<IFiltersState>({
+        source: "",
+        county: "",
+        minAcres: 0,
+        maxAcres: 0,
+        burnType: "",
+        startYear: new Date("2020"),
+        endYear: new Date("2021"),
+        startMonth: new Date("1"),
+        endMonth: new Date("12"),
+        owner: "",
+        minIntensity: 0,
+        maxIntensity: 0,
     });
 
+    const [interacted, setInteracted] = useState<IFiltersInteracted>({
+        source: false,
+        county: false,
+        minAcres: false,
+        maxAcres: false,
+        burnType: false,
+        startYear: false,
+        endYear: false,
+        startMonth: false,
+        endMonth: false,
+        owner: false,
+        minIntensity: false,
+        maxIntensity: false,
+    })
+
     const toggleDrawer =
-        (anchor: Anchor, open: boolean) =>
+        (open: boolean) =>
             (event: React.KeyboardEvent | React.MouseEvent) => {
                 if (
                     event.type === 'keydown' &&
@@ -42,51 +102,66 @@ export default function Filters(props: IFiltersProps) {
                     return;
                 }
 
-                setState({...state, [anchor]: open});
+                setIsOpen(open);
             };
 
-    const list = (anchor: Anchor) => (
+    const touchFilter = (key: string) => {
+        setInteracted({...interacted, [key]: true})
+    }
+
+    const handleApply = () => {
+        getFiresByFilters(state, interacted)
+            .then(fires => {
+                console.log(fires);
+                return fires;
+            })
+            .then(fires => props.setFireData(fires))
+            .catch(err => console.error(err));
+    }
+
+    const filterImplProps = {
+        setFilterState: setState,
+        touchFilter: touchFilter,
+        filterState: state
+    }
+
+    const list = () => (
         <Box
-            sx={{width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250, height: '100%', bgcolor: 'grey.100'}}
+            sx={{width: 250, height: '100%', bgcolor: 'grey.100'}}
             role="presentation"
-            //onKeyDown={toggleDrawer(anchor, false)}
         >
             <List>
-                <Typography align="center">
-                    <h3>All Filters</h3>
+                <Typography align="center" variant={"h5"}>
+                    All Filters
                 </Typography>
-                <SourceFilter setFireData={props.setFireData}/>
-                <LocationFilter setFireData={props.setFireData}/>
-                <SizeFilter setFireData={props.setFireData}/>
-                <BurnTypeFilter setFireData={props.setFireData}/>
-                <TimeFilter setFireData={props.setFireData}/>
-                <TimeMonthFilter setFireData={props.setFireData}/>
-                <OwnerFiler setFireData={props.setFireData}/>
-                <IntensityFilter setFireData={props.setFireData}/>
-                {/*TODO Add your filters here modelled after the SourceFilter*/}
-
+                <SourceFilter {...filterImplProps}/>
+                <LocationFilter {...filterImplProps}/>
+                <SizeFilter {...filterImplProps}/>
+                <BurnTypeFilter {...filterImplProps}/>
+                <TimeFilter {...filterImplProps}/>
+                <TimeMonthFilter {...filterImplProps}/>
+                <OwnerFiler {...filterImplProps}/>
+                <IntensityFilter {...filterImplProps}/>
                 <Divider/>
-                {/*No need to add any more dividers in this scope. The only change you need make is add Filters*/}
+                <Button variant="text" onClick={handleApply}>{"Apply"}</Button>
             </List>
         </Box>
     );
 
     return (
         <div className="filter-drawer">
-            {(['right'] as const).map((anchor) => (
-                <React.Fragment key={anchor}>
-                    <IconButton onClick={toggleDrawer(anchor, true)} aria-label={"filter"}>
-                        <FilterAltOutlinedIcon/>
-                    </IconButton>
-                    <Drawer
-                        anchor={anchor}
-                        open={state[anchor]}
-                        onClose={toggleDrawer(anchor, false)}
-                    >
-                        {list(anchor)}
-                    </Drawer>
-                </React.Fragment>
-            ))}
+            <React.Fragment key={"isOpen"}>
+                <IconButton onClick={toggleDrawer(true)} aria-label={"filter"}>
+                    <FilterAltOutlinedIcon/>
+                </IconButton>
+                <Drawer
+                    anchor={"right"}
+                    open={isOpen}
+                    onClose={toggleDrawer(false)}
+                >
+                    {list()}
+                </Drawer>
+            </React.Fragment>
         </div>
     );
 }

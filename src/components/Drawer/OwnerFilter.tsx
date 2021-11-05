@@ -2,34 +2,32 @@ import ListItem from "@mui/material/ListItem";
 import FormControl from "@mui/material/FormControl";
 import Collapse from "@mui/material/Collapse";
 import React, {useState} from "react";
-import {getFiresByOwner} from "../../service/burnService";
-import IFire from "../../types/fireType";
 import ListItemText from "@mui/material/ListItemText";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import {Divider} from "@mui/material";
-import Button from '@mui/material/Button';
 import InputLabel from "@mui/material/InputLabel";
 import Select, {SelectChangeEvent} from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import {IFilterImplProps} from "./Filters";
 
-interface IOwnerFilterProps {
-    setFireData: (fireData: IFire[]) => void;
-}
-
-export default function OwnerFiler(props: IOwnerFilterProps) {
+export default function OwnerFiler(props: IFilterImplProps) {
     const [dropDownSize, setDropDownSize] = useState(false);
-    const [owner, setOwner] = React.useState("");
 
     const handleChangeOwner = (event: SelectChangeEvent) => {
-        setOwner(event.target.value);
+        updateState("owner", event.target.value);
+        props.touchFilter("owner");
     };
 
-    const handleApplyOwner = () => {
-        getFiresByOwner(owner)
-            .then(fires => props.setFireData(fires))
-            .catch(err => console.error(err));
-    };
+    // const handleApplyOwner = () => {
+    //     getFiresByOwner(owner)
+    //         .then(fires => props.setFireData(fires))
+    //         .catch(err => console.error(err));
+    // };
+
+    function updateState<KeyStateType>(key: string, newState: KeyStateType) {
+        props.setFilterState({...props.filterState, [key]: newState})
+    }
 
     return (
         <div>
@@ -45,7 +43,7 @@ export default function OwnerFiler(props: IOwnerFilterProps) {
                         <Select
                             labelId="owner-select-label"
                             id="owner-select"
-                            value={owner}
+                            value={props.filterState.owner}
                             label="Owner"
                             autoWidth
                             onChange={handleChangeOwner}
@@ -60,7 +58,6 @@ export default function OwnerFiler(props: IOwnerFilterProps) {
                         </Select>
                     </FormControl>
                 </ListItem>
-                <Button variant="text" onClick={handleApplyOwner}>{"Apply Owner"}</Button>
             </Collapse>
         </div>
     );
