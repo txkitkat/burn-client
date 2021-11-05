@@ -3,7 +3,7 @@ import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
 import Collapse from "@mui/material/Collapse";
 import React, {useState} from "react";
-import {getFiresByRangeOfAcres} from "../../service/burnService";
+import {getFiresByIntensity} from "../../service/burnService";
 import IFire from "../../types/fireType";
 import ListItemText from "@mui/material/ListItemText";
 import ExpandLess from "@mui/icons-material/ExpandLess";
@@ -30,7 +30,7 @@ export default function IntensityFilter(props: IIntensityFilterProps) {
         maxIntensity >= 0 ? setMaxIntensity(maxIntensity) : setMaxIntensity(0);
     };
     const handleIntensity = () => {
-        getFiresByRangeOfAcres(minIntensity, maxIntensity)
+        getFiresByIntensity(minIntensity, maxIntensity)
             .then(fires => props.setFireData(fires))
             .catch(err => console.error(err));
     };
@@ -48,15 +48,15 @@ export default function IntensityFilter(props: IIntensityFilterProps) {
                         <Typography variant="body2" gutterBottom align="center">
                             Specify Fire Intensity
                         </Typography>
-                        <TextField id="min-size" label="Min Size" variant="standard" type="number" defaultValue="0"
+                        <TextField id="min-size" label="Min Size" variant="standard" type="number" defaultValue="-100.0"
                                    InputLabelProps={{shrink: true}} onChange={handleChangeMinIntensity}/>
                         <ListItemText primary={""}/>
                         <TextField id="max-size" required label="Max Size" variant="standard" type="number"
-                                   defaultValue="1000" InputLabelProps={{shrink: true}}
+                                   defaultValue="50.0" InputLabelProps={{shrink: true}}
                                    onChange={handleChangeMaxIntensity}/>
                     </FormControl>
                 </ListItem>
-                <Button variant="text" onClick={handleIntensity}>{"Apply Size"}</Button>
+                <Button variant="text" onClick={handleIntensity}>{"Apply Intensity"}</Button>
             </Collapse>
         </div>
     );
