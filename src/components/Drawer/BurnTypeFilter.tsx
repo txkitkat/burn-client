@@ -6,26 +6,26 @@ import MenuItem from "@mui/material/MenuItem";
 import Collapse from "@mui/material/Collapse";
 import React, {useState} from "react";
 import {getFiresByBurnType} from "../../service/burnService";
-import IFire from "../../types/fireType";
 import ListItemText from "@mui/material/ListItemText";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import {Divider} from "@mui/material";
+import {IFilterImplProps} from "./Filters";
 
-interface IBurnTypeFilterProps {
-    setFireData: (fireData: IFire[]) => void;
-}
-
-export default function BurnTypeFilter(props: IBurnTypeFilterProps) {
+export default function BurnTypeFilter(props: IFilterImplProps) {
     const [dropDownBurnType, setDropDownBurnType] = useState(false);
-    const [burnType, setBurnType] = React.useState('');
 
     const handleChangeBurnType = (event: SelectChangeEvent) => {
-        setBurnType(event.target.value as string);
-        getFiresByBurnType(event.target.value as string)
-            .then(fires => props.setFireData(fires))
-            .catch(err => console.error(err));
+        updateState("burnType", event.target.value as string);
+        props.touchFilter("burnType");
+        // getFiresByBurnType(event.target.value as string)
+        //     .then(fires => props.setFireData(fires))
+        //     .catch(err => console.error(err));
     };
+
+    function updateState<KeyStateType>(key: string, newState: KeyStateType) {
+        props.setFilterState({...props.filterState, [key]: newState})
+    }
 
     return (
         <div>
@@ -41,7 +41,7 @@ export default function BurnTypeFilter(props: IBurnTypeFilterProps) {
                         <Select
                             labelId="burnType-select-label"
                             id="burnType-select"
-                            value={burnType}
+                            value={props.filterState.burnType}
                             label="Burn Type"
                             autoWidth
                             onChange={handleChangeBurnType}

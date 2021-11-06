@@ -1,5 +1,6 @@
 import http from "../http-common";
 import IFire from "../types/fireType";
+import {IFiltersInteracted, IFiltersState} from "../components/Drawer/Filters";
 
 const host: any = process.env.REACT_APP_FIRE_BACKEND;
 
@@ -53,4 +54,22 @@ export async function getFiresByOwner(owner: String) {
 
 export async function getFiresByIntensity(lower: number, upper: number) {
     return (await http.get<IServerResp>(`${host}/fires/search/findByIntensityBetween?min=${lower}&max=${upper}`)).data._embedded.fires;
+}
+
+export async function getFiresByFilters(filterState: IFiltersState, interactedFilters: IFiltersInteracted) {
+    let query = `${host}/query?`;
+
+    for (const key in filterState) {
+        // @ts-ignore
+        if (interactedFilters[key]) {
+            // @ts-ignore
+            query += `${key}=${filterState[key]}&`;
+        }
+    }
+    query = query.slice(0, -1);
+    let resp = await http.get<IServerResp>(query);
+
+    console.log(resp)
+
+    return resp.data._embedded.fires;
 }
