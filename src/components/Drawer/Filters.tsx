@@ -15,7 +15,7 @@ import LocationFilter from "./LocationFilter";
 import TimeFilter from "./TimeFilter";
 import TimeMonthFilter from "./TimeMonthFilter";
 import OwnerFiler from "./OwnerFilter";
-import IntensityFilter from "./IntensityFilter";
+import SeverityFilter from "./SeverityFilter";
 import Button from "@mui/material/Button";
 import {getFiresByFilters} from "../../service/burnService";
 
@@ -40,8 +40,8 @@ export interface IFiltersState {
     startMonth: Date
     endMonth: Date
     owner: string
-    minIntensity: number
-    maxIntensity: number
+    minSeverity: number
+    maxSeverity: number
 }
 
 export interface IFiltersInteracted {
@@ -55,8 +55,8 @@ export interface IFiltersInteracted {
     startMonth: boolean
     endMonth: boolean
     owner: boolean
-    minIntensity: boolean
-    maxIntensity: boolean
+    minSeverity: boolean
+    maxSeverity: boolean
 }
 
 export default function Filters(props: IFiltersProps) {
@@ -72,8 +72,8 @@ export default function Filters(props: IFiltersProps) {
         startMonth: new Date("1"),
         endMonth: new Date("12"),
         owner: "",
-        minIntensity: 0,
-        maxIntensity: 0,
+        minSeverity: 0,
+        maxSeverity: 0,
     });
 
     const [interacted, setInteracted] = useState<IFiltersInteracted>({
@@ -87,8 +87,8 @@ export default function Filters(props: IFiltersProps) {
         startMonth: false,
         endMonth: false,
         owner: false,
-        minIntensity: false,
-        maxIntensity: false,
+        minSeverity: false,
+        maxSeverity: false,
     })
 
     const toggleDrawer =
@@ -141,9 +141,9 @@ export default function Filters(props: IFiltersProps) {
                 <TimeFilter {...filterImplProps}/>
                 <TimeMonthFilter {...filterImplProps}/>
                 <OwnerFiler {...filterImplProps}/>
-                <IntensityFilter {...filterImplProps}/>
+                <SeverityFilter {...filterImplProps}/>
                 <Divider/>
-                <Button variant="text" onClick={handleApply}>{"Apply"}</Button>
+                <Button variant="text" onClick={handleApply}>{"Apply Filter(s)"}</Button>
             </List>
         </Box>
     );

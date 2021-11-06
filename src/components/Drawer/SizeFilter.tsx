@@ -3,13 +3,12 @@ import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
 import Collapse from "@mui/material/Collapse";
 import React, {useState} from "react";
-import IFire from "../../types/fireType";
 import ListItemText from "@mui/material/ListItemText";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import {Divider} from "@mui/material";
 import Typography from '@mui/material/Typography';
-import {IFilterImplProps, IFiltersState} from "./Filters";
+import {IFilterImplProps} from "./Filters";
 
 const MIN_FIRE_SIZE = 0;
 const MAX_FIRE_SIZE = 100000;

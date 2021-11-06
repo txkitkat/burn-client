@@ -52,8 +52,8 @@ export async function getFiresByOwner(owner: String) {
     return (await http.get<IServerResp>(`${host}/fires/search/findByOwner?owner=${owner}`)).data._embedded.fires;
 }
 
-export async function getFiresByIntensity(lower: number, upper: number) {
-    return (await http.get<IServerResp>(`${host}/fires/search/findByIntensityBetween?min=${lower}&max=${upper}`)).data._embedded.fires;
+export async function getFiresBySeverity(lower: number, upper: number) {
+    return (await http.get<IServerResp>(`${host}/fires/search/findBySeverityBetween?min=${lower}&max=${upper}`)).data._embedded.fires;
 }
 
 export async function getFiresByFilters(filterState: IFiltersState, interactedFilters: IFiltersInteracted) {
