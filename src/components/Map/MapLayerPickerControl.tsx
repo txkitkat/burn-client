@@ -1,6 +1,6 @@
 import {LatLngBoundsLiteral, LatLngTuple} from "leaflet";
 import {LayersControl, Marker, Popup, LayerGroup, Circle, FeatureGroup, Rectangle} from "react-leaflet";
-
+import CountyBorders from "../CountyBorders"
 const center = [36.7783, -119.4179];
 const rectangle = [
     [36.7783, -119.4179],
@@ -11,6 +11,9 @@ export default function MapLayerPickerControl() {
     // @ts-ignore
     return (
         <LayersControl>
+            <LayersControl.Overlay name="County Borders">
+                <CountyBorders />
+            </LayersControl.Overlay>
             <LayersControl.Overlay name="Put a marker">
                 <Marker position={center as LatLngTuple}>
                     <Popup>

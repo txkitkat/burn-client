@@ -5,7 +5,6 @@ import Select, {SelectChangeEvent} from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import Collapse from "@mui/material/Collapse";
 import React, {useState} from "react";
-import {getFiresByBurnType} from "../../service/burnService";
 import ListItemText from "@mui/material/ListItemText";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";

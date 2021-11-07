@@ -5,7 +5,7 @@ import Navbar from "./components/Navbar";
 import Map from "./components/Map/Map";
 import Filters from "./components/Drawer/Filters";
 import IFire from "./types/fireType";
-import {getAllFires, getFiresByRangeOfAcres} from "./service/burnService";
+import {getAllFires} from "./service/burnService";
 
 function App() {
     const [fireData, setFireData] = useState<IFire[]>([]);

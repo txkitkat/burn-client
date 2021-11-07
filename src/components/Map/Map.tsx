@@ -15,7 +15,7 @@ export interface MapProps {
 const Map = (props: MapProps) => {
     const defaultPosition: LatLngExpression = [36.7783, -119.4179]; // California position
 
-    console.log(props.fireData);
+   // console.log(props.fireData);
 
     return (
         <div className="map__container">
@@ -31,7 +31,7 @@ const Map = (props: MapProps) => {
 
                 {props.fireData.map((fire, i) => <Fire key={i} latLon={[fire["latitude"], fire["longitude"]]}
                                                        burnArea={fire["acres"]}
-                                                       name={fire["name"]} date={fire["date"]}/>)}
+                                                       name={fire["name"]} date={fire["date"]} county={fire["county"]}/>)}
 
                 <MapLayerPickerControl/>
             </MapContainer>
