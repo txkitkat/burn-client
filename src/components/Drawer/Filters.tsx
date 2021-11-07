@@ -37,8 +37,8 @@ export interface IFiltersState {
     burnType: string
     startYear: Date
     endYear: Date
-    startMonth: Date
-    endMonth: Date
+    startMonth: number
+    endMonth: number
     owner: string
     minSeverity: number
     maxSeverity: number
@@ -69,8 +69,8 @@ export default function Filters(props: IFiltersProps) {
         burnType: "",
         startYear: new Date("2020"),
         endYear: new Date("2021"),
-        startMonth: new Date("1"),
-        endMonth: new Date("12"),
+        startMonth: 1,
+        endMonth: 12,
         owner: "",
         minSeverity: 0,
         maxSeverity: 0,
