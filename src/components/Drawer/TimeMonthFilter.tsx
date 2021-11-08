@@ -9,7 +9,6 @@ import ListItemText from "@mui/material/ListItemText";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import {Divider} from "@mui/material";
-import TextField from "@mui/material/TextField";
 import {IFilterImplProps} from "./Filters";
 
 export default function TimeMonthFilter(props: IFilterImplProps) {
@@ -21,16 +20,16 @@ export default function TimeMonthFilter(props: IFilterImplProps) {
         {
             updateState("startMonth", startMonth);
             props.touchFilter("startMonth");
+            props.touchFilter("endMonth"); // this so that default endMonth is also touched
         }
     }
 
     const handleEndMonthChange = (event: SelectChangeEvent<number>) => {
         const endMonth = event.target.value as number;
-        if (endMonth && endMonth === -1)
-            updateState("endMonth", endMonth);
-        else if (endMonth && props.filterState.startMonth <= endMonth){
+        if (endMonth && props.filterState.startMonth <= endMonth){
             updateState("endMonth", endMonth);
             props.touchFilter("endMonth");
+            props.touchFilter("startMonth"); // this so that default startMonth is also touched
         }
     }
 
@@ -90,8 +89,6 @@ const months: {
     value: number;
 }[] = 
 [
-    {"name":"",
-    "value":-1},
     {"name":"Jan",
     "value":1},
     {"name":"Feb",

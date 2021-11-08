@@ -35,8 +35,8 @@ export interface IFiltersState {
     minAcres: number
     maxAcres: number
     burnType: string
-    startYear: Date
-    endYear: Date
+    startYear: number
+    endYear: number
     startMonth: number
     endMonth: number
     owner: string
@@ -67,8 +67,8 @@ export default function Filters(props: IFiltersProps) {
         minAcres: 0,
         maxAcres: 0,
         burnType: "",
-        startYear: new Date("2020"),
-        endYear: new Date("2021"),
+        startYear: 2020,
+        endYear: 2021,
         startMonth: 1,
         endMonth: 12,
         owner: "",
