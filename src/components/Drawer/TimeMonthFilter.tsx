@@ -1,40 +1,37 @@
 import ListItem from "@mui/material/ListItem";
 import Collapse from "@mui/material/Collapse";
 import React, {useState} from "react";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import Select, {SelectChangeEvent} from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 import ListItemText from "@mui/material/ListItemText";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import {Divider} from "@mui/material";
-import TextField from "@mui/material/TextField";
-import DatePicker from "@mui/lab/DatePicker";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import {IFilterImplProps} from "./Filters";
 
 export default function TimeMonthFilter(props: IFilterImplProps) {
-    const [dropDownTimeMonth, setDropDownTimeMonth] = useState(false);
+    const [dropDownMonth, setDropDownMonth] = useState(false);
 
-    const handleStartDateChange = (newDate: Date | null) => {
-        if (newDate && props.filterState.endMonth >= newDate)
-            updateState("startMonth", newDate);
-
-        // handleChangeTimeMonth(newDate, endDate);
+    const handleStartMonthChange = (event: SelectChangeEvent<number>) => {
+        const startMonth = event.target.value as number;
+        if (startMonth && props.filterState.endMonth >= startMonth)
+        {
+            updateState("startMonth", startMonth);
+            props.touchFilter("startMonth");
+            props.touchFilter("endMonth"); // this so that default endMonth is also touched
+        }
     }
 
-    const handleEndDateChange = (newDate: Date | null) => {
-        if (newDate && props.filterState.startMonth <= newDate)
-            updateState("endMonth", newDate);
-
-        // handleChangeTimeMonth(newDate, endDate);
+    const handleEndMonthChange = (event: SelectChangeEvent<number>) => {
+        const endMonth = event.target.value as number;
+        if (endMonth && props.filterState.startMonth <= endMonth){
+            updateState("endMonth", endMonth);
+            props.touchFilter("endMonth");
+            props.touchFilter("startMonth"); // this so that default startMonth is also touched
+        }
     }
-
-    // const handleChangeTimeMonth = (_startDate: Date | null, _endDate: Date | null) => {
-    //     if (_startDate && _endDate && _startDate <= _endDate) {
-    //         getFiresByDates(_startDate.toLocaleDateString("en-US"), _endDate.toLocaleDateString("en-US"))
-    //             .then(fires => props.setFireData(fires))
-    //             .catch(err => console.error(err));
-    //     }
-    // };
 
     function updateState<KeyStateType>(key: string, newState: KeyStateType) {
         props.setFilterState({...props.filterState, [key]: newState})
@@ -43,33 +40,77 @@ export default function TimeMonthFilter(props: IFilterImplProps) {
     return (
         <div>
             <Divider/>
-            <ListItem button key={"Sort by Year and Month"} onClick={() => setDropDownTimeMonth(!dropDownTimeMonth)}>
-                <ListItemText primary={"Sort by Year and Month"}/>
-                {dropDownTimeMonth ? <ExpandLess/> : <ExpandMore/>}
+            <ListItem button key={"Sort by Month"} onClick={() => setDropDownMonth(!dropDownMonth)}>
+                <ListItemText primary={"Sort by Month"}/>
+                {dropDownMonth ? <ExpandLess/> : <ExpandMore/>}
             </ListItem>
-            <Collapse in={dropDownTimeMonth} timeout="auto" unmountOnExit>
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    <DatePicker
-                        views={['year', 'month']}
-                        label="Start Month"
-                        minDate={new Date('01/1977')}
-                        maxDate={new Date(Date.now())}
-                        value={props.filterState.startMonth}
-                        onChange={handleStartDateChange}
-                        renderInput={(params) => <TextField {...params} helperText={null}/>}
-                    />
-                    <ListItemText primary={""}/>
-                    <DatePicker
-                        views={['year', 'month']}
-                        label="End Month"
-                        minDate={new Date('01/2021')}
-                        maxDate={new Date('12/2021')}
-                        value={props.filterState.endMonth}
-                        onChange={handleEndDateChange}
-                        renderInput={(params) => <TextField {...params} helperText={null}/>}
-                    />
-                </LocalizationProvider>
+            <Collapse in={dropDownMonth} timeout="auto" unmountOnExit>
+            <ListItem key ={"Dropdown Month"} alignItems="center">
+                    <FormControl sx={{margin: 2, minWidth: 90}} variant="standard" color="primary">
+                        <InputLabel>Start Month</InputLabel>
+                        <Select
+                            labelId="start-month-select-label"
+                            id="start-month-select"
+                            value={props.filterState.startMonth}
+                            label="Start Month"
+                            onChange={handleStartMonthChange}
+                        >
+                            {months.map(month => (
+                                <MenuItem value= {month.value} key={month.name}>
+                                {month.name}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                        </FormControl>
+                        <FormControl sx={{margin: 2, minWidth: 90}} variant="standard" color="primary">
+                        <InputLabel>End Month</InputLabel>
+                        <Select
+                            labelId="end-month-select-label"
+                            id="end-month-select"
+                            value={props.filterState.endMonth}
+                            label="End Month"
+                            onChange={handleEndMonthChange}
+                            >
+                            {months.map(month => (
+                                <MenuItem value={month.value} key={month.name}>
+                                    {month.name}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+                </ListItem>
             </Collapse>
         </div>
     );
 }
+
+const months: {
+    name: string;
+    value: number;
+}[] = 
+[
+    {"name":"Jan",
+    "value":1},
+    {"name":"Feb",
+    "value":2},
+    {"name":"Mar",
+    "value":3},
+    {"name":"Apr",
+    "value":4},
+    {"name":"May",
+    "value":5},
+    {"name":"Jun",
+    "value":6},
+    {"name":"Jul",
+    "value":7},
+    {"name":"Aug",
+    "value":8},
+    {"name":"Sep",
+    "value":9},
+    {"name":"Oct",
+    "value":10},
+    {"name":"Nov",
+    "value":11},
+    {"name":"Dec",
+    "value":12}
+]

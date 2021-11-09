@@ -6,38 +6,78 @@ import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import {Divider} from "@mui/material";
 import TextField from "@mui/material/TextField";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import DatePicker from "@mui/lab/DatePicker";
 import {IFilterImplProps} from "./Filters";
 
 export default function TimeFilter(props: IFilterImplProps) {
     const [dropDownTime, setDropDownTime] = useState(false);
 
-    // const handleChangeTime = () => {
-    //     const _startYear = props.filterState.startYear?.getFullYear();
-    //     const _endYear = props.filterState.endYear?.getFullYear();
-    //     if (_startYear && _endYear && _startYear <= _endYear) {
-    //         getFiresByRangeOfYears(_startYear, _endYear)
-    //             .then(fires => props.setFireData(fires))
-    //             .catch(err => console.error(err));
-    //     }
-    // };
+    const [isStartYearInError, setIsStartYearInError] = useState(false);
+    const [isEndYearInError, setIsEndYearInError] = useState(false);
+    const defaultStartYear = props.filterState.startYear;
+    const defaultEndYear = props.filterState.endYear;
+    const [startYearUserInput, setStartYearUserInput] = useState(defaultStartYear.toString());
+    const [endYearUserInput, setEndYearUserInput] = useState(defaultEndYear.toString());
+    const [helperTextStartYear, setHelperTextStartYear] = useState(" ");
+    const [helperTextEndYear, setHelperTextEndYear] = useState(" ");
 
-    const handleStartDateChange = (newYear: Date | null) => {
-        if (newYear && props.filterState.endYear && newYear <= props.filterState.endYear) {
-            updateState("startYear", newYear);
-            props.touchFilter("startYear");
-            // handleChangeTime();
+    const checkValidStartYearAndSetState = (newYear: string) => {
+        if (newYear){
+            const startYear = parseInt(newYear);
+            if (startYear && props.filterState.endYear && startYear <= props.filterState.endYear){
+                setIsStartYearInError(false);
+                setHelperTextStartYear(" ");
+                updateState("startYear", startYear);
+                props.touchFilter("startYear");
+                props.touchFilter("endYear"); // this so that a default endYear is also touched
+            }
+            else{
+                setIsStartYearInError(true);
+                setHelperTextStartYear("select start year <= end year");
+            }
+        }
+        else{
+            setIsStartYearInError(true);
+            setHelperTextStartYear("invalid value");
         }
     }
 
-    const handleEndDateChange = (newYear: Date | null) => {
-        if (newYear && props.filterState.startYear && newYear >= props.filterState.startYear) {
-            updateState("endYear", newYear);
-            props.touchFilter("endYear");
-            // handleChangeTime();
+    const checkValidEndYearAndSetState = (newYear : string) => {
+        if (newYear){
+            const endYear = parseInt(newYear);
+            if (endYear && props.filterState.startYear && endYear >= props.filterState.startYear){
+                setIsEndYearInError(false);
+                setHelperTextEndYear(" ");
+                updateState("endYear", endYear);
+                props.touchFilter("endYear");
+                props.touchFilter("startYear");
+            }
+            else{
+                setIsEndYearInError(true);
+                setHelperTextEndYear("select end year >= start year");
+            }
         }
+        else{
+            setIsEndYearInError(true);
+            setHelperTextEndYear("invalid value");
+        }
+    }
+
+    const handleStartYearChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const newYear = event.target.value;
+        setStartYearUserInput(newYear);
+        checkValidStartYearAndSetState(newYear);
+        //also check if current user input for end year has become valid. If so, change the state
+        //error somewhere here
+        checkValidEndYearAndSetState(endYearUserInput);
+    }
+
+    const handleEndYearChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const newYear = event.target.value;
+        setEndYearUserInput(newYear);
+        checkValidEndYearAndSetState(newYear);
+        //also check if current user input for start year has become valid. If so, change state
+        //error somewhere here
+        checkValidStartYearAndSetState(startYearUserInput);
     }
 
     function updateState<KeyStateType>(key: string, newState: KeyStateType) {
@@ -52,27 +92,32 @@ export default function TimeFilter(props: IFilterImplProps) {
                 {dropDownTime ? <ExpandLess/> : <ExpandMore/>}
             </ListItem>
             <Collapse in={dropDownTime} timeout="auto" unmountOnExit>
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    <DatePicker
-                        views={['year']}
-                        label="Start Year"
-                        minDate={new Date('1977')}
-                        maxDate={new Date(Date.now())}
-                        value={props.filterState.startYear}
-                        onChange={handleStartDateChange}
-                        renderInput={(params) => <TextField {...params} helperText={null}/>}
-                    />
-                    <ListItemText primary={""}/>
-                    <DatePicker
-                        views={['year']}
-                        label="End Year"
-                        minDate={new Date('1977')}
-                        maxDate={new Date(Date.now())}
-                        value={props.filterState.endYear}
-                        onChange={handleEndDateChange}
-                        renderInput={(params) => <TextField {...params} helperText={null}/>}
-                    />
-                </LocalizationProvider>
+            <TextField
+                id="start-year"
+                label="Start Year"
+                inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                InputLabelProps={{
+                    shrink: true,
+                }}
+                variant="standard"
+                defaultValue= {defaultStartYear}
+                error={isStartYearInError}
+                helperText={helperTextStartYear}
+                onChange={handleStartYearChange}
+            />
+            <TextField
+                id="end-year"
+                label="End Year"
+                inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                InputLabelProps={{
+                    shrink: true,
+                }}
+                variant="standard"
+                defaultValue= {defaultEndYear}
+                error={isEndYearInError}
+                helperText={helperTextEndYear}
+                onChange={handleEndYearChange}
+            />
             </Collapse>
         </div>
     );
