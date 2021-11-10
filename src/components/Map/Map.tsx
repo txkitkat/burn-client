@@ -31,7 +31,7 @@ const Map = (props: MapProps) => {
 
                 {props.fireData.map((fire, i) => <Fire key={i} latLon={[fire["latitude"], fire["longitude"]]}
                                                        burnArea={fire["acres"]}
-                                                       name={fire["name"]} date={fire["date"]} county={fire["county"]}/>)}
+                                                       name={fire["name"]} day={fire["day"]} month={fire["month"]} year={fire["year"]} county={fire["county"]}/>)}
 
                 <MapLayerPickerControl/>
             </MapContainer>
