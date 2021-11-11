@@ -1,12 +1,15 @@
 export default interface IFire {
     year: number | any,
-    date: string | any,
+    day: number | any,
+    month: number | any,
     name: string | any,
     acres: number,
     latitude: number,
     longitude: number,
     county: string | any,
     source: string | any,
+    owner: string | any,
+    severity: number | any,
     burnType: string | any
   }
   
