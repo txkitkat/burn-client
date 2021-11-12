@@ -4,11 +4,13 @@ import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Map from "./components/Map/Map";
 import Filters from "./components/Drawer/Filters";
+import StatisticsPane from "./components/StatsPane/StatisticsPane"
 import IFire from "./types/fireType";
 import {getAllFires} from "./service/burnService";
 
 function App() {
     const [fireData, setFireData] = useState<IFire[]>([]);
+    const [statistics, setStatistics] = useState("");
 
     // todo this could get all fires instead but doing this for performance. Will be an issue.
     useEffect(() => {
@@ -20,6 +22,7 @@ function App() {
     return (
         <Router>
             <Navbar/>
+            <StatisticsPane statistics={statistics}/>
             <Switch>
                 <Route path="/" exact>
                     <Map fireData={fireData} setFireData={setFireData}/>
@@ -37,7 +40,7 @@ function App() {
                     <Map fireData={fireData} setFireData={setFireData}/>
                 </Route>
             </Switch>
-            <Filters setFireData={setFireData}/>
+            <Filters setFireData={setFireData} setStatistics={setStatistics}/>
         </Router>
     );
 }
