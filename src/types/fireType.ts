@@ -12,4 +12,6 @@ export default interface IFire {
     severity: number | any,
     burnType: string | any
   }
+
+
   
