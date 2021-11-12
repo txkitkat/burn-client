@@ -1,0 +1,24 @@
+h3 {
+text-align: center;
+background-color: bisque;
+margin-top: 0;
+padding-top: 5px;
+padding-bottom: 5px;
+border-right: 2px;
+border-color: black;
+}
+
+.statistics-pane {
+    float: left;
+    width: 10%;
+    height: 90vh;
+    border: 2px;
+    background-color: rgba(247, 247, 247, 0.687);
+    z-index: 1500;
+    overflow-wrap: break-word;
+}
+.statistics {
+    border: 1px;
+    border-radius: 5px;
+    border-color: cadetblue;
+}
