@@ -1,5 +1,6 @@
 import http from "../http-common";
 import IFire from "../types/fireType";
+import IFireStat from "../types/statType";
 import {IFiltersInteracted, IFiltersState} from "../components/Drawer/Filters";
 
 const host: any = process.env.REACT_APP_FIRE_BACKEND;
@@ -68,4 +69,22 @@ export async function getFiresByFilters(filterState: IFiltersState, interactedFi
     console.log(resp)
 
     return resp.data._embedded.fires;
+}
+
+export async function getFireStatistics(filterState: IFiltersState, interactedFilters: IFiltersInteracted) {
+    let statQuery = `${host}/statistics?`;
+
+    for (const key in filterState) {
+        // @ts-ignore
+        if (interactedFilters[key]) {
+            // @ts-ignore
+            statQuery += `${key}=${filterState[key]}&`;
+        }
+    }
+    statQuery = statQuery.slice(0, -1);
+    let resp = await http.get<IFireStat>(statQuery);
+
+    console.log(resp)
+
+    return resp.data;
 }

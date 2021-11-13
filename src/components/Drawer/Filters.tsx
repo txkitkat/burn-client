@@ -17,7 +17,7 @@ import TimeMonthFilter from "./TimeMonthFilter";
 import OwnerFiler from "./OwnerFilter";
 import SeverityFilter from "./SeverityFilter";
 import Button from "@mui/material/Button";
-import {getFiresByFilters} from "../../service/burnService";
+import {getFiresByFilters, getFireStatistics} from "../../service/burnService";
 import { Checkbox } from '@mui/material';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
@@ -119,7 +119,14 @@ export default function Filters(props: IFiltersProps) {
                 return fires;
             })
             .then(fires => {if (checkedShowStatistics){
-                props.setStatistics("Number of fires: " + fires.length);
+                getFireStatistics(state, interacted)
+                .then(fireStats=>{
+                    console.log(fireStats)
+                    let statsDisplay = "For Applied Filter: \n Fire(s) Count: "+ fireStats.numFires+"\n Average Size: "+fireStats.avgSize.toFixed(2)
+                                        +"\n Start Year: "+ fireStats.minYear+"\n End Year: "+fireStats.maxYear
+                    props.setStatistics(statsDisplay);
+                })
+                
             }else{
                 props.setStatistics("");
             }
@@ -161,7 +168,7 @@ export default function Filters(props: IFiltersProps) {
                 <OwnerFiler {...filterImplProps}/>
                 <SeverityFilter {...filterImplProps}/>
                 <Divider/>
-                <FormControlLabel control={<Checkbox defaultChecked onChange={handleShowStatistics}/>} label="Show statistics" labelPlacement="end"/>
+                <FormControlLabel control={<Checkbox onChange={handleShowStatistics}/>} label="Show statistics" labelPlacement="end"/>
                 <Button variant="text" onClick={handleApply}>{"Apply Filter(s)"}</Button>
             </List>
         </Box>
