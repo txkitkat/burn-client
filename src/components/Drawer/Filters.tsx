@@ -123,9 +123,9 @@ export default function Filters(props: IFiltersProps) {
                 .then(fireStats=>{
                     console.log(fireStats)
                     let statsDisplay = "For Applied Filter: \n Fire(s) Count: "+ fireStats.numFires+"\n Average Size: "+fireStats.avgSize.toFixed(2)
-                                        +"\n Start Year: "+ fireStats.minYear+"\n End Year: "+fireStats.maxYear
+                                        +"\n Start Year: "+ fireStats.minYear+"\n End Year: "+fireStats.maxYear+"\n Minimum Size: "+fireStats.minSize+"\n Maximum Area: "+fireStats.maxSize
                     props.setStatistics(statsDisplay);
-                })
+                }).catch(err => {console.log(err); props.setStatistics("For Applied Filter: No statistics available");})
                 
             }else{
                 props.setStatistics("");

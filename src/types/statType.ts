@@ -2,5 +2,7 @@ export default interface IFireStat{
     numFires: number,
     avgSize: number,
     minYear: number,
-    maxYear: number 
+    maxYear: number,
+    minSize: number,
+    maxSize: number 
   }
