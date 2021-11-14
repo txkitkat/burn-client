@@ -23,10 +23,14 @@ export default function TimeFilter(props: IFilterImplProps) {
     const checkValidStartYearAndSetState = (newYear: string) => {
         if (newYear){
             const startYear = parseInt(newYear);
-            if (startYear && props.filterState.endYear && startYear <= props.filterState.endYear){
+            const endYear = parseInt(endYearUserInput);
+            if (startYear && endYear  && startYear <= endYear){
                 setIsStartYearInError(false);
+                setIsEndYearInError(false);
                 setHelperTextStartYear(" ");
+                setHelperTextEndYear(" ");
                 updateState("startYear", startYear);
+                updateState("endYear", endYear);
                 props.touchFilter("startYear");
                 props.touchFilter("endYear"); // this so that a default endYear is also touched
             }
@@ -44,12 +48,16 @@ export default function TimeFilter(props: IFilterImplProps) {
     const checkValidEndYearAndSetState = (newYear : string) => {
         if (newYear){
             const endYear = parseInt(newYear);
-            if (endYear && props.filterState.startYear && endYear >= props.filterState.startYear){
+            const startYear = parseInt(startYearUserInput);
+            if (endYear && startYear && endYear >= startYear){
+                setIsStartYearInError(false);
                 setIsEndYearInError(false);
+                setHelperTextStartYear(" ");
                 setHelperTextEndYear(" ");
+                updateState("startYear", startYear);
                 updateState("endYear", endYear);
-                props.touchFilter("endYear");
                 props.touchFilter("startYear");
+                props.touchFilter("endYear"); // this so that a default endYear is also touched
             }
             else{
                 setIsEndYearInError(true);
@@ -68,7 +76,7 @@ export default function TimeFilter(props: IFilterImplProps) {
         checkValidStartYearAndSetState(newYear);
         //also check if current user input for end year has become valid. If so, change the state
         //error somewhere here
-        checkValidEndYearAndSetState(endYearUserInput);
+        //checkValidEndYearAndSetState(endYearUserInput);
     }
 
     const handleEndYearChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -77,7 +85,7 @@ export default function TimeFilter(props: IFilterImplProps) {
         checkValidEndYearAndSetState(newYear);
         //also check if current user input for start year has become valid. If so, change state
         //error somewhere here
-        checkValidStartYearAndSetState(startYearUserInput);
+        //checkValidStartYearAndSetState(startYearUserInput);
     }
 
     function updateState<KeyStateType>(key: string, newState: KeyStateType) {
