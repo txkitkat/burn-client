@@ -21,7 +21,7 @@ const Map = (props: MapProps) => {
         <div className="map__container">
             <MapContainer
                 center={defaultPosition}
-                zoom={5}
+                zoom={6}
                 style={{height: "100%"}}
             >
                 <TileLayer
