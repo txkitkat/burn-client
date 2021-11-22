@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import IconButton from "@mui/material/IconButton";
@@ -17,7 +17,7 @@ import TimeMonthFilter from "./TimeMonthFilter";
 import OwnerFiler from "./OwnerFilter";
 import SeverityFilter from "./SeverityFilter";
 import Button from "@mui/material/Button";
-import {getFiresByFilters, getFireStatistics} from "../../service/burnService";
+import { getFiresByFilters, getFireStatistics } from "../../service/burnService";
 import { Checkbox } from '@mui/material';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
@@ -109,7 +109,7 @@ export default function Filters(props: IFiltersProps) {
             };
 
     const touchFilter = (key: string) => {
-        setInteracted({...interacted, [key]: true})
+        setInteracted({ ...interacted, [key]: true })
     }
 
     const handleApply = () => {
@@ -118,23 +118,24 @@ export default function Filters(props: IFiltersProps) {
                 console.log(fires);
                 return fires;
             })
-            .then(fires => {if (checkedShowStatistics){
-                getFireStatistics(state, interacted)
-                .then(fireStats=>{
-                    console.log(fireStats)
-                    let statsDisplay = "For Applied Filter: \n Fire(s) Count: "+ fireStats.numFires+"\n Average Size: "+fireStats.avgSize.toFixed(2)
-                                        +"\n Start Year: "+ fireStats.minYear+"\n End Year: "+fireStats.maxYear+"\n Minimum Size: "+fireStats.minSize+"\n Maximum Area: "+fireStats.maxSize
-                    props.setStatistics(statsDisplay);
-                }).catch(err => {console.log(err); props.setStatistics("For Applied Filter: No statistics available");})
-                
-            }else{
-                props.setStatistics("");
-            }
+            .then(fires => {
+                if (checkedShowStatistics) {
+                    getFireStatistics(state, interacted)
+                        .then(fireStats => {
+                            console.log(fireStats)
+                            let statsDisplay = "For Applied Filter: \n Fire(s) Count: " + fireStats.numFires
+                                + "\n Start Year: " + fireStats.minYear + "\n End Year: " + fireStats.maxYear +"\n Average Size: " + fireStats.avgSize.toFixed(2) + "\n Minimum Size: " + fireStats.minSize.toFixed(2) + "\n Maximum Size: " + fireStats.maxSize.toFixed(2)
+                            props.setStatistics(statsDisplay);
+                        }).catch(err => { console.log(err); props.setStatistics("For Applied Filter: No statistics available"); })
 
-            return fires;
+                } else {
+                    props.setStatistics("");
+                }
+
+                return fires;
             })
             .then(fires => props.setFireData(fires))
-            
+
             .catch(err => console.error(err));
     }
 
@@ -152,23 +153,23 @@ export default function Filters(props: IFiltersProps) {
 
     const list = () => (
         <Box
-            sx={{width: 250, height: '100%', bgcolor: 'grey.100'}}
+            sx={{ width: 250, height: '100%', bgcolor: 'grey.100' }}
             role="presentation"
         >
             <List>
                 <Typography align="center" variant={"h5"}>
                     All Filters
                 </Typography>
-                <SourceFilter {...filterImplProps}/>
-                <LocationFilter {...filterImplProps}/>
-                <SizeFilter {...filterImplProps}/>
-                <BurnTypeFilter {...filterImplProps}/>
-                <TimeFilter {...filterImplProps}/>
-                <TimeMonthFilter {...filterImplProps}/>
-                <OwnerFiler {...filterImplProps}/>
-                <SeverityFilter {...filterImplProps}/>
-                <Divider/>
-                <FormControlLabel control={<Checkbox onChange={handleShowStatistics}/>} label="Show statistics" labelPlacement="end"/>
+                <SourceFilter {...filterImplProps} />
+                <LocationFilter {...filterImplProps} />
+                <SizeFilter {...filterImplProps} />
+                <BurnTypeFilter {...filterImplProps} />
+                <TimeFilter {...filterImplProps} />
+                <TimeMonthFilter {...filterImplProps} />
+                <OwnerFiler {...filterImplProps} />
+                <SeverityFilter {...filterImplProps} />
+                <Divider />
+                <FormControlLabel control={<Checkbox onChange={handleShowStatistics} />} label="Show statistics" labelPlacement="end" />
                 <Button variant="text" onClick={handleApply}>{"Apply Filter(s)"}</Button>
             </List>
         </Box>
@@ -178,7 +179,7 @@ export default function Filters(props: IFiltersProps) {
         <div className="filter-drawer">
             <React.Fragment key={"isOpen"}>
                 <IconButton onClick={toggleDrawer(true)} aria-label={"filter"}>
-                    <FilterAltOutlinedIcon/>
+                    <FilterAltOutlinedIcon />
                 </IconButton>
                 <Drawer
                     anchor={"right"}

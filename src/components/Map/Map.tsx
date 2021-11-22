@@ -15,7 +15,7 @@ export interface MapProps {
 const Map = (props: MapProps) => {
     const defaultPosition: LatLngExpression = [36.7783, -119.4179]; // California position
 
-   // console.log(props.fireData);
+    console.log(props.fireData);
 
     return (
         <div className="map__container">
