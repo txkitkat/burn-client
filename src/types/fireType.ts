@@ -6,11 +6,14 @@ export default interface IFire {
     acres: number,
     latitude: number,
     longitude: number,
+    countyUnitId: string | any,
     county: string | any,
     source: string | any,
     owner: string | any,
     severity: number | any,
-    burnType: string | any
+    burnType: string | any,
+    treatmentType: string | any,
+    escaped: boolean
   }
 
 

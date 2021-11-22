@@ -6,7 +6,7 @@ import Map from "./components/Map/Map";
 import Filters from "./components/Drawer/Filters";
 import StatisticsPane from "./components/StatsPane/StatisticsPane"
 import IFire from "./types/fireType";
-import {getAllFires} from "./service/burnService";
+import {getAllPrescribedFires} from "./service/burnService";
 
 function App() {
     const [fireData, setFireData] = useState<IFire[]>([]);
@@ -14,7 +14,7 @@ function App() {
 
     // todo this could get all fires instead but doing this for performance. Will be an issue.
     useEffect(() => {
-        getAllFires()
+        getAllPrescribedFires()
             .then(data => setFireData(data))
             .catch(err => console.error(err));
     }, []);

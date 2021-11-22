@@ -21,5 +21,6 @@ border-color: black;
 .statistics {
     border: 1px;
     border-radius: 5px;
+    padding-left: 2px;
     border-color: cadetblue;
 }

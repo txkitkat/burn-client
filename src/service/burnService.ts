@@ -17,6 +17,14 @@ export async function getAllFires(): Promise<IFire[]> {
     return (await http.get<IFire[]>(`${host}/fires`)).data;
 }
 
+export async function getAllPrescribedFires(){
+    return (await http.get<IServerResp>(`${host}/fires/search/findByEscapedFalse`)).data._embedded.fires;
+}
+
+export async function getAllEscapedFires(){
+    return (await http.get<IServerResp>(`${host}/fires/search/findByEscapedTrue`)).data._embedded.fires;
+}
+
 export async function getFiresBySource(source: string) {
     return (await http.get<IServerResp>(`${host}/fires/search/findBySource?source=${source}`)).data._embedded.fires;
 }
