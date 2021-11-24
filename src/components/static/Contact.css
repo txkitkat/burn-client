@@ -21,6 +21,13 @@ html{
   float: left;
   font-size: medium;
   background-color: white;
+  margin-right: 10%;
+}
+.three {
+  float: left;
+  font-size: medium;
+  background-color: white;
+  margin-right: 10%;
 }
   .contact {
     margin-right: 10%;
