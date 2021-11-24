@@ -67,8 +67,23 @@ export async function getFiresByFilters(filterState: IFiltersState, interactedFi
     for (const key in filterState) {
         // @ts-ignore
         if (interactedFilters[key]) {
+            if (key === "fireType"){
+                switch (filterState[key]) {
+                    case "PRESCRIBED":
+                        query += `escaped=false&`;
+                        break;
+                    case "ESCAPED":
+                        query += 'escaped=true&';
+                        break;
+                    case "ALL":
+                        break;
+                    default:
+                        break;
+                }
+            }else{
             // @ts-ignore
             query += `${key}=${filterState[key]}&`;
+            }
         }
     }
     query = query.slice(0, -1);

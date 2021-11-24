@@ -16,6 +16,7 @@ import TimeFilter from "./TimeFilter";
 import TimeMonthFilter from "./TimeMonthFilter";
 import OwnerFiler from "./OwnerFilter";
 import SeverityFilter from "./SeverityFilter";
+import FireTypeFilter from "./FireTypeFilter";
 import Button from "@mui/material/Button";
 import { getFiresByFilters, getFireStatistics } from "../../service/burnService";
 import { Checkbox } from '@mui/material';
@@ -45,6 +46,7 @@ export interface IFiltersState {
     owner: string
     minSeverity: number
     maxSeverity: number
+    fireType:string
 }
 
 export interface IFiltersInteracted {
@@ -60,6 +62,7 @@ export interface IFiltersInteracted {
     owner: boolean
     minSeverity: boolean
     maxSeverity: boolean
+    fireType: boolean
 }
 
 export default function Filters(props: IFiltersProps) {
@@ -77,6 +80,7 @@ export default function Filters(props: IFiltersProps) {
         owner: "",
         minSeverity: 0,
         maxSeverity: 0,
+        fireType: "PRESCRIBED"
     });
 
     const [interacted, setInteracted] = useState<IFiltersInteracted>({
@@ -92,6 +96,7 @@ export default function Filters(props: IFiltersProps) {
         owner: false,
         minSeverity: false,
         maxSeverity: false,
+        fireType: true
     })
 
     const toggleDrawer =
@@ -160,6 +165,7 @@ export default function Filters(props: IFiltersProps) {
                 <Typography align="center" variant={"h5"}>
                     All Filters
                 </Typography>
+                <FireTypeFilter {...filterImplProps} />
                 <SourceFilter {...filterImplProps} />
                 <LocationFilter {...filterImplProps} />
                 <SizeFilter {...filterImplProps} />
