@@ -1,14 +1,14 @@
 .navbar {
     height: 10vh;
-    background: #94c096;
+    background: #a8c28b;
     justify-content: center;
     display: flex;
     align-items: center;
 }
 
 .navbar-logo {
- color: white;
- text-decoration: none;
+ color: rgb(20, 57, 5);
+ text-decoration: seagreen;
  font-size: 2rem;
  height: 10rem;
  width: 10rem;
@@ -36,7 +36,7 @@
 
 .nav-item a {
     text-decoration: none;
-    color: white;
+    color: rgb(5, 48, 7);
     font-size: 1.5rem;
     margin-right: 2rem;
     padding: 6px 16px;
@@ -45,6 +45,6 @@
 }
 
 .nav-item a:hover {
-    background: rgb(200, 200, 0);
+    background: rgb(171, 184, 210);
 
 }

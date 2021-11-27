@@ -67,11 +67,27 @@ export async function getFiresByFilters(filterState: IFiltersState, interactedFi
     for (const key in filterState) {
         // @ts-ignore
         if (interactedFilters[key]) {
+            if (key === "fireType"){
+                switch (filterState[key]) {
+                    case "PRESCRIBED":
+                        query += `escaped=false&`;
+                        break;
+                    case "ESCAPED":
+                        query += 'escaped=true&';
+                        break;
+                    case "ALL":
+                        break;
+                    default:
+                        break;
+                }
+            }else{
             // @ts-ignore
             query += `${key}=${filterState[key]}&`;
+            }
         }
     }
     query = query.slice(0, -1);
+    console.log(query);
     let resp = await http.get<IServerResp>(query);
 
     console.log(resp)
@@ -85,11 +101,27 @@ export async function getFireStatistics(filterState: IFiltersState, interactedFi
     for (const key in filterState) {
         // @ts-ignore
         if (interactedFilters[key]) {
+            if (key === "fireType"){
+                switch (filterState[key]) {
+                    case "PRESCRIBED":
+                        statQuery += `escaped=false&`;
+                        break;
+                    case "ESCAPED":
+                        statQuery += 'escaped=true&';
+                        break;
+                    case "ALL":
+                        break;
+                    default:
+                        break;
+                }
+            }else{
             // @ts-ignore
             statQuery += `${key}=${filterState[key]}&`;
+            }
         }
     }
     statQuery = statQuery.slice(0, -1);
+    console.log(statQuery);
     let resp = await http.get<IFireStat>(statQuery);
 
     console.log(resp)

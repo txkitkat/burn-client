@@ -19,7 +19,7 @@ export const navItems = [
     }
 ];
 
-export const contactDropDown = [
+export var contactDropDown: {id: string, title: string, path:string, cName:string}[]=[];/* = [
     {
         id: 1,
         title: "Email us",
@@ -32,4 +32,4 @@ export const contactDropDown = [
         path: "./reach",
         cName: "submenu-item",
     },
-];
+];*/

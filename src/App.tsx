@@ -3,6 +3,8 @@ import "./App.css";
 import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Map from "./components/Map/Map";
+import About from "./components/static/About";
+import Contact from "./components/static/Contact";
 import Filters from "./components/Drawer/Filters";
 import StatisticsPane from "./components/StatsPane/StatisticsPane"
 import IFire from "./types/fireType";
@@ -22,25 +24,25 @@ function App() {
     return (
         <Router>
             <Navbar/>
-            <StatisticsPane statistics={statistics}/>
             <Switch>
                 <Route path="/" exact>
+                    <StatisticsPane statistics={statistics}/>
                     <Map fireData={fireData} setFireData={setFireData}/>
+                    <Filters setFireData={setFireData} setStatistics={setStatistics}/>
                 </Route>
                 <Route path="/about">
-                    <Map fireData={fireData} setFireData={setFireData}/>
+                    <About/>
                 </Route>
                 <Route path="/contact">
-                    <Map fireData={fireData} setFireData={setFireData}/>
+                    <Contact/>
                 </Route>
                 <Route path="/email">
-                    <Map fireData={fireData} setFireData={setFireData}/>
+                    <Contact/>
                 </Route>
                 <Route path="/reach">
-                    <Map fireData={fireData} setFireData={setFireData}/>
+                    <Contact/>
                 </Route>
             </Switch>
-            <Filters setFireData={setFireData} setStatistics={setStatistics}/>
         </Router>
     );
 }
