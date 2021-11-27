@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import IconButton from "@mui/material/IconButton";
-import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
+//import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
@@ -184,9 +184,14 @@ export default function Filters(props: IFiltersProps) {
     return (
         <div className="filter-drawer">
             <React.Fragment key={"isOpen"}>
-                <IconButton onClick={toggleDrawer(true)} aria-label={"filter"}>
-                    <FilterAltOutlinedIcon />
-                </IconButton>
+                {/* <IconButton onClick={toggleDrawer(true)} aria-label={"filter"}>
+                <FontAwesomeIcon icon={faEllipsisV} />
+                </IconButton> */}
+
+                <Button variant="contained" onClick={toggleDrawer(true)}>
+                 Filters
+                 </Button>
+
                 <Drawer
                     anchor={"right"}
                     open={isOpen}
