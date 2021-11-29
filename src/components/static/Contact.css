@@ -13,19 +13,23 @@ html{
 .one {
   float: left;
   font-size: medium;
+  font-weight: bold;
   background-color: white;
-  margin-right: 10%;
+  margin-left: 20%;
+  margin-right: 5%;
 }
 
 .two {
   float: left;
   font-size: medium;
+  font-weight: bold;
   background-color: white;
-  margin-right: 10%;
+  margin-right: 5%;
 }
 .three {
   float: left;
   font-size: medium;
+  font-weight: bold;
   background-color: white;
   margin-right: 10%;
 }

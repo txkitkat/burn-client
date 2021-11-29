@@ -1,14 +1,16 @@
 import React from "react";
 import "./StatisticsPane.css";
-
-interface IStatisticsPaneProps{
+import Tooltip from '@mui/material/Tooltip';
+interface IStatisticsPaneProps {
     statistics: string;
 }
 
 export default function StatisticsPane(props: IStatisticsPaneProps) {
     return (
         <div className="statistics-pane">
-            <h3>STATISTICS</h3>
+            <Tooltip title="Statistics for applied filters will be displayed here" >
+                <h3>STATISTICS</h3>
+            </Tooltip>
             <React.Fragment key={""}>
                 <p className="statistics">{props.statistics}</p>
             </React.Fragment>

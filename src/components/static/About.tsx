@@ -16,8 +16,8 @@ import "./About.css";
                 periods (considering factors such as weather, vegetation, season, previous burn etc) during which
                 prescribed fires can be conducted. The researchers need to sift through data from multiple datasets and
                 other real time data sources in order to identify these burn windows. The research team will therefore
-                benefit from having a visual dashboard with which they can interact. The aim of the capstone project is to develop a web based dashboard that can be used by the
-                    researchers to visualize the data at hand.</p>
+                benefit from having a visual dashboard with which they can interact. The aim of this FireMaps web based dashboard is to help the researchers
+                visualize the data at hand.</p>
                 
         </div>
         );
