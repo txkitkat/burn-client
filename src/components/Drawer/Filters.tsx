@@ -119,7 +119,30 @@ export default function Filters(props: IFiltersProps) {
         setInteracted({ ...interacted, [key]: true })
     }
 
+    const removeInapplicableFilters = () => {
+        if (state.fireType==="ESCAPED"){
+            setInteracted({ ...interacted, "burnType": false });
+            setState({...state, "source": "CALFIRE"});
+        }
+    }
+    
+    const [filtersDescription, setFiltersDescription] = useState("");
+
+    const createFiltersDescription = () =>{
+        let descString = "";
+        for (const key in state){
+            // @ts-ignore
+            if (interacted[key]){
+                // @ts-ignore
+                descString = descString + "\n" + key + ": " + state[key];
+            }
+        }
+        setFiltersDescription(descString);
+    }
+
     const handleApply = () => {
+        removeInapplicableFilters();
+        createFiltersDescription();
         getFiresByFilters(state, interacted)
             .then(fires => {
                 console.log(fires);
@@ -206,6 +229,12 @@ export default function Filters(props: IFiltersProps) {
                         Filters
                     </Button>
                 </Tooltip>
+                <Typography variant="body2" color="blue" align="center">
+                    <strong>Filters Applied</strong>
+                </Typography>
+                <Typography variant="body2" color="blue" fontStyle="italic" align="center">
+                    {filtersDescription}
+                </Typography>
                 <Drawer
                     anchor={"right"}
                     open={isOpen}

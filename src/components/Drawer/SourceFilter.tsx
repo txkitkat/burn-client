@@ -42,8 +42,8 @@ export default function SourceFilter(props: IFilterImplProps) {
                             onChange={handleChangeDataset}
                         >
                             <MenuItem value={"CALFIRE"}>CALFIRES</MenuItem>
-                            <MenuItem value={"PFIRS"}>PFIRx</MenuItem>
-                            <MenuItem value={"MTBS"}>MTBS</MenuItem>
+                            <MenuItem disabled={props.filterState.fireType==="ESCAPED"} value={"PFIRS"}>PFIRx</MenuItem>
+                            <MenuItem disabled={props.filterState.fireType==="ESCAPED"} value={"MTBS"}>MTBS</MenuItem>
                         </Select>
                     </FormControl>
                 </ListItem>
