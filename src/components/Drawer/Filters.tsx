@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
-import IconButton from "@mui/material/IconButton";
+//import IconButton from "@mui/material/IconButton";
 //import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
+import Popover from '@mui/material/Popover';
 import "./Filters.css";
 import IFire from "../../types/fireType";
 import SourceFilter from "./SourceFilter";
@@ -15,12 +16,13 @@ import LocationFilter from "./LocationFilter";
 import TimeFilter from "./TimeFilter";
 import TimeMonthFilter from "./TimeMonthFilter";
 import OwnerFiler from "./OwnerFilter";
-import SeverityFilter from "./SeverityFilter";
+// import SeverityFilter from "./SeverityFilter";
 import FireTypeFilter from "./FireTypeFilter";
 import Button from "@mui/material/Button";
 import { getFiresByFilters, getFireStatistics } from "../../service/burnService";
 import { Checkbox } from '@mui/material';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import Tooltip from '@mui/material/Tooltip';
 
 interface IFiltersProps {
     setFireData: (fireData: IFire[]) => void;
@@ -46,7 +48,7 @@ export interface IFiltersState {
     owner: string
     minSeverity: number
     maxSeverity: number
-    fireType:string
+    fireType: string
 }
 
 export interface IFiltersInteracted {
@@ -73,10 +75,10 @@ export default function Filters(props: IFiltersProps) {
         minAcres: 0,
         maxAcres: 0,
         burnType: "",
-        startYear: 2020,
-        endYear: 2021,
-        startMonth: 1,
-        endMonth: 12,
+        startYear: 2010,
+        endYear: 2020,
+        startMonth: 0,
+        endMonth: 11,
         owner: "",
         minSeverity: 0,
         maxSeverity: 0,
@@ -129,7 +131,7 @@ export default function Filters(props: IFiltersProps) {
                         .then(fireStats => {
                             console.log(fireStats)
                             let statsDisplay = "For Applied Filter: \n Fire(s) Count: " + fireStats.numFires
-                                + "\n Start Year: " + fireStats.minYear + "\n End Year: " + fireStats.maxYear +"\n Average Size: " + fireStats.avgSize.toFixed(2) + "\n Minimum Size: " + fireStats.minSize.toFixed(2) + "\n Maximum Size: " + fireStats.maxSize.toFixed(2)
+                                + "\n Start Year: " + fireStats.minYear + "\n End Year: " + fireStats.maxYear + "\n Average Size: " + fireStats.avgSize.toFixed(2) + "\n Minimum Size: " + fireStats.minSize.toFixed(3) + "\n Maximum Size: " + fireStats.maxSize.toFixed(2)
                             props.setStatistics(statsDisplay);
                         }).catch(err => { console.log(err); props.setStatistics("For Applied Filter: No statistics available"); })
 
@@ -144,7 +146,7 @@ export default function Filters(props: IFiltersProps) {
             .catch(err => console.error(err));
     }
 
-    const [checkedShowStatistics, setCheckedShowStatistics] = React.useState(true);
+    const [checkedShowStatistics, setCheckedShowStatistics] = React.useState(false);
 
     const handleShowStatistics = (event: React.ChangeEvent<HTMLInputElement>) => {
         setCheckedShowStatistics(event.target.checked)
@@ -156,13 +158,25 @@ export default function Filters(props: IFiltersProps) {
         filterState: state
     }
 
+    const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
+
+    const handlePopoverOpen = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+    }
+
+    const handlePopoverClose = () => {
+        setAnchorEl(null);
+    }
     const list = () => (
         <Box
             sx={{ width: 250, height: '100%', bgcolor: 'grey.100' }}
             role="presentation"
         >
             <List>
-                <Typography align="center" variant={"h5"}>
+                <Typography align="center" variant={"h5"}
+                    aria-owns={isOpen ? 'mouse-over-popover' : undefined}
+                    onMouseEnter={handlePopoverOpen}
+                    onMouseLeave={handlePopoverClose}>
                     All Filters
                 </Typography>
                 <FireTypeFilter {...filterImplProps} />
@@ -173,7 +187,7 @@ export default function Filters(props: IFiltersProps) {
                 <TimeFilter {...filterImplProps} />
                 <TimeMonthFilter {...filterImplProps} />
                 <OwnerFiler {...filterImplProps} />
-                <SeverityFilter {...filterImplProps} />
+                {/* <SeverityFilter {...filterImplProps} /> */}
                 <Divider />
                 <FormControlLabel control={<Checkbox onChange={handleShowStatistics} />} label="Show statistics" labelPlacement="end" />
                 <Button variant="text" onClick={handleApply}>{"Apply Filter(s)"}</Button>
@@ -187,11 +201,11 @@ export default function Filters(props: IFiltersProps) {
                 {/* <IconButton onClick={toggleDrawer(true)} aria-label={"filter"}>
                 <FontAwesomeIcon icon={faEllipsisV} />
                 </IconButton> */}
-
-                <Button variant="contained" onClick={toggleDrawer(true)}>
-                 Filters
-                 </Button>
-
+                <Tooltip title="Select from multiple filter categories" arrow>
+                    <Button variant="contained" onClick={toggleDrawer(true)}>
+                        Filters
+                    </Button>
+                </Tooltip>
                 <Drawer
                     anchor={"right"}
                     open={isOpen}
@@ -199,6 +213,26 @@ export default function Filters(props: IFiltersProps) {
                 >
                     {list()}
                 </Drawer>
+                <Popover
+                    id="mouse-over-popover"
+                    sx={{
+                        pointerEvents: 'none',
+                    }}
+                    open={isOpen}
+                    anchorEl={anchorEl}
+                    anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'left',
+                    }}
+                    transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'left',
+                    }}
+                    onClose={handlePopoverClose}
+                    disableRestoreFocus
+                >
+                    <Typography sx={{ p: 1 }}>Select the filter categories to apply and then click on Apply Filter(s).</Typography>
+                </Popover>
             </React.Fragment>
         </div>
     );
