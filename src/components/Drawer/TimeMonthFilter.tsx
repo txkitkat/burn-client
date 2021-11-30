@@ -17,7 +17,7 @@ export default function TimeMonthFilter(props: IFilterImplProps) {
 
     const handleStartMonthChange = (event: SelectChangeEvent<number>) => {
         const startMonth = event.target.value as number;
-        if (startMonth && props.filterState.endMonth >= startMonth) {
+        if (startMonth>=0 && props.filterState.endMonth >= startMonth) {
             updateState("startMonth", startMonth);
             props.touchFilter("startMonth");
             props.touchFilter("endMonth"); // this so that default endMonth is also touched
@@ -26,7 +26,7 @@ export default function TimeMonthFilter(props: IFilterImplProps) {
 
     const handleEndMonthChange = (event: SelectChangeEvent<number>) => {
         const endMonth = event.target.value as number;
-        if (endMonth && props.filterState.startMonth <= endMonth) {
+        if (endMonth>=0 && props.filterState.startMonth <= endMonth) {
             updateState("endMonth", endMonth);
             props.touchFilter("endMonth");
             props.touchFilter("startMonth"); // this so that default startMonth is also touched
