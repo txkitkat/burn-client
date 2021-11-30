@@ -6,6 +6,7 @@ import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
+import Popover from '@mui/material/Popover';
 import "./Filters.css";
 import IFire from "../../types/fireType";
 import SourceFilter from "./SourceFilter";
@@ -157,10 +158,22 @@ export default function Filters(props: IFiltersProps) {
         filterState: state
     }
 
+    const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
+
+    const handlePopoverOpen = (event: React.MouseEvent<HTMLElement>) => {
+      setAnchorEl(event.currentTarget);
+    }
+  
+    const handlePopoverClose = () => {
+      setAnchorEl(null);
+    }
     const list = () => (
         <Box
             sx={{ width: 250, height: '100%', bgcolor: 'grey.100' }}
             role="presentation"
+            aria-owns={isOpen ? 'mouse-over-popover' : undefined}
+            onMouseEnter={handlePopoverOpen}
+            onMouseLeave={handlePopoverClose}
         >
             <List>
                 <Typography align="center" variant={"h5"}>
@@ -200,6 +213,26 @@ export default function Filters(props: IFiltersProps) {
                 >
                     {list()}
                 </Drawer>
+                <Popover
+        id="mouse-over-popover"
+        sx={{
+          pointerEvents: 'none',
+        }}
+        open={isOpen}
+        anchorEl={anchorEl}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'left',
+        }}
+        onClose={handlePopoverClose}
+        disableRestoreFocus
+      >
+        <Typography sx={{ p: 1 }}>Select the filter categories to apply and then click on Apply Filter(s).</Typography>
+      </Popover>
             </React.Fragment>
         </div>
     );
