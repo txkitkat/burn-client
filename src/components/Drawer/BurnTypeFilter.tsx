@@ -26,14 +26,22 @@ export default function BurnTypeFilter(props: IFilterImplProps) {
         props.setFilterState({...props.filterState, [key]: newState})
     }
 
+    const enabledStyle = {
+        color: "black"
+    };
+
+    const disabledStyle = {
+        color: "gray"
+    };
+
     return (
         <div>
             <Divider/>
-            <ListItem button key={"Sort by Burn Type"} onClick={() => setDropDownBurnType(!dropDownBurnType)}>
-                <ListItemText primary={"Sort by Burn Type"}/>
-                {dropDownBurnType ? <ExpandLess/> : <ExpandMore/>}
+            <ListItem button key={"Sort by Burn Type"} onClick={() => setDropDownBurnType(!(props.filterState.fireType==="ESCAPED") && !dropDownBurnType)}>
+                <ListItemText primary={"Sort by Burn Type"} primaryTypographyProps={(props.filterState.fireType==="ESCAPED")? { style: disabledStyle}: {style: enabledStyle}}/>
+                {dropDownBurnType ? <ExpandLess color={(props.filterState.fireType==="ESCAPED")? "disabled": "inherit"}/> : <ExpandMore color={(props.filterState.fireType==="ESCAPED")? "disabled": "inherit"}/>}
             </ListItem>
-            <Collapse in={dropDownBurnType} timeout="auto" unmountOnExit>
+            <Collapse in={!(props.filterState.fireType==="ESCAPED") && dropDownBurnType} timeout="auto" unmountOnExit>
                 <ListItem alignItems="center">
                     <FormControl sx={{minWidth: 120}} variant="filled" color="primary">
                         <InputLabel id="demo-simple-select-label">Burn Type</InputLabel>
