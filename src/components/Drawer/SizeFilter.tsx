@@ -36,7 +36,6 @@ export default function SizeFilter(props: IFilterImplProps) {
 
     function updateState<KeyStateType>(key1: string, newState1: KeyStateType, key2: string, newState2: KeyStateType) {
         props.setFilterState({ ...props.filterState, [key1]: newState1, [key2]: newState2 })
-        //console.log("I have requested to set the state of " + key1 + "="+ newState1 + " and " + key2 + "=" + newState2);
     }
 
     return (
