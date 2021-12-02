@@ -14,27 +14,29 @@ import { IFilterImplProps } from "./Filters";
 
 export default function TimeMonthFilter(props: IFilterImplProps) {
     const [dropDownMonth, setDropDownMonth] = useState(false);
+    const [startMonthValue, setStartMonthValue] = useState(props.filterState.startMonth);
+    const [endMonthValue, setEndMonthValue] = useState(props.filterState.endMonth);
 
     const handleStartMonthChange = (event: SelectChangeEvent<number>) => {
         const startMonth = event.target.value as number;
-        if (startMonth>=0 && props.filterState.endMonth >= startMonth) {
-            updateState("startMonth", startMonth);
-            props.touchFilter("startMonth");
-            props.touchFilter("endMonth"); // this so that default endMonth is also touched
+        if (startMonth>=0 && endMonthValue >= startMonth) {
+            setStartMonthValue(startMonth);
+            updateState("startMonth", startMonth, "endMonth", endMonthValue);
+            props.touchTwoFilters("startMonth", "endMonth");// this so that default endMonth is also touched
         }
     }
 
     const handleEndMonthChange = (event: SelectChangeEvent<number>) => {
         const endMonth = event.target.value as number;
-        if (endMonth>=0 && props.filterState.startMonth <= endMonth) {
-            updateState("endMonth", endMonth);
-            props.touchFilter("endMonth");
-            props.touchFilter("startMonth"); // this so that default startMonth is also touched
+        if (endMonth>=0 && startMonthValue <= endMonth) {
+            setEndMonthValue(endMonth);
+            updateState("endMonth", endMonth, "startMonth", startMonthValue);
+            props.touchTwoFilters("startMonth", "endMonth");// this so that default startMonth is also touched
         }
     }
 
-    function updateState<KeyStateType>(key: string, newState: KeyStateType) {
-        props.setFilterState({ ...props.filterState, [key]: newState })
+    function updateState<KeyStateType>(key1: string, newState1: KeyStateType, key2: string, newState2: KeyStateType) {
+        props.setFilterState({ ...props.filterState, [key1]: newState1, [key2]: newState2 })
     }
 
     return (
@@ -52,7 +54,7 @@ export default function TimeMonthFilter(props: IFilterImplProps) {
                             <Select
                                 labelId="start-month-select-label"
                                 id="start-month-select"
-                                value={props.filterState.startMonth}
+                                value={startMonthValue}
                                 label="Start Month"
                                 onChange={handleStartMonthChange}
                             >
@@ -71,7 +73,7 @@ export default function TimeMonthFilter(props: IFilterImplProps) {
                             <Select
                                 labelId="end-month-select-label"
                                 id="end-month-select"
-                                value={props.filterState.endMonth}
+                                value={endMonthValue}
                                 label="End Month"
                                 onChange={handleEndMonthChange}
                             >

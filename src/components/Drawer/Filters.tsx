@@ -32,6 +32,7 @@ interface IFiltersProps {
 export interface IFilterImplProps {
     setFilterState: (newState: IFiltersState) => void;
     touchFilter: (key: string) => void;
+    touchTwoFilters: (key1: string, key2: string) => void;
     filterState: IFiltersState
 }
 
@@ -119,6 +120,10 @@ export default function Filters(props: IFiltersProps) {
         setInteracted({ ...interacted, [key]: true })
     }
 
+    const touchTwoFilters = (key1: string, key2: string) => {
+        setInteracted({ ...interacted, [key1]: true, [key2]: true});
+    }
+
     const removeInapplicableFilters = () => {
         if (state.fireType==="ESCAPED"){
             setInteracted({ ...interacted, "burnType": false });
@@ -139,6 +144,7 @@ export default function Filters(props: IFiltersProps) {
         }
         setFiltersDescription(descString);
     }
+
 
     const handleApply = () => {
         removeInapplicableFilters();
@@ -178,6 +184,7 @@ export default function Filters(props: IFiltersProps) {
     const filterImplProps = {
         setFilterState: setState,
         touchFilter: touchFilter,
+        touchTwoFilters: touchTwoFilters,
         filterState: state
     }
 
@@ -242,7 +249,7 @@ export default function Filters(props: IFiltersProps) {
                 >
                     {list()}
                 </Drawer>
-                <Popover
+                {/* <Popover
                     id="mouse-over-popover"
                     sx={{
                         pointerEvents: 'none',
@@ -261,7 +268,7 @@ export default function Filters(props: IFiltersProps) {
                     disableRestoreFocus
                 >
                     <Typography sx={{ p: 1 }}>Select the filter categories to apply and then click on Apply Filter(s).</Typography>
-                </Popover>
+                </Popover> */}
             </React.Fragment>
         </div>
     );
