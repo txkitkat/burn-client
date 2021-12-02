@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
-//import IconButton from "@mui/material/IconButton";
-//import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
-import Popover from '@mui/material/Popover';
 import "./Filters.css";
 import IFire from "../../types/fireType";
 import SourceFilter from "./SourceFilter";
@@ -16,13 +13,14 @@ import LocationFilter from "./LocationFilter";
 import TimeFilter from "./TimeFilter";
 import TimeMonthFilter from "./TimeMonthFilter";
 import OwnerFiler from "./OwnerFilter";
-// import SeverityFilter from "./SeverityFilter";
 import FireTypeFilter from "./FireTypeFilter";
 import Button from "@mui/material/Button";
 import { getFiresByFilters, getFireStatistics } from "../../service/burnService";
 import { Checkbox } from '@mui/material';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Tooltip from '@mui/material/Tooltip';
+// import SeverityFilter from "./SeverityFilter";
+/*Severity filter code can be enabled when data is available*/
 
 interface IFiltersProps {
     setFireData: (fireData: IFire[]) => void;
@@ -125,19 +123,19 @@ export default function Filters(props: IFiltersProps) {
     }
 
     const removeInapplicableFilters = () => {
-        if (state.fireType==="ESCAPED"){
+        if (state.fireType === "ESCAPED") {
             setInteracted({ ...interacted, "burnType": false });
-            setState({...state, "source": "CALFIRE"});
+            setState({ ...state, "source": "CALFIRE" });
         }
     }
-    
+
     const [filtersDescription, setFiltersDescription] = useState("");
 
-    const createFiltersDescription = () =>{
+    const createFiltersDescription = () => {
         let descString = "";
-        for (const key in state){
+        for (const key in state) {
             // @ts-ignore
-            if (interacted[key]){
+            if (interacted[key]) {
                 // @ts-ignore
                 descString = descString + "\n" + key + ": " + state[key];
             }
@@ -188,26 +186,21 @@ export default function Filters(props: IFiltersProps) {
         filterState: state
     }
 
-    const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
-
-    const handlePopoverOpen = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorEl(event.currentTarget);
-    }
-
-    const handlePopoverClose = () => {
-        setAnchorEl(null);
-    }
     const list = () => (
+
         <Box
             sx={{ width: 250, height: '100%', bgcolor: 'grey.100' }}
-            role="presentation"
-        >
+            role="presentation">
+
             <List>
-                <Typography align="center" variant={"h5"}
-                    aria-owns={isOpen ? 'mouse-over-popover' : undefined}
-                    onMouseEnter={handlePopoverOpen}
-                    onMouseLeave={handlePopoverClose}>
+                <Typography align="center" variant={"h5"}>
                     All Filters
+                </Typography>
+                <Typography align="center" variant={"body2"} color="blue" fontStyle="italic">
+                    Select from the Filter Options below
+                </Typography>
+                <Typography align="center" variant={"body2"} color="blue" fontStyle="italic">
+                    Click on Apply Filter(s) when finished
                 </Typography>
                 <FireTypeFilter {...filterImplProps} />
                 <SourceFilter {...filterImplProps} />
@@ -228,9 +221,6 @@ export default function Filters(props: IFiltersProps) {
     return (
         <div className="filter-drawer">
             <React.Fragment key={"isOpen"}>
-                {/* <IconButton onClick={toggleDrawer(true)} aria-label={"filter"}>
-                <FontAwesomeIcon icon={faEllipsisV} />
-                </IconButton> */}
                 <Tooltip title="Select from multiple filter categories" arrow>
                     <Button variant="contained" onClick={toggleDrawer(true)}>
                         Filters
@@ -249,26 +239,6 @@ export default function Filters(props: IFiltersProps) {
                 >
                     {list()}
                 </Drawer>
-                {/* <Popover
-                    id="mouse-over-popover"
-                    sx={{
-                        pointerEvents: 'none',
-                    }}
-                    open={isOpen}
-                    anchorEl={anchorEl}
-                    anchorOrigin={{
-                        vertical: 'top',
-                        horizontal: 'left',
-                    }}
-                    transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'left',
-                    }}
-                    onClose={handlePopoverClose}
-                    disableRestoreFocus
-                >
-                    <Typography sx={{ p: 1 }}>Select the filter categories to apply and then click on Apply Filter(s).</Typography>
-                </Popover> */}
             </React.Fragment>
         </div>
     );

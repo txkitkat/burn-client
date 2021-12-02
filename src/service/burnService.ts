@@ -13,6 +13,9 @@ interface IServerResp {
     }
 }
 
+/*getFiresByFilters() getAllPrescribedFires() and getFireStatistics()  are the main service methods used
+retaining the signatures for the remaining methods for possible future applications*/
+
 export async function getAllFires(): Promise<IFire[]> {
     return (await http.get<IFire[]>(`${host}/fires`)).data;
 }

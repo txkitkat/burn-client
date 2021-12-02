@@ -15,10 +15,6 @@ export default function LocationFilter(props: IFilterImplProps) {
     const handleChangeLocation = (event: React.SyntheticEvent<Element, Event>, value: string | null, reason: AutocompleteChangeReason) => {
         props.setFilterState({...props.filterState, county: value as string});
         props.touchFilter("county");
-
-        // getFiresByCounty(value as string)
-        //     .then(fires => props.setFireData(fires))
-        //     .catch(err => console.error(err));
     };
 
     return (

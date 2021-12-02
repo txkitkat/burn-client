@@ -14,7 +14,7 @@ function App() {
     const [fireData, setFireData] = useState<IFire[]>([]);
     const [statistics, setStatistics] = useState("");
 
-    // todo this could get all fires instead but doing this for performance. Will be an issue.
+    // Loads all non-escaped fire 12K+ records will be slow on first load/page refresh/Home button click
     useEffect(() => {
         getAllPrescribedFires()
             .then(data => setFireData(data))
@@ -34,12 +34,6 @@ function App() {
                     <About/>
                 </Route>
                 <Route path="/contact">
-                    <Contact/>
-                </Route>
-                <Route path="/email">
-                    <Contact/>
-                </Route>
-                <Route path="/reach">
                     <Contact/>
                 </Route>
             </Switch>

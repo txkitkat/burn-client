@@ -17,9 +17,6 @@ export default function SourceFilter(props: IFilterImplProps) {
     const handleChangeDataset = (event: SelectChangeEvent) => {
         props.setFilterState({...props.filterState, source: event.target.value as string});
         props.touchFilter("source");
-        // getFiresBySource(event.target.value as string)
-        //     .then(fires => props.setFireData(fires))
-        //     .catch(err => console.error(err));
     };
 
     return (
