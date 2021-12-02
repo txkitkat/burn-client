@@ -11,28 +11,32 @@ import { Divider } from "@mui/material";
 import Typography from '@mui/material/Typography';
 import { IFilterImplProps } from "./Filters";
 
-const MIN_FIRE_SIZE = 0;
-const MAX_FIRE_SIZE = 100000;
-
 export default function SizeFilter(props: IFilterImplProps) {
     const [dropDownSize, setDropDownSize] = useState(false);
+    const [minAcresValue, setMinAcresValue] = useState(props.filterState.minAcres);
+    const [maxAcresValue, setMaxAcresValue] = useState(props.filterState.maxAcres);
 
     const handleChangeMinSize = (event: React.ChangeEvent<HTMLInputElement>) => {
         const enteredSize = parseFloat(event.target.value);
-        if (enteredSize > props.filterState.maxAcres) updateState("minAcres", props.filterState.maxAcres)
-        else (enteredSize >= 0) ? updateState("minAcres", enteredSize) : updateState("minAcres", 0);
-        props.touchFilter("minAcres");
+        if (enteredSize >= 0 && maxAcresValue>=0 && enteredSize <= maxAcresValue){
+            setMinAcresValue(enteredSize);
+            updateState("minAcres", enteredSize, "maxAcres", maxAcresValue);
+            props.touchTwoFilters("minAcres", "maxAcres");
+        }
     };
 
     const handleChangeMaxSize = (event: React.ChangeEvent<HTMLInputElement>) => {
         const enteredSize = parseFloat(event.target.value);
-        if (enteredSize < props.filterState.minAcres) updateState("maxAcres", props.filterState.minAcres)
-        else enteredSize >= 0 ? updateState("maxAcres", enteredSize) : updateState("maxAcres", 0);
-        props.touchFilter("maxAcres");
+        if (enteredSize>=0 && minAcresValue>=0 && minAcresValue<= enteredSize){
+            setMaxAcresValue(enteredSize);
+            updateState("minAcres", minAcresValue, "maxAcres", enteredSize);
+            props.touchTwoFilters("minAcres", "maxAcres");
+        }
     };
 
-    function updateState<KeyStateType>(key: string, newState: KeyStateType) {
-        props.setFilterState({ ...props.filterState, [key]: newState })
+    function updateState<KeyStateType>(key1: string, newState1: KeyStateType, key2: string, newState2: KeyStateType) {
+        props.setFilterState({ ...props.filterState, [key1]: newState1, [key2]: newState2 })
+        //console.log("I have requested to set the state of " + key1 + "="+ newState1 + " and " + key2 + "=" + newState2);
     }
 
     return (
@@ -48,15 +52,15 @@ export default function SizeFilter(props: IFilterImplProps) {
                         <Typography variant="body2" gutterBottom align="center">
                             Specify Fire size in Acres
                         </Typography>
-                        <Tooltip title="Please edit both min and max size values" arrow>
+                        <Tooltip title="Please provide max size followed by min size" arrow>
                             <TextField id="min-size" label="Min Size" variant="standard" type="number"
-                                defaultValue={MIN_FIRE_SIZE} InputLabelProps={{ shrink: true }}
+                                value={minAcresValue} InputLabelProps={{ shrink: true }}
                                 onChange={handleChangeMinSize} />
                         </Tooltip>
                         <ListItemText primary={""} />
-                        <Tooltip title="Please edit both min and max size values" arrow>
+                        <Tooltip title="Please provide max size followed by min size" arrow>
                             <TextField id="max-size" required label="Max Size" variant="standard" type="number"
-                                defaultValue={MAX_FIRE_SIZE} InputLabelProps={{ shrink: true }}
+                                value={maxAcresValue} InputLabelProps={{ shrink: true }}
                                 onChange={handleChangeMaxSize} />
                         </Tooltip>
 
