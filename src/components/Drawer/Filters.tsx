@@ -119,7 +119,7 @@ export default function Filters(props: IFiltersProps) {
     }
 
     const touchTwoFilters = (key1: string, key2: string) => {
-        setInteracted({ ...interacted, [key1]: true, [key2]: true});
+        setInteracted({ ...interacted, [key1]: true, [key2]: true });
     }
 
     const removeInapplicableFilters = () => {
@@ -229,9 +229,11 @@ export default function Filters(props: IFiltersProps) {
                 <Typography variant="body2" color="blue" align="center">
                     <strong>Filters Applied</strong>
                 </Typography>
-                <Typography variant="body2" color="blue" fontStyle="italic" align="center">
-                    {filtersDescription}
-                </Typography>
+                <Tooltip title="Months if specified will be in range 0-11" arrow>
+                    <Typography variant="body2" color="blue" fontStyle="italic" align="center">
+                        {filtersDescription}
+                    </Typography>
+                </Tooltip>
                 <Drawer
                     anchor={"right"}
                     open={isOpen}
