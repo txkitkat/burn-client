@@ -3,7 +3,6 @@ import {Circle, Popup} from "react-leaflet";
 function Fire(props: any) {
     let date = (props.month+1)+'/'+props.day+'/'+props.year;
     return (
-      //  <Circle center={props.latLon} radius={props.burnArea} > check if sponsors prefer the dots
       <Circle center={props.latLon}>
             <Popup>
                 <div>

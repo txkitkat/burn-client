@@ -17,9 +17,6 @@ export default function BurnTypeFilter(props: IFilterImplProps) {
     const handleChangeBurnType = (event: SelectChangeEvent) => {
         updateState("burnType", event.target.value as string);
         props.touchFilter("burnType");
-        // getFiresByBurnType(event.target.value as string)
-        //     .then(fires => props.setFireData(fires))
-        //     .catch(err => console.error(err));
     };
 
     function updateState<KeyStateType>(key: string, newState: KeyStateType) {

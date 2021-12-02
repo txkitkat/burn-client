@@ -17,9 +17,6 @@ export default function FireTypeFilter(props: IFilterImplProps) {
     const handleChangeFireType = (event: SelectChangeEvent) => {
         props.setFilterState({...props.filterState, fireType: event.target.value as string});
         props.touchFilter("fireType");
-        // getFiresBySource(event.target.value as string)
-        //     .then(fires => props.setFireData(fires))
-        //     .catch(err => console.error(err));
     };
 
     return (

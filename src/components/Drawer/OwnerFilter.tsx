@@ -19,11 +19,6 @@ export default function OwnerFiler(props: IFilterImplProps) {
         props.touchFilter("owner");
     };
 
-    // const handleApplyOwner = () => {
-    //     getFiresByOwner(owner)
-    //         .then(fires => props.setFireData(fires))
-    //         .catch(err => console.error(err));
-    // };
 
     function updateState<KeyStateType>(key: string, newState: KeyStateType) {
         props.setFilterState({...props.filterState, [key]: newState})
