@@ -2,8 +2,10 @@ import http from "../http-common";
 import IFire from "../types/fireType";
 import IFireStat from "../types/statType";
 import {IFiltersInteracted, IFiltersState} from "../components/Drawer/Filters";
+import axios from "axios";
 
 const host: any = process.env.REACT_APP_FIRE_BACKEND;
+const windowHost: any = process.env.REACT_APP_FIRE_WINDOW_BACKEND;
 
 console.log(host);
 
@@ -96,6 +98,19 @@ export async function getFiresByFilters(filterState: IFiltersState, interactedFi
     console.log(resp)
 
     return resp.data._embedded.fires;
+}
+
+export async function downloadFireWindow(startDate: number, endDate: number) {
+    let downloadQuery = `${windowHost}/query?start_date=${startDate}&end_date=${endDate}`
+    console.log(downloadQuery);
+    let resp = await axios({
+        url: downloadQuery,
+        method: "GET",
+        responseType: "blob"
+    });
+    console.log(resp)
+
+    return resp;
 }
 
 export async function getFireStatistics(filterState: IFiltersState, interactedFilters: IFiltersInteracted) {

@@ -21,6 +21,7 @@
     "axios": "^0.23.0",
     "date-fns": "^2.25.0",
     "formik": "^2.2.6",
+    "js-file-download": "^0.4.12",
     "leaflet": "^1.7.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",

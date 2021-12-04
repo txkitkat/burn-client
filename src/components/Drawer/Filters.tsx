@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
@@ -15,12 +15,10 @@ import TimeMonthFilter from "./TimeMonthFilter";
 import OwnerFiler from "./OwnerFilter";
 import FireTypeFilter from "./FireTypeFilter";
 import Button from "@mui/material/Button";
-import { getFiresByFilters, getFireStatistics } from "../../service/burnService";
-import { Checkbox } from '@mui/material';
+import {downloadFireWindow, getFiresByFilters, getFireStatistics} from "../../service/burnService";
+import {Checkbox} from '@mui/material';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Tooltip from '@mui/material/Tooltip';
-// import SeverityFilter from "./SeverityFilter";
-/*Severity filter code can be enabled when data is available*/
 
 interface IFiltersProps {
     setFireData: (fireData: IFire[]) => void;
@@ -115,17 +113,17 @@ export default function Filters(props: IFiltersProps) {
             };
 
     const touchFilter = (key: string) => {
-        setInteracted({ ...interacted, [key]: true })
+        setInteracted({...interacted, [key]: true})
     }
 
     const touchTwoFilters = (key1: string, key2: string) => {
-        setInteracted({ ...interacted, [key1]: true, [key2]: true });
+        setInteracted({...interacted, [key1]: true, [key2]: true});
     }
 
     const removeInapplicableFilters = () => {
         if (state.fireType === "ESCAPED") {
-            setInteracted({ ...interacted, "burnType": false });
-            setState({ ...state, "source": "CALFIRE" });
+            setInteracted({...interacted, "burnType": false});
+            setState({...state, "source": "CALFIRE"});
         }
     }
 
@@ -145,6 +143,8 @@ export default function Filters(props: IFiltersProps) {
 
 
     const handleApply = () => {
+        const FileDownload = require("js-file-download");
+
         removeInapplicableFilters();
         createFiltersDescription();
         getFiresByFilters(state, interacted)
@@ -160,7 +160,10 @@ export default function Filters(props: IFiltersProps) {
                             let statsDisplay = "For Applied Filter: \n Fire(s) Count: " + fireStats.numFires
                                 + "\n Start Year: " + fireStats.minYear + "\n End Year: " + fireStats.maxYear + "\n Average Size: " + fireStats.avgSize.toFixed(2) + "\n Minimum Size: " + fireStats.minSize.toFixed(3) + "\n Maximum Size: " + fireStats.maxSize.toFixed(2)
                             props.setStatistics(statsDisplay);
-                        }).catch(err => { console.log(err); props.setStatistics("For Applied Filter: No statistics available"); })
+                        }).catch(err => {
+                        console.log(err);
+                        props.setStatistics("For Applied Filter: No statistics available");
+                    })
 
                 } else {
                     props.setStatistics("");
@@ -169,14 +172,34 @@ export default function Filters(props: IFiltersProps) {
                 return fires;
             })
             .then(fires => props.setFireData(fires))
+            .then(() => {
+                if (checkedDownloadRaster) {
+                    let baseDate = new Date(1979, 0, 0);
+                    let startDate = new Date(state.startYear, state.startMonth - 1, 0);
+                    let endDate;
+                    if (state.endMonth === 12)
+                        endDate = new Date(state.endYear + 1, 0, 0);
+                    else
+                        endDate = new Date(state.endYear, state.endMonth, 0);
 
+                    downloadFireWindow((startDate.getTime() - baseDate.getTime()) / (1000 * 3600 * 24),
+                        (endDate.getTime() - baseDate.getTime()) / (1000 * 3600 * 24)).then((data) => {
+                        return data.data
+                    }).then((data: any) => FileDownload(new Blob([data]), "window.nc"));
+                }
+            })
             .catch(err => console.error(err));
     }
 
     const [checkedShowStatistics, setCheckedShowStatistics] = React.useState(false);
+    const [checkedDownloadRaster, setCheckedDownloadRaster] = React.useState(false);
 
     const handleShowStatistics = (event: React.ChangeEvent<HTMLInputElement>) => {
         setCheckedShowStatistics(event.target.checked)
+    }
+
+    const handleDownloadRaster = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setCheckedDownloadRaster(event.target.checked)
     }
 
     const filterImplProps = {
@@ -189,7 +212,7 @@ export default function Filters(props: IFiltersProps) {
     const list = () => (
 
         <Box
-            sx={{ width: 250, height: '100%', bgcolor: 'grey.100' }}
+            sx={{width: 250, height: '100%', bgcolor: 'grey.100'}}
             role="presentation">
 
             <List>
@@ -211,8 +234,11 @@ export default function Filters(props: IFiltersProps) {
                 <TimeMonthFilter {...filterImplProps} />
                 <OwnerFiler {...filterImplProps} />
                 {/* <SeverityFilter {...filterImplProps} /> */}
-                <Divider />
-                <FormControlLabel control={<Checkbox onChange={handleShowStatistics} />} label="Show statistics" labelPlacement="end" />
+                <Divider/>
+                <FormControlLabel control={<Checkbox onChange={handleShowStatistics}/>} label="Show statistics"
+                                  labelPlacement="end"/>
+                <FormControlLabel control={<Checkbox onChange={handleDownloadRaster}/>}
+                                  label="Download Burn Window Raster for Time Frame" labelPlacement="end"/>
                 <Button variant="text" onClick={handleApply}>{"Apply Filter(s)"}</Button>
             </List>
         </Box>
