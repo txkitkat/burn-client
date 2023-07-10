@@ -174,6 +174,7 @@ export default function Filters(props: IFiltersProps) {
             .then(fires => props.setFireData(fires))
             .then(() => {
                 if (checkedDownloadRaster) {
+
                     let baseDate = new Date(1979, 0, 0);
                     let startDate = new Date(state.startYear, state.startMonth - 1, 0);
                     let endDate;
