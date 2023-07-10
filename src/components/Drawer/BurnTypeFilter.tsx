@@ -53,6 +53,7 @@ export default function BurnTypeFilter(props: IFilterImplProps) {
                             <MenuItem value={"Broadcast"}>BROADCAST</MenuItem>
                             <MenuItem value={"Hand Pile"}>HAND PILE</MenuItem>
                             <MenuItem value={"Machine Pile"}>MACHINE PILE</MenuItem>
+                            <MenuItem value={"UNK"}>UNK</MenuItem>
                         </Select>
                     </FormControl>
                 </ListItem>
