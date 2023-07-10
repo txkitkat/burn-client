@@ -16,6 +16,9 @@ export default function MapLayerPickerControl() {
             <LayersControl.Overlay name="Vegetation Legend">
                 <ImageOverlay url={vegetationLegend} bounds={[[43.07287, -130.92884], [38.669518, -127.03968]]} opacity={1} />
             </LayersControl.Overlay>
+            <LayersControl.Overlay name="Burn Window">
+                <ImageOverlay url={`${process.env.REACT_APP_FIRE_WINDOW_BACKEND}/image`} bounds={[[30.962, -127.554], [43.377, -111.44]]} opacity={0.2} />
+            </LayersControl.Overlay>
         </LayersControl>
     );
 }
