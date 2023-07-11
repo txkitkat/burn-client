@@ -15,6 +15,7 @@ function App() {
     const [statistics, setStatistics] = useState("");
     const [seed, setSeed] = useState(1);
     const updateBurnWindow = () => setSeed(seed + 1);
+    const resetBurnWindow = () => setSeed(1);
 
     // Loads all non-escaped fire 12K+ records will be slow on first load/page refresh/Home button click
     useEffect(() => {
@@ -31,7 +32,7 @@ function App() {
                     <StatisticsPane statistics={statistics}/>
                     <Map fireData={fireData} setFireData={setFireData} seed={seed}/>
                     <Filters setFireData={setFireData} setStatistics={setStatistics} 
-                      updateBurnWindow={updateBurnWindow}/>
+                      updateBurnWindow={updateBurnWindow} resetBurnWindow={resetBurnWindow}/>
                 </Route>
                 <Route path="/about">
                     <About/>

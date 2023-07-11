@@ -24,6 +24,7 @@ interface IFiltersProps {
     setFireData: (fireData: IFire[]) => void;
     setStatistics: (statistics: string) => void;
     updateBurnWindow: () => void;
+    resetBurnWindow: () => void;
 }
 
 export interface IFilterImplProps {
@@ -189,6 +190,7 @@ export default function Filters(props: IFiltersProps) {
 
                     downloadFireWindow(startDateInSeconds, endDateInSeconds)
                     .then((data) => { return data.data})
+                    .then((data: any) => props.resetBurnWindow())
                     .then((data: any) => props.updateBurnWindow());
                 }
             })
