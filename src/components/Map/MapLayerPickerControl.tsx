@@ -3,7 +3,7 @@ import CountyBorders from "../CountyBorders"
 import vegetationImage from "../../data/WHR13_vegetation.png"
 import vegetationLegend from "../../data/WHR13_vegetation_legend.png"
 
-export default function MapLayerPickerControl() {
+export default function MapLayerPickerControl(props: {seed: number}) {
     // @ts-ignore
     return (
         <LayersControl>
@@ -16,9 +16,11 @@ export default function MapLayerPickerControl() {
             <LayersControl.Overlay name="Vegetation Legend">
                 <ImageOverlay url={vegetationLegend} bounds={[[43.07287, -130.92884], [38.669518, -127.03968]]} opacity={1} />
             </LayersControl.Overlay>
+            {(props.seed > 1) ? (
             <LayersControl.Overlay name="Burn Window">
-                <ImageOverlay url={`${process.env.REACT_APP_FIRE_WINDOW_BACKEND}/image`} bounds={[[30.962, -127.554], [43.377, -111.44]]} opacity={0.2} />
+                <ImageOverlay url={`${process.env.REACT_APP_FIRE_WINDOW_BACKEND}/image`} bounds={[[32.462, -124.554], [41.977, -114.04]]} opacity={0.4} />
             </LayersControl.Overlay>
+            ) : (<></>)}
         </LayersControl>
     );
 }

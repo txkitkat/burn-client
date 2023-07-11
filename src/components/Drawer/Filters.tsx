@@ -23,6 +23,7 @@ import Tooltip from '@mui/material/Tooltip';
 interface IFiltersProps {
     setFireData: (fireData: IFire[]) => void;
     setStatistics: (statistics: string) => void;
+    updateWindow: () => void;
 }
 
 export interface IFilterImplProps {
@@ -186,7 +187,7 @@ export default function Filters(props: IFiltersProps) {
                     downloadFireWindow((startDate.getTime() - baseDate.getTime()) / (1000 * 3600 * 24),
                         (endDate.getTime() - baseDate.getTime()) / (1000 * 3600 * 24)).then((data) => {
                         return data.data
-                    }).then((data: any) => FileDownload(new Blob([data]), "window.nc"));
+                    }).then((data: any) => props.updateWindow());
                 }
             })
             .catch(err => console.error(err));

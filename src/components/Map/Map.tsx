@@ -10,6 +10,7 @@ import "./Map.css";
 export interface MapProps {
     fireData: IFire[];
     setFireData: (fireData: IFire[]) => void;
+    seed: number;
 }
 
 const Map = (props: MapProps) => {
@@ -33,7 +34,7 @@ const Map = (props: MapProps) => {
                     burnArea={fire["acres"]}
                     name={fire["name"]} day={fire["day"]} month={fire["month"]} year={fire["year"]} county={fire["county"]} />)}
 
-                <MapLayerPickerControl />
+                <MapLayerPickerControl seed={props.seed}/>
             </MapContainer>
         </div>
     );

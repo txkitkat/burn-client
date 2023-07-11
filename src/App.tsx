@@ -13,6 +13,8 @@ import {getAllPrescribedFires} from "./service/burnService";
 function App() {
     const [fireData, setFireData] = useState<IFire[]>([]);
     const [statistics, setStatistics] = useState("");
+    const [seed, setSeed] = useState(1);
+    const updateWindow = () => setSeed(seed + 1);
 
     // Loads all non-escaped fire 12K+ records will be slow on first load/page refresh/Home button click
     useEffect(() => {
@@ -27,8 +29,8 @@ function App() {
             <Switch>
                 <Route path="/" exact>
                     <StatisticsPane statistics={statistics}/>
-                    <Map fireData={fireData} setFireData={setFireData}/>
-                    <Filters setFireData={setFireData} setStatistics={setStatistics}/>
+                    <Map fireData={fireData} setFireData={setFireData} seed={seed}/>
+                    <Filters setFireData={setFireData} setStatistics={setStatistics} updateWindow={updateWindow}/>
                 </Route>
                 <Route path="/about">
                     <About/>
