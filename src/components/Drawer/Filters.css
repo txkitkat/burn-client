@@ -4,5 +4,17 @@
     height: 90vh;
     border: 2px;
     background-color: rgba(255, 255, 255, 0.687);
-    z-index: 1500;
+    z-index: 1500;   
 }
+
+Button.filter-button {
+  width:100%;
+  border-radius: 0px;
+}
+
+Button.apply-filter-button {
+  width:100%;
+  align-self: end;
+}
+
+ 

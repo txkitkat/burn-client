@@ -94,7 +94,7 @@ export default function TimeFilter(props: IFilterImplProps) {
             </ListItem>
             <Collapse in={dropDownTime} timeout="auto" unmountOnExit>
                 <Tooltip title="Please edit both start and end year values" arrow>
-                    <TextField
+                    <TextField sx={{ marginLeft: 2, minWidth: 90 }}
                         id="start-year"
                         label="Start Year"
                         inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
@@ -109,7 +109,7 @@ export default function TimeFilter(props: IFilterImplProps) {
                     />
                 </Tooltip>
                 <Tooltip title="Please edit both start and end year values" arrow>
-                    <TextField
+                    <TextField sx={{ marginLeft: 2, minWidth: 90 }}
                         id="end-year"
                         label="End Year"
                         inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}

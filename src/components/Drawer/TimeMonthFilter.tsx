@@ -48,7 +48,7 @@ export default function TimeMonthFilter(props: IFilterImplProps) {
             </ListItem>
             <Collapse in={dropDownMonth} timeout="auto" unmountOnExit>
                 <ListItem key={"Dropdown Month"} alignItems="center">
-                    <FormControl sx={{ margin: 2, minWidth: 90 }} variant="standard" color="primary">
+                    <FormControl sx={{ margin: 1, minWidth: 90 }} variant="standard" color="primary">
                         <InputLabel>Start Month</InputLabel>
                         <Tooltip title="Please edit both start and end month values" arrow>
                             <Select

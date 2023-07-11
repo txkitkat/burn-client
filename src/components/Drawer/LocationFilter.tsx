@@ -29,7 +29,7 @@ export default function LocationFilter(props: IFilterImplProps) {
                     disablePortal
                     id="County"
                     options={counties}
-                    sx={{width: 200}}
+                    sx={{marginLeft: 2, marginRight: 2}}
                     renderInput={(params) => <TextField {...params} label="County"/>}
                     onChange={handleChangeLocation}
                     value={props.filterState.county}

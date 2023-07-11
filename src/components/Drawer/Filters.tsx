@@ -23,7 +23,7 @@ import Tooltip from '@mui/material/Tooltip';
 interface IFiltersProps {
     setFireData: (fireData: IFire[]) => void;
     setStatistics: (statistics: string) => void;
-    updateWindow: () => void;
+    updateBurnWindow: () => void;
 }
 
 export interface IFilterImplProps {
@@ -189,7 +189,7 @@ export default function Filters(props: IFiltersProps) {
 
                     downloadFireWindow(startDateInSeconds, endDateInSeconds)
                     .then((data) => { return data.data})
-                    .then((data: any) => props.updateWindow());
+                    .then((data: any) => props.updateBurnWindow());
                 }
             })
             .catch(err => console.error(err));
@@ -239,11 +239,11 @@ export default function Filters(props: IFiltersProps) {
                 <OwnerFiler {...filterImplProps} />
                 {/* <SeverityFilter {...filterImplProps} /> */}
                 <Divider/>
-                <FormControlLabel control={<Checkbox onChange={handleShowStatistics}/>} label="Show statistics"
-                                  labelPlacement="end"/>
-                <FormControlLabel control={<Checkbox onChange={handleDownloadRaster}/>}
+                <FormControlLabel sx={{ margin: 1 }} control={<Checkbox onChange={handleShowStatistics}/>} 
+                                  label="Show statistics" labelPlacement="end"/>
+                <FormControlLabel sx={{ margin: 1 }} control={<Checkbox onChange={handleDownloadRaster}/>}
                                   label="Show Burn Window Raster for Time Frame" labelPlacement="end"/>
-                <Button variant="text" onClick={handleApply}>{"Apply Filter(s)"}</Button>
+                <Button className = "apply-filter-button" variant="text" onClick={handleApply}>{"Apply Filter(s)"}</Button>
             </List>
         </Box>
     );
@@ -252,7 +252,7 @@ export default function Filters(props: IFiltersProps) {
         <div className="filter-drawer">
             <React.Fragment key={"isOpen"}>
                 <Tooltip title="Select from multiple filter categories" arrow>
-                    <Button variant="contained" onClick={toggleDrawer(true)}>
+                    <Button className = "filter-button" variant="contained" onClick={toggleDrawer(true)}>
                         Filters
                     </Button>
                 </Tooltip>
