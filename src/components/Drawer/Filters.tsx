@@ -184,10 +184,12 @@ export default function Filters(props: IFiltersProps) {
                     else
                         endDate = new Date(state.endYear, state.endMonth, 0);
 
-                    downloadFireWindow((startDate.getTime() - baseDate.getTime()) / (1000 * 3600 * 24),
-                        (endDate.getTime() - baseDate.getTime()) / (1000 * 3600 * 24)).then((data) => {
-                        return data.data
-                    }).then((data: any) => props.updateWindow());
+                    let startDateInSeconds = Math.floor((startDate.getTime() - baseDate.getTime()) / (1000 * 3600 * 24));
+                    let endDateInSeconds = Math.ceil((endDate.getTime() - baseDate.getTime()) / (1000 * 3600 * 24));
+
+                    downloadFireWindow(startDateInSeconds, endDateInSeconds)
+                    .then((data) => { return data.data})
+                    .then((data: any) => props.updateWindow());
                 }
             })
             .catch(err => console.error(err));
