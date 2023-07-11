@@ -240,7 +240,7 @@ export default function Filters(props: IFiltersProps) {
                 <FormControlLabel control={<Checkbox onChange={handleShowStatistics}/>} label="Show statistics"
                                   labelPlacement="end"/>
                 <FormControlLabel control={<Checkbox onChange={handleDownloadRaster}/>}
-                                  label="Download Burn Window Raster for Time Frame" labelPlacement="end"/>
+                                  label="Show Burn Window Raster for Time Frame" labelPlacement="end"/>
                 <Button variant="text" onClick={handleApply}>{"Apply Filter(s)"}</Button>
             </List>
         </Box>
