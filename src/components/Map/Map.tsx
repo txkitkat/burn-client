@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { LatLngExpression } from "leaflet";
 import { MapContainer, TileLayer } from "react-leaflet";
 import Fire from "../Fire";
 import IFire from "../../types/fireType";
 import MapLayerPickerControl from "./MapLayerPickerControl";
+import { Slider, Typography } from "@material-ui/core";
 
 import "./Map.css";
 
@@ -14,12 +15,31 @@ export interface MapProps {
 }
 
 const Map = (props: MapProps) => {
+    const [value, setValue] = useState(1);
+
+    const changeOpacity = (e: React.ChangeEvent<any>, value: any) => {
+        setValue(value);
+    };
+
+    const getSliderText = (value: number) => `${value}`;
+
     const defaultPosition: LatLngExpression = [36.7783, -119.4179]; // California position
 
     //    console.log(props.fireData);
 
     return (
         <div className="map__container">
+            <div 
+                style={{ position: 'absolute', backgroundColor: "white", padding: 10, 
+                borderRadius:'2px', borderStyle: 'solid', borderColor: 'rgba(105,105,105,0.5)', borderWidth: '2px',
+                zIndex: 450, width: 125, top: 675, left: 200, }} >
+                <Typography variant={"body1"}>
+                    Opacity
+                </Typography>
+                <Slider value={value} min={0} max={1} step={0.1} 
+                    onChange={(e, val) => changeOpacity(e, val)} valueLabelDisplay="auto" getAriaValueText={getSliderText} 
+                />
+            </div>
             <MapContainer
                 center={defaultPosition}
                 zoom={6}
@@ -34,7 +54,7 @@ const Map = (props: MapProps) => {
                     burnArea={fire["acres"]}
                     name={fire["name"]} day={fire["day"]} month={fire["month"]} year={fire["year"]} county={fire["county"]} />)}
 
-                <MapLayerPickerControl seed={props.seed}/>
+                <MapLayerPickerControl seed={props.seed} value = {value}/>
             </MapContainer>
         </div>
     );
