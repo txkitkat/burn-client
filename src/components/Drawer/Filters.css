@@ -17,4 +17,8 @@ Button.apply-filter-button {
   align-self: end;
 }
 
+input.date-change{
+  width: 100%;
+  padding: 2px;
+}
  

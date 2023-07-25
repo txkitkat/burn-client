@@ -21,8 +21,6 @@ const Map = (props: MapProps) => {
         setValue(value);
     };
 
-    const getSliderText = (value: number) => `${value}`;
-
     const defaultPosition: LatLngExpression = [36.7783, -119.4179]; // California position
 
     //    console.log(props.fireData);
@@ -32,12 +30,12 @@ const Map = (props: MapProps) => {
             <div 
                 style={{ position: 'absolute', backgroundColor: "white", padding: 10, 
                 borderRadius:'2px', borderStyle: 'solid', borderColor: 'rgba(105,105,105,0.5)', borderWidth: '2px',
-                zIndex: 450, width: 125, top: 675, left: 200, }} >
+                zIndex: 450, width: 125, top: 675, left: 250, }} >
                 <Typography variant={"body1"}>
                     Opacity
                 </Typography>
                 <Slider value={value} min={0} max={1} step={0.1} 
-                    onChange={(e, val) => changeOpacity(e, val)} valueLabelDisplay="auto" getAriaValueText={getSliderText} 
+                    onChange={(e, val) => changeOpacity(e, val)} valueLabelDisplay="auto" 
                 />
             </div>
             <MapContainer

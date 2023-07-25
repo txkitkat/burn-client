@@ -274,12 +274,12 @@ export default function Filters(props: IFiltersProps) {
                         {filtersDescription}
                     </Typography>
                 </Tooltip>
-                <input  style={{marginTop: "100px"}} type="date" onChange={(e) => setDate(e.target.value)} ref={dateInputRef} />
-                <input  type="date" onChange={(e) => setDate2(e.target.value)} ref={date2InputRef} />
+                <input className = 'date-change'  style={{marginTop: "100px"}} type="date" onChange={(e) => setDate(e.target.value)} ref={dateInputRef} />
+                <input className = 'date-change' type="date" onChange={(e) => setDate2(e.target.value)} ref={date2InputRef} />
                 <Button className = "filter-button"
                         variant="contained"
-                        onClick={() => query_counties(toDate(date), toDate(date2)).then((data)=>props.setCounties(data.data))}
-                        disabled = {date == ''}>
+                        onClick={() => query_counties(toDate(date), toDate(date2)).then((data)=>props.setCounties(data.data)).then(() => console.log("DATE2: " + date2))}
+                        disabled = {date == '' || date2 == ''}>
                     Search
                 </Button>
                 <Drawer
