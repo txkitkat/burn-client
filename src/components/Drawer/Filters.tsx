@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
@@ -15,16 +15,18 @@ import TimeMonthFilter from "./TimeMonthFilter";
 import OwnerFiler from "./OwnerFilter";
 import FireTypeFilter from "./FireTypeFilter";
 import Button from "@mui/material/Button";
-import {downloadFireWindow, getFiresByFilters, getFireStatistics} from "../../service/burnService";
+import {downloadFireWindow, getFiresByFilters, getFireStatistics, query_counties} from "../../service/burnService";
 import {Checkbox} from '@mui/material';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Tooltip from '@mui/material/Tooltip';
+
 
 interface IFiltersProps {
     setFireData: (fireData: IFire[]) => void;
     setStatistics: (statistics: string) => void;
     updateBurnWindow: () => void;
     resetBurnWindow: () => void;
+    setCounties: (counties: string[]) => void;
 }
 
 export interface IFilterImplProps {
@@ -250,6 +252,9 @@ export default function Filters(props: IFiltersProps) {
         </Box>
     );
 
+    const [date, setDate] = useState('');
+    const dateInputRef = useRef(null);
+
     return (
         <div className="filter-drawer">
             <React.Fragment key={"isOpen"}>
@@ -266,6 +271,10 @@ export default function Filters(props: IFiltersProps) {
                         {filtersDescription}
                     </Typography>
                 </Tooltip>
+                <input  style={{marginTop: "100px"}} type="date" onChange={(e) => setDate(e.target.value)} ref={dateInputRef} />
+                <Button className = "filter-button" variant="contained" onClick={() => query_counties(Math.floor((new Date(date).getTime() - (new Date(1979, 0, 0)).getTime()) / (1000 * 3600 * 24))).then((data)=>props.setCounties(data.data))}>
+                    Search
+                </Button>
                 <Drawer
                     anchor={"right"}
                     open={isOpen}
