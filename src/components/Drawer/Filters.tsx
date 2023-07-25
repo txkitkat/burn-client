@@ -254,6 +254,9 @@ export default function Filters(props: IFiltersProps) {
 
     const [date, setDate] = useState('');
     const dateInputRef = useRef(null);
+    const [date2, setDate2] = useState('');
+    const date2InputRef = useRef(null);
+    const toDate = (date: string) => Math.floor((new Date(date).getTime() - (new Date(1979, 0, 0)).getTime()) / (1000 * 3600 * 24))
 
     return (
         <div className="filter-drawer">
@@ -271,12 +274,12 @@ export default function Filters(props: IFiltersProps) {
                         {filtersDescription}
                     </Typography>
                 </Tooltip>
-                <input style={{marginTop: "100px"}} type="date" onChange={(e) => setDate(e.target.value)} ref={dateInputRef} />
-                <Button className = "filter-button" variant="contained" 
-                    onClick={() => query_counties(Math.floor((new Date(date).getTime() - (new Date(1979, 0, 0)).getTime()) / (1000 * 3600 * 24))).
-                    then((data)=>props.setCounties(data.data))}
-                    disabled = {date == ''}
-                    >
+                <input  style={{marginTop: "100px"}} type="date" onChange={(e) => setDate(e.target.value)} ref={dateInputRef} />
+                <input  type="date" onChange={(e) => setDate2(e.target.value)} ref={date2InputRef} />
+                <Button className = "filter-button"
+                        variant="contained"
+                        onClick={() => query_counties(toDate(date), toDate(date2)).then((data)=>props.setCounties(data.data))}
+                        disabled = {date == ''}>
                     Search
                 </Button>
                 <Drawer

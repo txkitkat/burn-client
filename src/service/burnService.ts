@@ -112,8 +112,8 @@ export async function downloadFireWindow(startDate: number, endDate: number) {
 
     return resp;
 }
-export async function query_counties(date: number) {
-    let query = `${windowHost}/county?date=${date}`
+export async function query_counties(startDate: number, endDate: number) {
+    let query = `${windowHost}/county?start_date=${startDate}&end_date=${endDate}`
     console.log(query);
     let resp = await http.get<string[]>(query);
 
