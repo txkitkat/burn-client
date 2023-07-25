@@ -271,8 +271,12 @@ export default function Filters(props: IFiltersProps) {
                         {filtersDescription}
                     </Typography>
                 </Tooltip>
-                <input  style={{marginTop: "100px"}} type="date" onChange={(e) => setDate(e.target.value)} ref={dateInputRef} />
-                <Button className = "filter-button" variant="contained" onClick={() => query_counties(Math.floor((new Date(date).getTime() - (new Date(1979, 0, 0)).getTime()) / (1000 * 3600 * 24))).then((data)=>props.setCounties(data.data))}>
+                <input style={{marginTop: "100px"}} type="date" onChange={(e) => setDate(e.target.value)} ref={dateInputRef} />
+                <Button className = "filter-button" variant="contained" 
+                    onClick={() => query_counties(Math.floor((new Date(date).getTime() - (new Date(1979, 0, 0)).getTime()) / (1000 * 3600 * 24))).
+                    then((data)=>props.setCounties(data.data))}
+                    disabled = {date == ''}
+                    >
                     Search
                 </Button>
                 <Drawer
