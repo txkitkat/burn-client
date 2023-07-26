@@ -76,7 +76,7 @@ export default function Filters(props: IFiltersProps) {
         minAcres: 0,
         maxAcres: 0,
         burnType: "",
-        startYear: 2010,
+        startYear: 1900, //Earliest Fire Data By Default
         endYear: 2020,
         startMonth: 0,
         endMonth: 11,
@@ -161,8 +161,8 @@ export default function Filters(props: IFiltersProps) {
                     getFireStatistics(state, interacted)
                         .then(fireStats => {
                             console.log(fireStats)
-                            let statsDisplay = "For Applied Filter: \n Fire(s) Count: " + fireStats.numFires
-                                + "\n Start Year: " + fireStats.minYear + "\n End Year: " + fireStats.maxYear + "\n Average Size: " + fireStats.avgSize.toFixed(2) + "\n Minimum Size: " + fireStats.minSize.toFixed(3) + "\n Maximum Size: " + fireStats.maxSize.toFixed(2)
+                            let statsDisplay = "For Applied Filter:\nFire(s) Count: " + fireStats.numFires
+                                + "\nStart Year: " + fireStats.minYear + "\nEnd Year: " + fireStats.maxYear + "\nAverage Size: " + fireStats.avgSize.toFixed(2) + "\nMinimum Size: " + fireStats.minSize.toFixed(3) + "\nMaximum Size: " + fireStats.maxSize.toFixed(2)
                             props.setStatistics(statsDisplay);
                         }).catch(err => {
                         console.log(err);
@@ -294,9 +294,9 @@ export default function Filters(props: IFiltersProps) {
                         Search
                     </Button>
                 </Tooltip>
-                <FormControlLabel control={<Checkbox onChange={handleDownloadRaster}/>} checked={checkedDownloadRaster} 
+                <FormControlLabel sx={{ marginLeft: 1 }} control={<Checkbox onChange={handleDownloadRaster}/>} checked={checkedDownloadRaster} 
                                   label={<Box component="div" fontSize={12}>Show Burn Window Raster</Box>} labelPlacement="end"/>
-                <FormControlLabel control={<Checkbox onChange={event => setHideFire(event.target.checked)}/>} checked={hideFire}
+                <FormControlLabel sx={{ marginLeft: 1 }} control={<Checkbox onChange={event => setHideFire(event.target.checked)}/>} checked={hideFire}
                                   label={<Box component="div" fontSize={12}>Hide Fires</Box>} labelPlacement="end"/>
                 <Drawer
                     anchor={"right"}

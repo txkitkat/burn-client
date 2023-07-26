@@ -13,13 +13,13 @@ export default function StatisticsPane(props: IStatisticsPaneProps) {
                 <h3>STATISTICS</h3>
             </Tooltip>
             <React.Fragment key={""}>
-                <p className="statistics">{props.statistics}</p >
+                <pre className="statistics">{props.statistics}</pre >
             </React.Fragment>
             <Tooltip title="Counties in burn window" style={{marginTop: "100px"}}>
                 <h3>COUNTIES</h3>
             </Tooltip>
             <React.Fragment key={"1"}>
-                {props.counties.map((county, i) => <pre className="statistics">{county}</pre >)}
+                {props.counties.map((county, i) => <pre className="statistics-counties">{county}</pre >)}
             </React.Fragment>
         </div>
     )
