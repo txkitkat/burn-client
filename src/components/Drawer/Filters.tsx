@@ -246,7 +246,7 @@ export default function Filters(props: IFiltersProps) {
                 <FormControlLabel sx={{ margin: 1 }} control={<Checkbox onChange={handleShowStatistics}/>} 
                                   label="Show statistics" labelPlacement="end"/>
                 <FormControlLabel sx={{ margin: 1 }} control={<Checkbox onChange={handleDownloadRaster}/>}
-                                  label="Show Burn Window Raster for Time Frame" labelPlacement="end"/>
+                                  checked={checkedDownloadRaster} label="Show Burn Window Raster for Time Frame" labelPlacement="end"/>
                 <Button className = "apply-filter-button" variant="text" onClick={handleApply}>{"Apply Filter(s)"}</Button>
             </List>
         </Box>
@@ -256,7 +256,16 @@ export default function Filters(props: IFiltersProps) {
     const dateInputRef = useRef(null);
     const [date2, setDate2] = useState('');
     const date2InputRef = useRef(null);
-    const toDate = (date: string) => Math.floor((new Date(date).getTime() - (new Date(1979, 0, 0)).getTime()) / (1000 * 3600 * 24))
+    const toDate = (date: string) => Math.floor((new Date(date).getTime() - (new Date(1979, 0, 0)).getTime()) / (1000 * 3600 * 24));
+    const handleWindow = () => {
+        query_counties(toDate(date), toDate(date2)).then((data)=>props.setCounties(data.data)).then(() => console.log("DATE2: " + date2));
+        if (checkedDownloadRaster) {
+            downloadFireWindow(toDate(date), toDate(date2))
+            .then((data) => props.resetBurnWindow())
+            .then((data) => props.updateBurnWindow());
+        }
+    }
+    const [hideFire, setHideFire] = useState(false);
 
     return (
         <div className="filter-drawer">
@@ -274,14 +283,21 @@ export default function Filters(props: IFiltersProps) {
                         {filtersDescription}
                     </Typography>
                 </Tooltip>
-                <input className = 'date-change'  style={{marginTop: "100px"}} type="date" onChange={(e) => setDate(e.target.value)} ref={dateInputRef} />
-                <input className = 'date-change' type="date" onChange={(e) => setDate2(e.target.value)} ref={date2InputRef} />
-                <Button className = "filter-button"
-                        variant="contained"
-                        onClick={() => query_counties(toDate(date), toDate(date2)).then((data)=>props.setCounties(data.data)).then(() => console.log("DATE2: " + date2))}
-                        disabled = {date == '' || date2 == ''}>
-                    Search
-                </Button>
+                <Button className='burn-window' variant="contained">Burn Window</Button>
+                <input className='date-change' type="date" onChange={(e) => setDate(e.target.value)} ref={dateInputRef} />
+                <input className='date-change' type="date" onChange={(e) => setDate2(e.target.value)} ref={date2InputRef} />
+                <Tooltip title="Search counties in burn window during a time period" arrow>
+                    <Button className = "filter-button"
+                            variant="contained"
+                            onClick={() => handleWindow()}
+                            disabled = {date == '' || date2 == ''}>
+                        Search
+                    </Button>
+                </Tooltip>
+                <FormControlLabel control={<Checkbox onChange={handleDownloadRaster}/>} checked={checkedDownloadRaster} 
+                                  label={<Box component="div" fontSize={12}>Show Burn Window Raster</Box>} labelPlacement="end"/>
+                <FormControlLabel control={<Checkbox onChange={event => setHideFire(event.target.checked)}/>} checked={hideFire}
+                                  label={<Box component="div" fontSize={12}>Hide Fires</Box>} labelPlacement="end"/>
                 <Drawer
                     anchor={"right"}
                     open={isOpen}

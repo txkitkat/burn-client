@@ -1,24 +1,35 @@
 .filter-drawer {
     float: right;
-    width: 8%;
+    width: 10%;
     height: 90vh;
     border: 2px;
     background-color: rgba(255, 255, 255, 0.687);
-    z-index: 1500;   
+    z-index: 1500;
 }
 
 Button.filter-button {
-  width:100%;
-  border-radius: 0px;
+    width:100%;
+    border-radius: 0px;
+    margin-bottom: 5px;
 }
 
 Button.apply-filter-button {
-  width:100%;
-  align-self: end;
+    width:100%;
+    align-self: end;
 }
 
 input.date-change{
-  width: 100%;
-  padding: 2px;
+    width: 100%;
+    padding: 2px;
 }
- 
+
+Button.burn-window {
+    width:100%;
+    border-radius: 0px;
+    margin-top: 120px;
+    margin-bottom: 20px;
+}
+
+.date-change {
+    margin-bottom: 10px;
+}
