@@ -1,5 +1,5 @@
-import {Circle, Popup} from "react-leaflet";
-
+import {CircleMarker, Popup} from "react-leaflet";
+import "./Fire.css"
 
 function Fire(props: any) {
 
@@ -11,17 +11,18 @@ function Fire(props: any) {
 
     let date = (props.month+1)+'/'+props.day+'/'+props.year;
     return (
-      <Circle 
+      <CircleMarker
         center={props.latLon} 
-        radius = {50}
+        radius = {4}
         color={fireColors['baseFireColor'].rgb}
         fillColor={fireColors['baseFireColor'].rgb}>
             <Popup>
-                <div>
-                    Fire with name: {props.name} burned on date: {date} in County: {props.county} and was size: {props.burnArea} acres.
-                </div>
+                {(props.name != '') && <h3 className="fire-popup-name"> {props.name} </h3>}
+                <div className="fire-popup"> Burned On: {date} </div>
+                <div className="fire-popup"> County: {props.county}</div>
+                <div className="fire-popup"> Fire Size: {props.burnArea} acres</div>
             </Popup>
-        </Circle>
+        </CircleMarker>
     );
 }
 

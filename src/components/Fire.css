@@ -1,0 +1,15 @@
+h3.fire-popup-name{
+    margin: 0;
+    padding-top: 0px;
+    padding-bottom: 5px;
+    background-color: transparent;
+    color: black;
+}
+
+.fire-popup{
+    text-align: center;
+}
+
+Circle:hover {
+    color: yellow;
+  }
