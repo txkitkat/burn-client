@@ -48,11 +48,8 @@ const Map = (props: MapProps) => {
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
 
-                {props.fireData.map((fire, i) => <Fire key={i} latLon={[fire["latitude"], fire["longitude"]]}
-                    burnArea={fire["acres"]}
-                    name={fire["name"]} day={fire["day"]} month={fire["month"]} year={fire["year"]} county={fire["county"]} />)}
 
-                <MapLayerPickerControl seed={props.seed} value = {value}/>
+                <MapLayerPickerControl seed={props.seed} value = {value} fireData={props.fireData}/>
             </MapContainer>
         </div>
     );

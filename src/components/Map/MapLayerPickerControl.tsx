@@ -2,11 +2,21 @@ import { LayersControl, ImageOverlay, LayerGroup } from "react-leaflet";
 import CountyBorders from "../CountyBorders"
 import vegetationImage from "../../data/WHR13_vegetation.png"
 import vegetationLegend from "../../data/WHR13_vegetation_legend.png"
+import IFire from "../../types/fireType";
+import Fire from "../Fire";
 
-export default function MapLayerPickerControl(props: {seed: number, value: number}) {
+export default function MapLayerPickerControl(props: {seed: number, value: number, fireData: IFire[]}) {
     // @ts-ignore
     return (
         <LayersControl>
+            <LayersControl.Overlay name="Fires">
+                <LayerGroup>
+                    {props.fireData.map((fire, i) => <Fire key={i} latLon={[fire["latitude"], fire["longitude"]]}
+                                                           burnArea={fire["acres"]}
+                                                           name={fire["name"]} day={fire["day"]} month={fire["month"]} year={fire["year"]} county={fire["county"]} />)}
+
+                </LayerGroup>
+            </LayersControl.Overlay>
             <LayersControl.Overlay name="County Borders">
                 <CountyBorders />
             </LayersControl.Overlay>
