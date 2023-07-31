@@ -22,7 +22,7 @@ export default function MapLayerPickerControl(props: {seed: number, value: numbe
             </LayersControl.Overlay>
             <LayersControl.Overlay name="Vegetation Overlay">
                 <LayerGroup>
-                    <ImageOverlay url={vegetationImage} bounds={[[42.160435, -124.814949], [32.566587, -113.922004]]} opacity={props.value} />
+                    <ImageOverlay url={vegetationImage} bounds={[[42.040435, -125.354949], [32.506587, -114.352004]]} opacity={props.value} />
                     <ImageOverlay url={vegetationLegend} bounds={[[43.07287, -130.92884], [38.669518, -127.03968]]} opacity={props.value} />
                 </LayerGroup>
             </LayersControl.Overlay>
