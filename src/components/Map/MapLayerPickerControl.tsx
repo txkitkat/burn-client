@@ -29,7 +29,7 @@ export default function MapLayerPickerControl(props: {seed: number, value: numbe
             {(props.seed > 1) ? (
             <LayersControl.Overlay name="Burn Window">
                 <LayerGroup>
-                    <ImageOverlay url={`${process.env.REACT_APP_FIRE_WINDOW_BACKEND}/image`} bounds={[[43.40287, -127.624903], [30.929048, -111.356167]]} opacity={props.value}/>
+                    <ImageOverlay url={`${process.env.REACT_APP_FIRE_WINDOW_BACKEND}/image`} bounds={[[42.00287, -124.524903], [32.499048, -114.106167]]} opacity={props.value}/>
                     <ImageOverlay url={`${process.env.REACT_APP_FIRE_WINDOW_BACKEND}/legend`} bounds={[[38.07287, -131.52884], [32.669518, -125.03968]]} opacity={props.value} />
                 </LayerGroup>
             </LayersControl.Overlay>
