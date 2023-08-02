@@ -78,7 +78,7 @@ export default function Filters(props: IFiltersProps) {
         minAcres: 0,
         maxAcres: 0,
         burnType: "",
-        startYear: 1979, //Earliest Fire Data By Default
+        startYear: 1900, //Earliest Fire Data By Default
         endYear: 2020,
         startMonth: 0,
         endMonth: 11,
