@@ -1,6 +1,7 @@
 import React from "react";
 import "./StatisticsPane.css";
 import Tooltip from '@mui/material/Tooltip';
+import {Grid} from "@mui/material";
 interface IStatisticsPaneProps {
     counties: string[];
     statistics: string;
@@ -18,6 +19,18 @@ export default function StatisticsPane(props: IStatisticsPaneProps) {
             <Tooltip title="Counties in burn window" style={{marginTop: "100px"}}>
                 <h3>COUNTIES</h3>
             </Tooltip>
+            <Grid container spacing={2}>
+                <Grid item xs={6}>
+                    <Tooltip title="counties in burn window" >
+                        <p>County</p >
+                    </Tooltip>
+                </Grid>
+                <Grid item xs={6}>
+                    <Tooltip title="percentage of area that is in burn window for at least one day" >
+                        <p>Percentage</p >
+                    </Tooltip>
+                </Grid>
+            </Grid>
             <React.Fragment key={"1"}>
                 {props.counties.map((county, i) => <pre className="statistics-counties">{county}</pre >)}
             </React.Fragment>

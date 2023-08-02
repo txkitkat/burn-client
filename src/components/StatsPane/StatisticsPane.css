@@ -34,3 +34,7 @@ border-color: rgb(250, 248, 248);
     text-align: center;
     border-color: cadetblue;
 }
+p {
+    font-size: 10pt;
+    text-align: center;
+}

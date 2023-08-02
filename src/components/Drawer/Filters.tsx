@@ -200,7 +200,7 @@ export default function Filters(props: IFiltersProps) {
     }
 
     const [checkedShowStatistics, setCheckedShowStatistics] = React.useState(false);
-    const [checkedDownloadRaster, setCheckedDownloadRaster] = React.useState(false);
+    const [checkedDownloadRaster, setCheckedDownloadRaster] = React.useState(true);
 
     const handleShowStatistics = (event: React.ChangeEvent<HTMLInputElement>) => {
         setCheckedShowStatistics(event.target.checked)
@@ -284,7 +284,9 @@ export default function Filters(props: IFiltersProps) {
                     </Typography>
                 </Tooltip>
                 <Button className='burn-window' variant="contained">Burn Window</Button>
+                <p>Start Date</p>
                 <input className='date-change' type="date" onChange={(e) => setDate(e.target.value)} ref={dateInputRef} />
+                <p>End Date</p>
                 <input className='date-change' type="date" onChange={(e) => setDate2(e.target.value)} ref={date2InputRef} />
                 <Tooltip title="Search counties in burn window during a time period" arrow>
                     <Button className = "filter-button"
@@ -296,8 +298,6 @@ export default function Filters(props: IFiltersProps) {
                 </Tooltip>
                 <FormControlLabel sx={{ marginLeft: 1 }} control={<Checkbox onChange={handleDownloadRaster}/>} checked={checkedDownloadRaster} 
                                   label={<Box component="div" fontSize={12}>Show Burn Window Raster</Box>} labelPlacement="end"/>
-                <FormControlLabel sx={{ marginLeft: 1 }} control={<Checkbox onChange={event => setHideFire(event.target.checked)}/>} checked={hideFire}
-                                  label={<Box component="div" fontSize={12}>Hide Fires</Box>} labelPlacement="end"/>
                 <Drawer
                     anchor={"right"}
                     open={isOpen}
