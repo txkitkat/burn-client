@@ -243,8 +243,6 @@ export default function Filters(props: IFiltersProps) {
                 <Typography align="center" variant={"body2"} color="blue" fontStyle="italic">
                     Click on Apply Filter(s) when finished
                 </Typography>
-
-         
                 <FireTypeFilter {...filterImplProps} />
                 <SourceFilter {...filterImplProps} />
                 <LocationFilter {...filterImplProps} />
@@ -291,11 +289,11 @@ export default function Filters(props: IFiltersProps) {
                 <Typography variant="body2" color="blue" align="center">
                     <strong>Filters Applied</strong>
                 </Typography>
-                <Tooltip title="Months if specified will be in range 0-11" arrow>
-                    <Typography variant="body2" color="blue" fontStyle="italic" align="center">
-                        {filtersDescription}
-                    </Typography>
-                </Tooltip>
+            
+                <Typography variant="body2" color="blue" fontStyle="italic" align="center">
+                    <div className = "filtersDescription">{filtersDescription}</div>
+                </Typography>
+                
                 <Button className='burn-window' variant="contained">Burn Window</Button>
                 <p>Start Date</p>
                 <input className='date-change' type="date" onChange={(e) => setDate(e.target.value)} ref={dateInputRef} />

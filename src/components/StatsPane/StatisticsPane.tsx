@@ -14,7 +14,7 @@ export default function StatisticsPane(props: IStatisticsPaneProps) {
                 <h3>STATISTICS</h3>
             </Tooltip>
             <React.Fragment key={""}>
-                <pre className="statistics">{props.statistics}</pre >
+                <div className="statistics">{props.statistics}</div>
             </React.Fragment>
             <Tooltip title="Counties in burn window" style={{marginTop: "100px"}}>
                 <h3>COUNTIES</h3>

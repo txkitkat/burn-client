@@ -1,11 +1,10 @@
 import ListItem from "@mui/material/ListItem";
 import Collapse from "@mui/material/Collapse";
-import React, { useState } from "react";
+import { useState } from "react";
 import ListItemText from "@mui/material/ListItemText";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import { Divider } from "@mui/material";
-import TextField from "@mui/material/TextField";
+import { Divider, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import Tooltip from '@mui/material/Tooltip';
 import { IFilterImplProps } from "./Filters";
 
@@ -69,13 +68,13 @@ export default function TimeFilter(props: IFilterImplProps) {
         }
     }
 
-    const handleStartYearChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const handleStartYearChange = (event: SelectChangeEvent<string>) => {
         const newYear = event.target.value;
         setStartYearUserInput(newYear);
         checkValidStartYearAndSetState(newYear);
     }
 
-    const handleEndYearChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const handleEndYearChange = (event: SelectChangeEvent<string>) => {
         const newYear = event.target.value;
         setEndYearUserInput(newYear);
         checkValidEndYearAndSetState(newYear);
@@ -93,37 +92,64 @@ export default function TimeFilter(props: IFilterImplProps) {
                 {dropDownTime ? <ExpandLess /> : <ExpandMore />}
             </ListItem>
             <Collapse in={dropDownTime} timeout="auto" unmountOnExit>
-                <Tooltip title="Please edit both start and end year values" arrow>
-                    <TextField sx={{ marginLeft: 2, minWidth: 90 }}
-                        id="start-year"
-                        label="Start Year"
-                        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                        variant="standard"
-                        defaultValue={defaultStartYear}
-                        error={isStartYearInError}
-                        helperText={helperTextStartYear}
-                        onChange={handleStartYearChange}
-                    />
-                </Tooltip>
-                <Tooltip title="Please edit both start and end year values" arrow>
-                    <TextField sx={{ marginLeft: 2, minWidth: 90 }}
-                        id="end-year"
-                        label="End Year"
-                        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                        variant="standard"
-                        defaultValue={defaultEndYear}
-                        error={isEndYearInError}
-                        helperText={helperTextEndYear}
-                        onChange={handleEndYearChange}
-                    />
-                </Tooltip>
+                <FormControl sx={{ margin: 2, minWidth: 90 }} variant="standard" color="primary">
+                        <InputLabel>Start Year</InputLabel>
+                        <Tooltip title="Please edit both start and end year values" arrow>
+                            <Select
+                                labelId="start-year-select-label"
+                                id="start-year-select"
+                                label="Start Year"
+                                onChange={handleStartYearChange}
+                            >
+                                {years.map(year => (
+                                    <MenuItem value={year.value} key={year.name}>
+                                        {year.name}
+                                    </MenuItem>
+                                ))}
+
+                            </Select>
+                        </Tooltip>
+                    </FormControl>
+                    <FormControl sx={{ margin: 2, minWidth: 90 }} variant="standard" color="primary">
+                        <InputLabel>End Year</InputLabel>
+                        <Tooltip title="Please edit both start and end year values" arrow>
+                        <Select
+                                labelId="end-year-select-label"
+                                id="end-year-select"
+                                defaultValue={defaultEndYear.toString()}
+                                value={defaultEndYear.toString()}
+                                label="End Year"
+                                onChange={handleEndYearChange}
+                            >
+                                {years.map(year => (
+                                    <MenuItem value={year.value} key={year.name}>
+                                        {year.name}
+                                    </MenuItem>
+                                ))}
+
+                            </Select>
+                        </Tooltip>
+                    </FormControl>
             </Collapse>
         </div>
     );
 }
+
+//Years Covered: 1979 - 2020
+const years: {
+    name: string;
+    value: number;
+}[] =
+    [
+        {"name": "1979", "value": 1979}, {"name": "1980", "value": 1980}, {"name": "1981", "value": 1981}, {"name": "1982", "value": 1982},
+        {"name": "1983", "value": 1983}, {"name": "1984", "value": 1984}, {"name": "1985", "value": 1985}, {"name": "1986", "value": 1986},
+        {"name": "1987", "value": 1987}, {"name": "1988", "value": 1988}, {"name": "1989", "value": 1989}, {"name": "1990", "value": 1990},
+        {"name": "1991", "value": 1991}, {"name": "1992", "value": 1992}, {"name": "1993", "value": 1993}, {"name": "1994", "value": 1994},
+        {"name": "1995", "value": 1995}, {"name": "1996", "value": 1996}, {"name": "1997", "value": 1997}, {"name": "1998", "value": 1998},
+        {"name": "1999", "value": 1999}, {"name": "2000", "value": 2000}, {"name": "2001", "value": 2001}, {"name": "2002", "value": 2002},
+        {"name": "2003", "value": 2003}, {"name": "2004", "value": 2004}, {"name": "2005", "value": 2005}, {"name": "2006", "value": 2006},
+        {"name": "2007", "value": 2007}, {"name": "2008", "value": 2008}, {"name": "2009", "value": 2009}, {"name": "2010", "value": 2010},
+        {"name": "2011", "value": 2011}, {"name": "2012", "value": 2012}, {"name": "2013", "value": 2013}, {"name": "2014", "value": 2014},
+        {"name": "2015", "value": 2015}, {"name": "2016", "value": 2016}, {"name": "2017", "value": 2017}, {"name": "2018", "value": 2018},
+        {"name": "2019", "value": 2019}, {"name": "2020", "value": 2020},
+    ]
