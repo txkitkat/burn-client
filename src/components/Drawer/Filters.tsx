@@ -19,6 +19,7 @@ import {downloadFireWindow, getFiresByFilters, getFireStatistics, query_counties
 import {Checkbox} from '@mui/material';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Tooltip from '@mui/material/Tooltip';
+import ReactLoading from "react-loading";
 
 
 interface IFiltersProps {
@@ -69,6 +70,7 @@ export interface IFiltersInteracted {
 }
 
 export default function Filters(props: IFiltersProps) {
+    const [isLoading, setIsLoading] = useState(false)
     const [isOpen, setIsOpen] = useState(false);
     const [state, setState] = useState<IFiltersState>({
         source: "",
@@ -149,11 +151,16 @@ export default function Filters(props: IFiltersProps) {
     const handleApply = () => {
         const FileDownload = require("js-file-download");
 
+        setIsLoading(true)
+
         removeInapplicableFilters();
         createFiltersDescription();
         getFiresByFilters(state, interacted)
             .then(fires => {
                 console.log(fires);
+
+                if(!checkedShowStatistics && !checkedDownloadRaster) setIsLoading(false);
+
                 return fires;
             })
             .then(fires => {
@@ -172,6 +179,8 @@ export default function Filters(props: IFiltersProps) {
                 } else {
                     props.setStatistics("");
                 }
+
+                if(!checkedDownloadRaster) setIsLoading(false)
 
                 return fires;
             })
@@ -193,7 +202,8 @@ export default function Filters(props: IFiltersProps) {
                     downloadFireWindow(startDateInSeconds, endDateInSeconds)
                     .then((data) => { return data.data})
                     .then((data: any) => props.resetBurnWindow())
-                    .then((data: any) => props.updateBurnWindow());
+                    .then((data: any) => props.updateBurnWindow())
+                    .then(() => setIsLoading(false));
                 }
             })
             .catch(err => console.error(err));
@@ -233,6 +243,8 @@ export default function Filters(props: IFiltersProps) {
                 <Typography align="center" variant={"body2"} color="blue" fontStyle="italic">
                     Click on Apply Filter(s) when finished
                 </Typography>
+
+         
                 <FireTypeFilter {...filterImplProps} />
                 <SourceFilter {...filterImplProps} />
                 <LocationFilter {...filterImplProps} />
@@ -248,6 +260,7 @@ export default function Filters(props: IFiltersProps) {
                 <FormControlLabel sx={{ margin: 1 }} control={<Checkbox onChange={handleDownloadRaster}/>}
                                   checked={checkedDownloadRaster} label="Show Burn Window Raster for Time Frame" labelPlacement="end"/>
                 <Button className = "apply-filter-button" variant="text" onClick={handleApply}>{"Apply Filter(s)"}</Button>
+                {isLoading == true && <ReactLoading className = "burn-window-loading" type="spin" color="blue" height={35} width={30} />}
             </List>
         </Box>
     );

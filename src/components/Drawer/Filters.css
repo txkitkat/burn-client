@@ -16,6 +16,7 @@ Button.filter-button {
 Button.apply-filter-button {
     width:100%;
     align-self: end;
+    padding: 0;
 }
 
 input.date-change{
@@ -36,4 +37,9 @@ Button.burn-window {
 p {
     margin-top: 0;
     margin-bottom: 0;
+}
+
+.burn-window-loading{
+    padding-top: 20px;
+    margin:auto;
 }
