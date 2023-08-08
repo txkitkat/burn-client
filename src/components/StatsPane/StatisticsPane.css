@@ -29,11 +29,17 @@ border-color: rgb(250, 248, 248);
 }
 
 .statistics-counties{
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+
+.statistics-counties-percentages{
     margin: auto;
     font-size: 15px;
     text-align: center;
     border-color: cadetblue;
 }
+
 p {
     font-size: 10pt;
     text-align: center;

@@ -169,7 +169,7 @@ export default function Filters(props: IFiltersProps) {
                         .then(fireStats => {
                             console.log(fireStats)
                             let statsDisplay = "For Applied Filter:\nFire(s) Count: " + fireStats.numFires
-                                + "\nStart Year: " + fireStats.minYear + "\nEnd Year: " + fireStats.maxYear + "\nAverage Size: " + fireStats.avgSize.toFixed(2) + "\nMinimum Size: " + fireStats.minSize.toFixed(3) + "\nMaximum Size: " + fireStats.maxSize.toFixed(2)
+                                + "\nStart Year: " + fireStats.minYear + "\nEnd Year: " + fireStats.maxYear + "\nAvg Size: " + fireStats.avgSize.toFixed(2) + " acres\nMin Size: " + fireStats.minSize.toFixed(3) + " acres\nMax Size: " + fireStats.maxSize.toFixed(2) + " acres"
                             props.setStatistics(statsDisplay);
                         }).catch(err => {
                         console.log(err);
