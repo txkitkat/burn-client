@@ -269,11 +269,13 @@ export default function Filters(props: IFiltersProps) {
     const date2InputRef = useRef(null);
     const toDate = (date: string) => Math.floor((new Date(date).getTime() - (new Date(1979, 0, 0)).getTime()) / (1000 * 3600 * 24));
     const handleWindow = () => {
+        setIsLoading(true);
         query_counties(toDate(date), toDate(date2)).then((data)=>props.setCounties(data.data)).then(() => console.log("DATE2: " + date2));
         if (checkedDownloadRaster) {
             downloadFireWindow(toDate(date), toDate(date2))
             .then((data) => props.resetBurnWindow())
-            .then((data) => props.updateBurnWindow());
+            .then((data) => props.updateBurnWindow())
+            .then(() => setIsLoading(false));
         }
     }
     const [hideFire, setHideFire] = useState(false);
@@ -309,6 +311,7 @@ export default function Filters(props: IFiltersProps) {
                 </Tooltip>
                 <FormControlLabel sx={{ marginLeft: 1 }} control={<Checkbox onChange={handleDownloadRaster}/>} checked={checkedDownloadRaster} 
                                   label={<Box component="div" fontSize={12}>Show Burn Window Raster</Box>} labelPlacement="end"/>
+                {isLoading == true && <ReactLoading className = "burn-window-loading" type="spin" color="blue" height={35} width={30} />}
                 <Drawer
                     anchor={"right"}
                     open={isOpen}
