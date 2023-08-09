@@ -5,8 +5,10 @@ import Fire from "../Fire";
 import IFire from "../../types/fireType";
 import MapLayerPickerControl from "./MapLayerPickerControl";
 import { Slider, Typography } from "@material-ui/core";
+import L from "leaflet";
 
 import "./Map.css";
+import Legend from "./VegetationLegend";
 
 export interface MapProps {
     fireData: IFire[];
@@ -16,6 +18,7 @@ export interface MapProps {
 
 const Map = (props: MapProps) => {
     const [value, setValue] = useState(1);
+    const [map, setMap] = useState<L.Map>()
 
     const changeOpacity = (e: React.ChangeEvent<any>, value: any) => {
         setValue(value);
@@ -30,7 +33,7 @@ const Map = (props: MapProps) => {
             <div 
                 style={{ position: 'absolute', backgroundColor: "white", padding: 10, 
                 borderRadius:'2px', borderStyle: 'solid', borderColor: 'rgba(105,105,105,0.5)', borderWidth: '2px',
-                zIndex: 450, width: 125, top: 675, left: 250, }} >
+                zIndex: 450, width: 125, top: 650, left: 1350, }} >
                 <Typography variant={"body1"}>
                     Opacity
                 </Typography>
@@ -42,14 +45,14 @@ const Map = (props: MapProps) => {
                 center={defaultPosition}
                 zoom={6}
                 style={{ height: "100%" }}
+                whenCreated={ (mapInstance) => {setMap(mapInstance)}} //get instance of the map
             >
                 <TileLayer
                     attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
 
-
-                <MapLayerPickerControl seed={props.seed} value = {value} fireData={props.fireData}/>
+                <MapLayerPickerControl seed={props.seed} value = {value} fireData={props.fireData} map = {map}/>
             </MapContainer>
         </div>
     );
