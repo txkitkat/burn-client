@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { LatLngExpression } from "leaflet";
 import { MapContainer, TileLayer } from "react-leaflet";
 import Fire from "../Fire";
 import IFire from "../../types/fireType";
 import MapLayerPickerControl from "./MapLayerPickerControl";
-import { Slider, Typography } from "@material-ui/core";
 import L from "leaflet";
+import CustomSliderLayersControl from "./CustomSliderLayersControl";
 
 import "./Map.css";
 import Legend from "./VegetationLegend";
@@ -16,31 +16,25 @@ export interface MapProps {
     seed: number;
 }
 
-const Map = (props: MapProps) => {
-    const [value, setValue] = useState(1);
-    const [map, setMap] = useState<L.Map>()
+// Improve performance of using Callback functions
+const MemoizedMapLayerPickerControl = React.memo(MapLayerPickerControl);
+const MemoizedCustomSliderLayersControl = React.memo(CustomSliderLayersControl);
 
-    const changeOpacity = (e: React.ChangeEvent<any>, value: any) => {
-        setValue(value);
-    };
+const Map = (props: MapProps) => {
+    const [value1, setValue1] = useState(1);
+    const [value2, setValue2] = useState(1);
+    
+    const [map, setMap] = useState<L.Map>()
 
     const defaultPosition: LatLngExpression = [36.7783, -119.4179]; // California position
 
     //    console.log(props.fireData);
 
+    const updateValue1 = useCallback((newValue: number) => {setValue1(newValue); },[] );
+    const updateValue2 = useCallback((newValue: number) => {setValue2(newValue); },[] );
+    
     return (
-        <div className="map__container">
-            <div 
-                style={{ position: 'absolute', backgroundColor: "white", padding: 10, 
-                borderRadius:'2px', borderStyle: 'solid', borderColor: 'rgba(105,105,105,0.5)', borderWidth: '2px',
-                zIndex: 450, width: 125, top: 650, left: 1350, }} >
-                <Typography variant={"body1"}>
-                    Opacity
-                </Typography>
-                <Slider value={value} min={0} max={1} step={0.1} 
-                    onChange={(e, val) => changeOpacity(e, val)} valueLabelDisplay="auto" 
-                />
-            </div>
+        <div className="map__container">           
             <MapContainer
                 center={defaultPosition}
                 zoom={6}
@@ -52,7 +46,11 @@ const Map = (props: MapProps) => {
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
 
-                <MapLayerPickerControl seed={props.seed} value = {value} fireData={props.fireData} map = {map}/>
+                <MemoizedMapLayerPickerControl seed={props.seed} fireData={props.fireData} map={map} 
+                    valueSliderValue={[value1, value2]} />
+                    
+                <MemoizedCustomSliderLayersControl seed={props.seed} setValue = {[updateValue1, updateValue2]} map={map} />
+
             </MapContainer>
         </div>
     );
