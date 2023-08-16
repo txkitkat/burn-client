@@ -10,13 +10,13 @@ const CreateCustomLayersControl = (props: {map: any, seed: number, setValue: any
     const [sliderRendered, setSliderRendered] = useState(false); // Prevent sliders from being rendered multiple times
 
     useEffect(() => {
-        if(props.map && !sliderRendered){
+        if(props.map != undefined && props.seed != undefined && !sliderRendered){
             const controlInstance = new Control({ position: "topright" });
             const div = L.DomUtil.create("div");
             div.style.width = '150px';
             div.style.backgroundColor = 'white'; 
             div.style.borderRadius = '5px';  
-            div.style.border = '10px solid rgba(128, 128, 128, 0.6)'; 
+            div.style.border = '10px solid rgba(128, 128, 128, 0.5)'; 
             div.style.borderWidth = '2px'; 
             div.style.padding = '3px 10px 0px 10px'; 
 
@@ -26,7 +26,7 @@ const CreateCustomLayersControl = (props: {map: any, seed: number, setValue: any
             layer1.style.textAlign = "center";
             
             // use Callback function in setValue[] to change the opacity value for a layer
-            const slider = createSlider({startingValue: "1", setValue: props.setValue[0]});
+            const slider = createSlider({map: props.map, startingValue: "1", setValue: props.setValue[0]});
 
             div.appendChild(layer1);
             div.appendChild(slider); 
@@ -41,7 +41,7 @@ const CreateCustomLayersControl = (props: {map: any, seed: number, setValue: any
                     burnWindowLayer.textContent = LayerNames[1];
                     burnWindowLayer.style.textAlign = "center";
 
-                    const slider = createSlider({startingValue: "1", setValue: props.setValue[1]});
+                    const slider = createSlider({map: props.map, startingValue: "1", setValue: props.setValue[1]});
           
                     div.appendChild(burnWindowLayer);
                     div.appendChild(slider); // Append the slider to the control div
@@ -59,28 +59,39 @@ const CreateCustomLayersControl = (props: {map: any, seed: number, setValue: any
 
 export default CreateCustomLayersControl;
 
-const createSlider = (props: {startingValue: any, setValue: any}) => {
+const createSlider = (props: {map: any, startingValue: any, setValue: any}) => {
     const slider = document.createElement("input");
     slider.type = "range";
     slider.min = "0";
     slider.max = "1";
-    slider.value = props.startingValue; 
+    slider.value = props.startingValue || "1"; 
     slider.step = "0.1";
     slider.style.width = "100%";
 
-    const handleSliderChange = (event: Event) => {
-        const newValue = (event.target as HTMLInputElement).value;
+    let isDragging = false; 
+
+    const handleSliderChange = (e: Event) => { 
+        if(!isDragging) return;
+
+        const newValue = (e.target as HTMLInputElement).value;
         const parsedValue = parseFloat(newValue);
 
         props.setValue(parsedValue); //Callback to setValue function
     };
 
-    const handleSliderMouseDown = (event: PointerEvent) => {
-        event.stopPropagation(); 
+    const handleSliderMouseDown = (e: PointerEvent) => {
+        e.stopPropagation();
+        props.map.dragging.disable(); // Disable map dragging
+        isDragging = true; 
     };
-    
-    slider.addEventListener("input", handleSliderChange);
-    slider.addEventListener("pointerdown", handleSliderMouseDown); 
 
+    const handleSliderMouseUp = () => {
+        props.map.dragging.enable(); // Enable map dragging
+        isDragging = false;
+    };
+
+    slider.addEventListener("input", handleSliderChange);
+    slider.addEventListener("pointerdown", handleSliderMouseDown);
+    slider.addEventListener("pointerup", handleSliderMouseUp);
     return slider;
 }
