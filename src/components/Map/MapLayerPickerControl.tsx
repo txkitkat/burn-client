@@ -52,7 +52,7 @@ export default function MapLayerPickerControl(props: {seed: number, fireData: IF
             ) : 
             (<BurnWindowLegend map = {props.map} isOn = {false}/>)}
             <LayersControl.Overlay name="Vegetation Type">
-                <TifLayer url={"LC22_EVT_230_4x_crop3.tif"}/>
+                <TifLayer url={"LC22_EVT_230_4x_crop3_Deflate.tif"}/>
 
             </LayersControl.Overlay>
 
