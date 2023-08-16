@@ -6,6 +6,7 @@ import Fire from "../Fire";
 import { useState } from "react";
 import BurnWindowLegend from "./BurnWindowLegend";
 import VegetationLegend from "./VegetationLegend";
+import TifLayer from "./TifLayer";
 
 export default function MapLayerPickerControl(props: {seed: number, fireData: IFire[], map: any, valueSliderValue: number[]}) {
     const [vegetationTypeLegend, setVegetationTypeLegend] = useState(false);
@@ -50,6 +51,11 @@ export default function MapLayerPickerControl(props: {seed: number, fireData: IF
             </LayersControl.Overlay>
             ) : 
             (<BurnWindowLegend map = {props.map} isOn = {false}/>)}
+            <LayersControl.Overlay name="Vegetation Type">
+                <TifLayer url={"LC22_EVT_230_4x_crop3.tif"}/>
+
+            </LayersControl.Overlay>
+
         </LayersControl>
     );
 }
