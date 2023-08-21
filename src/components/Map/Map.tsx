@@ -8,7 +8,6 @@ import L from "leaflet";
 import CustomSliderLayersControl from "./CustomSliderLayersControl";
 
 import "./Map.css";
-import Legend from "./VegetationLegend";
 
 export interface MapProps {
     fireData: IFire[];

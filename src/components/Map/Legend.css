@@ -1,6 +1,6 @@
 .info {
     padding: 6px 8px;
-    font: 14px/16px Arial, Helvetica, sans-serif;
+    font: 14px/14px Arial, Helvetica, sans-serif;
     background: white;
     border-radius: 5px;
 }
@@ -9,5 +9,40 @@
 text-align: left;
 line-height: 18px;
 color: #555;
+}
+
+.custom-legend{
+    width: auto;
+    background-color: white;
+    border-radius: 5px;
+    padding: 10px;
+
+    max-height: 25vh;
+    overflow-y: auto;
+}
+
+.legend-title{
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.legend-entry {
+    display: flex;
+    align-items: center;
+    padding: 3px;
+  }
+
+.color-box{
+    width: 16px;
+    height: 16px;
+    margin-right: 7px;
+    border: 1px solid rgba(128, 128, 128, 0.5);
+}
+
+.color-box-gradient{
+    width: 35%;
+    height: 16px;
+    margin-right: 7px;
+    border: 1px solid rgba(128, 128, 128, 0.5);
 }
   
