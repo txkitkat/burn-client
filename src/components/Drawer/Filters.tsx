@@ -79,7 +79,7 @@ export default function Filters(props: IFiltersProps) {
         maxAcres: 0,
         burnType: "",
         startYear: 1900, //Earliest Fire Data By Default
-        endYear: 2020,
+        endYear: 2023,
         startMonth: 0,
         endMonth: 11,
         owner: "",
@@ -305,7 +305,7 @@ export default function Filters(props: IFiltersProps) {
                     <Button className = "filter-button"
                             variant="contained"
                             onClick={() => handleWindow()}
-                            disabled = {date == '' || date2 == ''}>
+                            disabled = {date == '' || date2 == '' || toDate(date2) < toDate(date)}>
                         Search
                     </Button>
                 </Tooltip>
