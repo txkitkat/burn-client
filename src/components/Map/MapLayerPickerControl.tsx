@@ -41,6 +41,7 @@ export default function MapLayerPickerControl(props: {seed: number, fireData: IF
                     />
                 </LayerGroup>
             </LayersControl.Overlay>
+
             {(props.seed > 1) ? (
             <LayersControl.Overlay name="Burn Window">
                 <LayerGroup eventHandlers={{
@@ -57,16 +58,13 @@ export default function MapLayerPickerControl(props: {seed: number, fireData: IF
             </LayersControl.Overlay>
             ) : 
             (<BurnWindowLegend map = {props.map} isOn = {false}/>)}
-            <LayersControl.Overlay name="Vegetation Type">
-                <TifLayer url={"LC22_EVT_230_4x_crop3_Deflate.tif"}/>
-            </LayersControl.Overlay>
+
             <LayersControl.Overlay name="Vegetation Cover">
-            <LayerGroup eventHandlers={{
+                <LayerGroup eventHandlers={{
                         add: (e) => {setVegetationCoverLegend(true);},
                         remove: (e) => {setVegetationCoverLegend(false);},
                     }}>
-                    {/*Placeholder image for Cover*/}
-                    <ImageOverlay url={vegetationImage} bounds={[[42.040435, -125.354949], [32.506587, -114.352004]]} opacity={props.valueSliderValue[0]} />
+                    <TifLayer url={"EVC_ca_Deflate.tif"} />
                     <Legend map = {props.map} isOn = {vegetationCoverLegend} 
                         colors = {["#0000FF", "#9EA1EF", "#3F3DA8", "#444F89", "#6677CD", 
                         "#798EF4", "#9EAAD6", "#FF798E", "#FD2B4F", "#FFFFFF", 
