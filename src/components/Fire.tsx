@@ -5,7 +5,7 @@ function Fire(props: any) {
 
     const fireColors = {
         baseFireColor: {
-          rgb: "rgb(255, 128, 0)",
+          rgb: "rgb(0, 76, 153)",
         },
     };
 

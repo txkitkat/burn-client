@@ -49,10 +49,7 @@ export default function MapLayerPickerControl(props: {seed: number, fireData: IF
                         remove: (e) => {setBurnWindowLegend(false);},
                     }}>
                     {/*Image bounds below work for svg image created by burn-window*/}
-                    <ImageOverlay url={`${process.env.REACT_APP_FIRE_WINDOW_BACKEND}/image`} bounds={[[43.40287, -127.624903], [31.029048, -111.356167]]} opacity={props.valueSliderValue[1]}/>
-                    {/*Image bounds below work for png image created by burn-window*/}
-                    {/*<ImageOverlay url={`${process.env.REACT_APP_FIRE_WINDOW_BACKEND}/image`} bounds={[[42.00287, -124.524903], [32.499048, -114.106167]]} opacity={props.value}/>*/}
-                    {/*<ImageOverlay url={`${process.env.REACT_APP_FIRE_WINDOW_BACKEND}/legend`} bounds={[[38.07287, -131.52884], [32.669518, -125.03968]]} opacity={props.value}/>*/}
+                    <ImageOverlay url={`${process.env.REACT_APP_FIRE_WINDOW_BACKEND}/image`} bounds={[[43.375, -127.624903], [31.05, -111.356167]]} opacity={props.valueSliderValue[1]}/>
                     <BurnWindowLegend map = {props.map} isOn = {burnWindowLegend}/>
                 </LayerGroup>
             </LayersControl.Overlay>
