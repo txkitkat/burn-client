@@ -11,11 +11,11 @@ var legendUrl = `${process.env.REACT_APP_FIRE_WINDOW_BACKEND}/legend`; //For png
 
   useEffect(() => {
     if (props.map) {
-      const legend = new Control({ position: "bottomleft" });
+      const legend = new Control({ position: "bottomright" });
 
       legend.onAdd = () => {
         const div = L.DomUtil.create("div", "info legend");
-        div.innerHTML = "<img src=\"" + legendUrl +"\" width=\"150px\" height=\"275px\">";
+        div.innerHTML = "<img src=\"" + legendUrl +"\" width=\"100px\" height=\"457px\">";
         return div;
       };
 
