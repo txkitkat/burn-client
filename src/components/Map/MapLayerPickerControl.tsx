@@ -61,16 +61,12 @@ export default function MapLayerPickerControl(props: {seed: number, fireData: IF
                         add: (e) => {setVegetationCoverLegend(true);},
                         remove: (e) => {setVegetationCoverLegend(false);},
                     }}>
-                    <TifLayer url={"EVC_ca_Deflate.tif"} />
+                    <TifLayer url={"EVC.tif"} />
                     <Legend map = {props.map} isOn = {vegetationCoverLegend} 
-                        colors = {["#0000FF", "#9EA1EF", "#3F3DA8", "#444F89", "#6677CD", 
-                        "#798EF4", "#9EAAD6", "#FF798E", "#FD2B4F", "#FFFFFF", 
-                        "#000000", "#BFBFBF", "#E6E8F9", "#A80083", "#FFED77",
-                        "#D1FFED", "#797E75"]}
-                        labels = {["Open Water", "Snow/Ice", "Developed-Upland Deciduous Forest", "Developed-Upland Evergreen Forest", "Developed-Upland Mixed Forest", 
-                        "Developed-Upland Herbaceous", "Developed-Upland Shrubland", "Developed-Low Intensity", "Developed Medium Intensity", "Developed High Intensity", 
-                        "Developed Roads", "Barren", "Quarries", "NASS-Vineyard", "NASS-Crops",
-                        "NASS-Aquaculture", "Sparse Vegetation Canopy"]} 
+                        colors = {["#0000FF", "#9EA1EF", "#FF798E", "#BFBFBF", "#E6E8F9", "#A80083", "#FFED77",
+                            "#D1FFED", "#797E75"]}
+                        labels = {["Open Water", "Snow/Ice", "Developed", "Barren", "Quarries", "NASS-Vineyard",
+                            "NASS-Crops", "NASS-Aquaculture", "Sparse Vegetation Canopy"]}
                         legendTitle = {"Vegetation Cover"}
                         multiColor={[["#CCFF99", "#033B01"], ["#D4B17C", "#AC3631"], ["#FFCC66", "#FF3300"]]}
                         multiColorLabels={["Tree 10% - 95%", "Shrub 10% - 79%", "Herb 10% - 99%"]}
