@@ -138,18 +138,23 @@ export default function Filters(props: IFiltersProps) {
     const createFiltersDescription = () => {
         let descString = "";
         for (const key in state) {
-            // @ts-ignore
-            if (interacted[key]) {
-                // @ts-ignore
-                descString = descString + "\n" + key + ": " + state[key];
+            if (state.hasOwnProperty(key)) {
+                const filterKey = key as keyof IFiltersState; //type assertion
+                if (interacted[filterKey]) {
+                    let value = state[filterKey];
+                    if (filterKey === "startMonth" || filterKey === "endMonth") {
+                        value = parseInt(value as string, 10) + 1; //increment month value by 1
+                    }
+                    descString = descString + "\n" + key + ': ' + value;
+                }
             }
         }
         setFiltersDescription(descString);
-    }
-
+    };
+    
 
     const handleApply = () => {
-        const FileDownload = require("js-file-download");
+        //const FileDownload = require("js-file-download");
 
         setIsLoading(true)
 
@@ -169,7 +174,13 @@ export default function Filters(props: IFiltersProps) {
                         .then(fireStats => {
                             console.log(fireStats)
                             let statsDisplay = "For Applied Filter:\nFire(s) Count: " + fireStats.numFires
-                                + "\nStart Year: " + fireStats.minYear + "\nEnd Year: " + fireStats.maxYear + "\nAvg Size: " + fireStats.avgSize.toFixed(2) + " acres\nMin Size: " + fireStats.minSize.toFixed(3) + " acres\nMax Size: " + fireStats.maxSize.toFixed(2) + " acres"
+                                + "\nStart Year: " + fireStats.minYear 
+                                + "\nEnd Year: " + fireStats.maxYear 
+                                + "\nStart Month: " + fireStats.minMonth 
+                                + "\nEnd Month: " + fireStats.maxMonth
+                                + "\nAvg Size: " + fireStats.avgSize.toFixed(2) + " acres" 
+                                + "\nMin Size: " + fireStats.minSize.toFixed(3) + " acres" 
+                                + "\nMax Size: " + fireStats.maxSize.toFixed(2) + " acres"
                             props.setStatistics(statsDisplay);
                         }).catch(err => {
                         console.log(err);
@@ -209,7 +220,7 @@ export default function Filters(props: IFiltersProps) {
             .catch(err => console.error(err));
     }
 
-    const [checkedShowStatistics, setCheckedShowStatistics] = React.useState(false);
+    const [checkedShowStatistics, setCheckedShowStatistics] = React.useState(true);
     const [checkedDownloadRaster, setCheckedDownloadRaster] = React.useState(true);
 
     const handleShowStatistics = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -254,11 +265,11 @@ export default function Filters(props: IFiltersProps) {
                 {/* <SeverityFilter {...filterImplProps} /> */}
                 <Divider/>
                 <FormControlLabel sx={{ margin: 1 }} control={<Checkbox onChange={handleShowStatistics}/>} 
-                                  label="Show statistics" labelPlacement="end"/>
+                                  checked = {checkedShowStatistics} label="Show statistics" labelPlacement="end"/>
                 <FormControlLabel sx={{ margin: 1 }} control={<Checkbox onChange={handleDownloadRaster}/>}
                                   checked={checkedDownloadRaster} label="Show Burn Window Raster for Time Frame" labelPlacement="end"/>
                 <Button className = "apply-filter-button" variant="text" onClick={handleApply}>{"Apply Filter(s)"}</Button>
-                {isLoading == true && <ReactLoading className = "burn-window-loading" type="spin" color="blue" height={35} width={30} />}
+                {isLoading === true && <ReactLoading className = "burn-window-loading" type="spin" color="blue" height={35} width={30} />}
             </List>
         </Box>
     );
@@ -278,7 +289,6 @@ export default function Filters(props: IFiltersProps) {
             .then(() => setIsLoading(false));
         }
     }
-    const [hideFire, setHideFire] = useState(false);
 
     return (
         <div className="filter-drawer">
@@ -305,13 +315,13 @@ export default function Filters(props: IFiltersProps) {
                     <Button className = "filter-button"
                             variant="contained"
                             onClick={() => handleWindow()}
-                            disabled = {date == '' || date2 == '' || toDate(date2) < toDate(date)}>
+                            disabled = {date === '' || date2 === '' || toDate(date2) < toDate(date)}>
                         Search
                     </Button>
                 </Tooltip>
                 <FormControlLabel sx={{ marginLeft: 1 }} control={<Checkbox onChange={handleDownloadRaster}/>} checked={checkedDownloadRaster} 
                                   label={<Box component="div" fontSize={12}>Show Burn Window Raster</Box>} labelPlacement="end"/>
-                {isLoading == true && <ReactLoading className = "burn-window-loading" type="spin" color="blue" height={35} width={30} />}
+                {isLoading === true && <ReactLoading className = "burn-window-loading" type="spin" color="blue" height={35} width={30} />}
                 <Drawer
                     anchor={"right"}
                     open={isOpen}

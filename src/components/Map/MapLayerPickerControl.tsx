@@ -19,10 +19,7 @@ export default function MapLayerPickerControl(props: {seed: number, fireData: IF
         <LayersControl>
             <LayersControl.Overlay name="Fires">
                 <LayerGroup>
-                    {props.fireData.map((fire, i) => <Fire key={i} latLon={[fire["latitude"], fire["longitude"]]}
-                                                           burnArea={fire["acres"]}
-                                                           name={fire["name"]} day={fire["day"]} month={fire["month"]} year={fire["year"]} county={fire["county"]} />)}
-
+                {props.fireData.map((fire, i) => ( <Fire key={i} {...fire} /> ))}
                 </LayerGroup>
             </LayersControl.Overlay>
             <LayersControl.Overlay name="County Borders">

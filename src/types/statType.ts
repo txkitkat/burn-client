@@ -4,5 +4,7 @@ export default interface IFireStat{
     minYear: number,
     maxYear: number,
     minSize: number,
-    maxSize: number 
+    maxSize: number,
+    minMonth: number,
+    maxMonth: number,
   }
