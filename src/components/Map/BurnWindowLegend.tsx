@@ -1,17 +1,16 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import L, { Control } from "leaflet";
 import "./Legend.css";
 
-var prevLegend: L.Control;
-
 function BurnWindowLegend(props: {map: any, isOn: boolean}) {
+  const [currLegend, setCurrLegend] = useState<L.Control>(); 
 
 //\"http://placehold.it/350x350\" //placeholder image url
 var legendUrl = `${process.env.REACT_APP_FIRE_WINDOW_BACKEND}/legend`; //For png image
 
   useEffect(() => {
     if (props.map) {
-      const legend = new Control({ position: "bottomright" });
+      const legend = new Control({ position: "topright" });
 
       legend.onAdd = () => {
         const div = L.DomUtil.create("div", "info legend");
@@ -19,13 +18,12 @@ var legendUrl = `${process.env.REACT_APP_FIRE_WINDOW_BACKEND}/legend`; //For png
         return div;
       };
 
-      if(props.isOn == true){
+      if(props.isOn === true){
         legend.addTo(props.map);
-        prevLegend = legend; //use global variable to get the current legend for deletion
+        setCurrLegend(legend);
       }
-      else if(props.isOn == false){
-        if(prevLegend != null)
-        prevLegend.remove();
+      else if(props.isOn === false){
+        currLegend?.remove();
       }
 
     }
