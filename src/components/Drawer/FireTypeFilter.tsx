@@ -40,6 +40,8 @@ export default function FireTypeFilter(props: IFilterImplProps) {
                         >
                             <MenuItem value={"PRESCRIBED"}>PRESCRIBED</MenuItem>
                             <MenuItem value={"ESCAPED"}>ESCAPED</MenuItem>
+                            <MenuItem value={"WILDFIRE"}>WILDFIRE</MenuItem>
+                            <MenuItem value={"UNKNOWN"}>UNKNOWN</MenuItem>
                             <MenuItem value={"ALL"}>ALL</MenuItem>
                         </Select>
                     </FormControl>

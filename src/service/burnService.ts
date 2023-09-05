@@ -75,10 +75,16 @@ export async function getFiresByFilters(filterState: IFiltersState, interactedFi
             if (key === "fireType"){
                 switch (filterState[key]) {
                     case "PRESCRIBED":
-                        query += `escaped=false&`;
+                        query += 'fireType=PRESCRIBED%20FIRE&';
                         break;
                     case "ESCAPED":
-                        query += 'escaped=true&';
+                        query += 'fireType=ESCAPED%20FIRE&';
+                        break;
+                    case "WILDFIRE":
+                        query += 'fireType=WILDFIRE&';
+                        break;
+                    case "UNKNOWN":
+                        query += 'fireType=UNKNOWN&';
                         break;
                     case "ALL":
                         break;
@@ -129,10 +135,16 @@ export async function getFireStatistics(filterState: IFiltersState, interactedFi
             if (key === "fireType"){
                 switch (filterState[key]) {
                     case "PRESCRIBED":
-                        statQuery += `escaped=false&`;
+                        statQuery += 'fireType=PRESCRIBED%20FIRE&';
                         break;
                     case "ESCAPED":
-                        statQuery += 'escaped=true&';
+                        statQuery += 'fireType=ESCAPED%20FIRE&';
+                        break;
+                    case "WILDFIRE":
+                        statQuery += 'fireType=WILDFIRE&';
+                        break;
+                    case "UNKNOWN":
+                        statQuery += 'fireType=UNKNOWN&';
                         break;
                     case "ALL":
                         break;
