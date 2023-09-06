@@ -1,18 +1,18 @@
 import React, { useCallback, useState } from "react";
 import { LatLngExpression } from "leaflet";
 import { MapContainer, TileLayer } from "react-leaflet";
-import Fire from "../Fire";
 import IFire from "../../types/fireType";
 import MapLayerPickerControl from "./MapLayerPickerControl";
 import L from "leaflet";
 import CustomSliderLayersControl from "./CustomSliderLayersControl";
-
 import "./Map.css";
 
 export interface MapProps {
     fireData: IFire[];
     setFireData: (fireData: IFire[]) => void;
     seed: number;
+    counties: string[];
+    countyRefresh: number;
 }
 
 // Improve performance of using Callback functions
@@ -27,8 +27,6 @@ const Map = (props: MapProps) => {
 
     const defaultPosition: LatLngExpression = [36.7783, -119.4179]; // California position
 
-    //    console.log(props.fireData);
-
     const updateValue1 = useCallback((newValue: number) => {setValue1(newValue); },[] );
     const updateValue2 = useCallback((newValue: number) => {setValue2(newValue); },[] );
     
@@ -40,13 +38,14 @@ const Map = (props: MapProps) => {
                 style={{ height: "100%" }}
                 whenCreated={ (mapInstance) => {setMap(mapInstance)}} //get instance of the map
             >
+
                 <TileLayer
                     attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
 
-                <MemoizedMapLayerPickerControl seed={props.seed} fireData={props.fireData} map={map} 
-                    valueSliderValue={[value1, value2]} />
+                <MemoizedMapLayerPickerControl seed={props.seed} fireData={props.fireData} map={map} counties={props.counties}
+                    valueSliderValue={[value1, value2]} countyRefresh={props.countyRefresh}/>
                     
                 <MemoizedCustomSliderLayersControl seed={props.seed} setValue = {[updateValue1, updateValue2]} map={map} />
 

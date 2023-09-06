@@ -9,7 +9,7 @@ import BurnWindowLegend from "./BurnWindowLegend";
 import Legend from "./Legend";
 import TifLayer from "./TifLayer";
 
-export default function MapLayerPickerControl(props: {seed: number, fireData: IFire[], map: any, valueSliderValue: number[]}) {
+export default function MapLayerPickerControl(props: {seed: number, fireData: IFire[], map: any, valueSliderValue: number[], counties: string[], countyRefresh: number}) {
     const [vegetationTypeLegend, setVegetationTypeLegend] = useState(false);
     const [burnWindowLegend, setBurnWindowLegend] = useState(false);
     const [vegetationCoverLegend, setVegetationCoverLegend] = useState(false);
@@ -23,7 +23,7 @@ export default function MapLayerPickerControl(props: {seed: number, fireData: IF
                 </LayerGroup>
             </LayersControl.Overlay>
             <LayersControl.Overlay name="County Borders">
-                <CountyBorders />
+                <CountyBorders counties={props.counties} countyRefresh={props.countyRefresh}/>
             </LayersControl.Overlay>
             <LayersControl.Overlay name="Vegetation Overlay">
                 <LayerGroup eventHandlers={{

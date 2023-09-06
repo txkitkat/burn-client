@@ -17,7 +17,7 @@ function Fire(props: any) {
         color={fireColors['baseFireColor'].rgb}
         fillColor={fireColors['baseFireColor'].rgb}>
             <Popup>
-                {(props.name != '') && <h3 className="fire-popup-name"> {props.name} </h3>}
+                {(props.name !== '') && <h3 className="fire-popup-name"> {props.name} </h3>}
                 <div className="fire-popup"> Fire Type: {props.fireType} </div>
                 <div className="fire-popup"> Burned On: {date || "N/A"} </div>
                 <div className="fire-popup"> Fire Size: {props.acres || "N/A"} acres</div>

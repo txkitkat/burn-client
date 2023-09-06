@@ -28,6 +28,7 @@ interface IFiltersProps {
     updateBurnWindow: () => void;
     resetBurnWindow: () => void;
     setCounties: (counties: string[]) => void;
+    setCountyRefresh: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export interface IFilterImplProps {
@@ -281,7 +282,11 @@ export default function Filters(props: IFiltersProps) {
     const toDate = (date: string) => Math.floor((new Date(date).getTime() - (new Date(1979, 0, 0)).getTime()) / (1000 * 3600 * 24));
     const handleWindow = () => {
         setIsLoading(true);
-        query_counties(toDate(date), toDate(date2)).then((data)=>props.setCounties(data.data)).then(() => console.log("DATE2: " + date2));
+        props.setCountyRefresh(0);
+        query_counties(toDate(date), toDate(date2)).then((data)=> {
+            props.setCounties(data.data);
+            props.setCountyRefresh(1);
+        })
         if (checkedDownloadRaster) {
             downloadFireWindow(toDate(date), toDate(date2))
             .then((data) => props.resetBurnWindow())
