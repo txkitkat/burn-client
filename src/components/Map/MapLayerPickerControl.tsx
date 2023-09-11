@@ -5,6 +5,7 @@ import IFire from "../../types/fireType";
 import Fire from "../Fire";
 import { useState } from "react";
 import BurnWindowLegend from "./BurnWindowLegend";
+import TemperatureLegend from "./TemperatureLegend";
 
 import Legend from "./Legend";
 import TifLayer from "./TifLayer";
@@ -12,6 +13,7 @@ import TifLayer from "./TifLayer";
 export default function MapLayerPickerControl(props: {seed: number, fireData: IFire[], map: any, valueSliderValue: number[], counties: string[], countyRefresh: number}) {
     const [vegetationTypeLegend, setVegetationTypeLegend] = useState(false);
     const [burnWindowLegend, setBurnWindowLegend] = useState(false);
+    const [temperatureLegend, setTemperatureLegend] = useState(false);
     const [vegetationCoverLegend, setVegetationCoverLegend] = useState(false);
 
     // @ts-ignore
@@ -52,6 +54,21 @@ export default function MapLayerPickerControl(props: {seed: number, fireData: IF
             </LayersControl.Overlay>
             ) : 
             (<BurnWindowLegend map = {props.map} isOn = {false}/>)}
+
+            {(props.seed > 1) ? (
+            <LayersControl.Overlay name="Temperature">
+                <LayerGroup eventHandlers={{
+                        add: (e) => {setTemperatureLegend(true);},
+                        remove: (e) => {setTemperatureLegend(false);},
+                    }}>
+                    {/*Image bounds below work for svg image created by burn-window*/}
+                    <ImageOverlay url={`${process.env.REACT_APP_FIRE_WINDOW_BACKEND}/temperature_image`} bounds={[[43.375, -127.624903], [31.05, -111.356167]]} opacity={props.valueSliderValue[1]}/>
+                    <TemperatureLegend map = {props.map} isOn = {temperatureLegend}/>
+                </LayerGroup>
+            </LayersControl.Overlay>
+            ) : 
+            (<TemperatureLegend map = {props.map} isOn = {false}/>)}
+
 
             <LayersControl.Overlay name="Vegetation Cover">
                 <LayerGroup eventHandlers={{
