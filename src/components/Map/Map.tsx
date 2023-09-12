@@ -22,6 +22,7 @@ const MemoizedCustomSliderLayersControl = React.memo(CustomSliderLayersControl);
 const Map = (props: MapProps) => {
     const [value1, setValue1] = useState(1);
     const [value2, setValue2] = useState(1);
+    const [value3, setValue3] = useState(1);
     
     const [map, setMap] = useState<L.Map>()
 
@@ -29,6 +30,7 @@ const Map = (props: MapProps) => {
 
     const updateValue1 = useCallback((newValue: number) => {setValue1(newValue); },[] );
     const updateValue2 = useCallback((newValue: number) => {setValue2(newValue); },[] );
+    const updateValue3 = useCallback((newValue: number) => {setValue3(newValue); },[] );
     
     return (
         <div className="map__container">           
@@ -45,9 +47,9 @@ const Map = (props: MapProps) => {
                 />
 
                 <MemoizedMapLayerPickerControl seed={props.seed} fireData={props.fireData} map={map} counties={props.counties}
-                    valueSliderValue={[value1, value2]} countyRefresh={props.countyRefresh}/>
+                    valueSliderValue={[value1, value2, value3]} countyRefresh={props.countyRefresh}/>
                     
-                <MemoizedCustomSliderLayersControl seed={props.seed} setValue = {[updateValue1, updateValue2]} map={map} />
+                <MemoizedCustomSliderLayersControl seed={props.seed} setValue = {[updateValue1, updateValue2, updateValue3]} map={map} />
 
             </MapContainer>
         </div>

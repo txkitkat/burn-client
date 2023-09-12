@@ -3,7 +3,8 @@ import L, { Control } from "leaflet";
 
 const LayerNames = [
         "Vegetation Overlay",
-        "Burn Window"
+        "Burn Window",
+        "Average Temperature"
     ];
 
 const CreateCustomLayersControl = (props: {map: any, seed: number, setValue: any}) => {
@@ -20,21 +21,21 @@ const CreateCustomLayersControl = (props: {map: any, seed: number, setValue: any
             div.style.borderWidth = '2px'; 
             div.style.padding = '3px 10px 0px 10px'; 
 
-          controlInstance.onAdd = () => { 
-            const layer1 = document.createElement("div");
-            layer1.textContent = LayerNames[0];
-            layer1.style.textAlign = "center";
-            
-            // use Callback function in setValue[] to change the opacity value for a layer
-            const slider = createSlider({map: props.map, startingValue: "1", setValue: props.setValue[0]});
+            controlInstance.onAdd = () => { 
+                const layer1 = document.createElement("div");
+                layer1.textContent = LayerNames[0];
+                layer1.style.textAlign = "center";
+                
+                // use Callback function in setValue[] to change the opacity value for a layer
+                const slider = createSlider({map: props.map, startingValue: "1", setValue: props.setValue[0]});
 
-            div.appendChild(layer1);
-            div.appendChild(slider); 
-            return div;
-    
-            };
+                div.appendChild(layer1);
+                div.appendChild(slider); 
+                return div;
+        
+                };
 
-            //Add Burn Window Slider
+            //Add Burn Window Slider and Temperature Slider
             if(props.seed > 1 && !sliderRendered){
                 controlInstance.onAdd = () => {
                     const burnWindowLayer = document.createElement("div");
@@ -45,9 +46,21 @@ const CreateCustomLayersControl = (props: {map: any, seed: number, setValue: any
           
                     div.appendChild(burnWindowLayer);
                     div.appendChild(slider); // Append the slider to the control div
+
+
+                    // Temperature
+                    const layerDiv = document.createElement("dßv");
+                    layerDiv.textContent = LayerNames[2];
+                    layerDiv.style.textAlign = "center";
+        
+                    const temperatureSlider = createSlider({ map: props.map, startingValue: "1", setValue: props.setValue[2] });
+        
+                    div.appendChild(layerDiv);
+                    div.appendChild(temperatureSlider);
                     return div;
+
                     };
-                
+                    
                 setSliderRendered(true);
             }
 

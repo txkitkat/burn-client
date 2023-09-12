@@ -56,13 +56,13 @@ export default function MapLayerPickerControl(props: {seed: number, fireData: IF
             (<BurnWindowLegend map = {props.map} isOn = {false}/>)}
 
             {(props.seed > 1) ? (
-            <LayersControl.Overlay name="Temperature">
+            <LayersControl.Overlay name="Average Temperature">
                 <LayerGroup eventHandlers={{
                         add: (e) => {setTemperatureLegend(true);},
                         remove: (e) => {setTemperatureLegend(false);},
                     }}>
                     {/*Image bounds below work for svg image created by burn-window*/}
-                    <ImageOverlay url={`${process.env.REACT_APP_FIRE_WINDOW_BACKEND}/temperature_image`} bounds={[[43.375, -127.624903], [31.05, -111.356167]]} opacity={props.valueSliderValue[1]}/>
+                    <ImageOverlay url={`${process.env.REACT_APP_FIRE_WINDOW_BACKEND}/temperature_image`} bounds={[[43.375, -127.624903], [31.05, -111.356167]]} opacity={props.valueSliderValue[2]}/>
                     <TemperatureLegend map = {props.map} isOn = {temperatureLegend}/>
                 </LayerGroup>
             </LayersControl.Overlay>
