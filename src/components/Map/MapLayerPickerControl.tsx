@@ -25,7 +25,7 @@ export default function MapLayerPickerControl(props: {seed: number, fireData: IF
                 </LayerGroup>
             </LayersControl.Overlay>
             <LayersControl.Overlay name="County Borders">
-                <CountyBorders counties={props.counties} countyRefresh={props.countyRefresh}/>
+                <CountyBorders counties={props.counties} countyRefresh={props.countyRefresh} map={props.map}/>
             </LayersControl.Overlay>
             <LayersControl.Overlay name="Vegetation Overlay">
                 <LayerGroup eventHandlers={{

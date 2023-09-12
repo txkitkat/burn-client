@@ -37,7 +37,7 @@ export default function BurnTypeFilter(props: IFilterImplProps) {
             <ListItem key={"Sort by Burn Type"} onClick={() => setDropDownBurnType(!["ESCAPED","WILDFIRE","WILDLAND FIRE USE","UNKNOWN","ALL"].includes(props.filterState.fireType) && !dropDownBurnType)}>
                 <ListItemText primary={"Sort by Burn Type"} 
                     primaryTypographyProps={["WILDFIRE","WILDLAND FIRE USE","UNKNOWN","ALL"].includes(props.filterState.fireType) ? { style: disabledStyle}: {style: enabledStyle}}/>
-                {dropDownBurnType ? <ExpandLess color={(["WILDFIRE","WILDLAND FIRE USE","UNKNOWN","ALL"].includes(props.filterState.fireType))? "disabled": "inherit"}/> : <ExpandMore color={([,"WILDFIRE","WILDLAND FIRE USE","UNKNOWN","ALL"].includes(props.filterState.fireType))? "disabled": "inherit"}/>}
+                {dropDownBurnType ? <ExpandLess color={(["WILDFIRE","WILDLAND FIRE USE","UNKNOWN","ALL"].includes(props.filterState.fireType))? "disabled": "inherit"}/> : <ExpandMore color={(["WILDFIRE","WILDLAND FIRE USE","UNKNOWN","ALL"].includes(props.filterState.fireType))? "disabled": "inherit"}/>}
             </ListItem>
             <Collapse in={!(["WILDFIRE","WILDLAND FIRE USE","UNKNOWN","ALL"].includes(props.filterState.fireType)) && dropDownBurnType} timeout="auto" unmountOnExit>
                 <ListItem alignItems="center">

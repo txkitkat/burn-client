@@ -18,7 +18,6 @@ const TifLayer = ({ url }) => {
         fetch(url, { mode: "no-cors" })
         .then((response) => response.arrayBuffer())
         .then((arrayBuffer) => {
-            console.log(arrayBuffer)
             parseGeoraster(arrayBuffer).then((georaster) => {
                 const options = {
                     resolution: 256,

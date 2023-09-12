@@ -133,7 +133,7 @@ export default function Filters(props: IFiltersProps) {
     }
 
     const removeInapplicableFilters = () => {
-        if (["ESCAPED","WILDFIRE","WILDLAND FIRE USE","UNKNOWN","ALL"].includes(state.fireType)) {
+        if (["ESCAPED", "WILDFIRE", "WILDLAND FIRE USE", "UNKNOWN", "ALL"].includes(state.fireType)) {
             setInteracted({...interacted, "burnType": false});
             setState({...state, "source": "CALFIRE"});
         }
@@ -157,7 +157,6 @@ export default function Filters(props: IFiltersProps) {
         }
         setFiltersDescription(descString);
     };
-    
 
     const handleApply = () => {
         //const FileDownload = require("js-file-download");
@@ -168,43 +167,35 @@ export default function Filters(props: IFiltersProps) {
         createFiltersDescription();
         getFiresByFilters(state, interacted)
             .then(fires => {
-                console.log(fires);
-
-                if(!checkedShowStatistics && !checkedDownloadRaster) setIsLoading(false);
-
+                if (!checkedShowStatistics && !checkedDownloadRaster) setIsLoading(false);
                 return fires;
             })
             .then(fires => {
                 if (checkedShowStatistics) {
-                    getFireStatistics(state, interacted)
-                        .then(fireStats => {
-                            console.log(fireStats)
-                            let statsDisplay = "For Applied Filter:\nFire(s) Count: " + fireStats.numFires
-                                + "\nStart Year: " + fireStats.minYear 
-                                + "\nEnd Year: " + fireStats.maxYear 
-                                + "\nStart Month: " + fireStats.minMonth 
-                                + "\nEnd Month: " + fireStats.maxMonth
-                                + "\nAvg Size: " + fireStats.avgSize.toFixed(2) + " acres" 
-                                + "\nMin Size: " + fireStats.minSize.toFixed(3) + " acres" 
-                                + "\nMax Size: " + fireStats.maxSize.toFixed(2) + " acres"
-                            props.setStatistics(statsDisplay);
-                        }).catch(err => {
+                    getFireStatistics(state, interacted).then(fireStats => {
+                        console.log(fireStats)
+                        let statsDisplay = "For Applied Filter:\nFire(s) Count: " + fireStats.numFires
+                            + "\nStart Year: " + fireStats.minYear
+                            + "\nEnd Year: " + fireStats.maxYear
+                            + "\nStart Month: " + fireStats.minMonth
+                            + "\nEnd Month: " + fireStats.maxMonth
+                            + "\nAvg Size: " + fireStats.avgSize.toFixed(2) + " acres"
+                            + "\nMin Size: " + fireStats.minSize.toFixed(3) + " acres"
+                            + "\nMax Size: " + fireStats.maxSize.toFixed(2) + " acres"
+                        props.setStatistics(statsDisplay);
+                    }).catch(err => {
                         console.log(err);
                         props.setStatistics("For Applied Filter: No statistics available");
                     })
-
                 } else {
                     props.setStatistics("");
                 }
-
-                if(!checkedDownloadRaster) setIsLoading(false)
-
+                if (!checkedDownloadRaster) setIsLoading(false)
                 return fires;
             })
             .then(fires => props.setFireData(fires))
             .then(() => {
                 if (checkedDownloadRaster) {
-
                     let baseDate = new Date(1979, 0, 0);
                     let startDate = new Date(state.startYear, state.startMonth - 1, 0);
                     let endDate;
@@ -212,15 +203,14 @@ export default function Filters(props: IFiltersProps) {
                         endDate = new Date(state.endYear + 1, 0, 0);
                     else
                         endDate = new Date(state.endYear, state.endMonth, 0);
-
                     let startDateInSeconds = Math.floor((startDate.getTime() - baseDate.getTime()) / (1000 * 3600 * 24));
                     let endDateInSeconds = Math.ceil((endDate.getTime() - baseDate.getTime()) / (1000 * 3600 * 24));
 
                     downloadFireWindow(startDateInSeconds, endDateInSeconds)
-                    .then((data) => { return data.data})
-                    .then((data: any) => props.resetBurnWindow())
-                    .then((data: any) => props.updateBurnWindow())
-                    .then(() => setIsLoading(false));
+                        .then((data) => data.data)
+                        .then((data: any) => props.resetBurnWindow())
+                        .then((data: any) => props.updateBurnWindow())
+                        .then(() => setIsLoading(false));
                 }
             })
             .catch(err => console.error(err));
@@ -245,11 +235,9 @@ export default function Filters(props: IFiltersProps) {
     }
 
     const list = () => (
-
         <Box
             sx={{width: 250, height: '100%', bgcolor: 'grey.100'}}
             role="presentation">
-
             <List>
                 <Typography align="center" variant={"h5"}>
                     All Filters
@@ -271,33 +259,36 @@ export default function Filters(props: IFiltersProps) {
                 <OwnerFiler {...filterImplProps} />
                 {/* <SeverityFilter {...filterImplProps} /> */}
                 <Divider/>
-                <FormControlLabel sx={{ margin: 1 }} control={<Checkbox onChange={handleShowStatistics}/>} 
-                                  checked = {checkedShowStatistics} label="Show statistics" labelPlacement="end"/>
-                <FormControlLabel sx={{ margin: 1 }} control={<Checkbox onChange={handleDownloadRaster}/>}
-                                  checked={checkedDownloadRaster} label="Show Burn Window Raster for Time Frame" labelPlacement="end"/>
-                <Button className = "apply-filter-button" variant="text" onClick={handleApply}>{"Apply Filter(s)"}</Button>
-                {isLoading === true && <ReactLoading className = "burn-window-loading" type="spin" color="blue" height={35} width={30} />}
+                <FormControlLabel sx={{margin: 1}} control={<Checkbox onChange={handleShowStatistics}/>}
+                                  checked={checkedShowStatistics} label="Show statistics" labelPlacement="end"/>
+                <FormControlLabel sx={{margin: 1}} control={<Checkbox onChange={handleDownloadRaster}/>}
+                                  checked={checkedDownloadRaster} label="Show Burn Window Raster for Time Frame"
+                                  labelPlacement="end"/>
+                <Button className="apply-filter-button" variant="text"
+                        onClick={handleApply}>{"Apply Filter(s)"}</Button>
+                {isLoading &&
+                    <ReactLoading className="burn-window-loading" type="spin" color="blue" height={35} width={30}/>}
             </List>
         </Box>
     );
 
-    const [date, setDate] = useState('');
+    const [date, setDate] = useState('2023-01-25');
     const dateInputRef = useRef(null);
-    const [date2, setDate2] = useState('');
+    const [date2, setDate2] = useState('2023-01-25');
     const date2InputRef = useRef(null);
     const toDate = (date: string) => Math.floor((new Date(date).getTime() - (new Date(1979, 0, 0)).getTime()) / (1000 * 3600 * 24));
     const handleWindow = () => {
-        setIsLoading(true);
         props.setCountyRefresh(0);
-        query_counties(toDate(date), toDate(date2)).then((data)=> {
+        query_counties(toDate(date), toDate(date2)).then((data) => {
             props.setCounties(data.data);
             props.setCountyRefresh(1);
         })
         if (checkedDownloadRaster) {
+            setIsLoading(true);
             downloadFireWindow(toDate(date), toDate(date2))
-            .then((data) => props.resetBurnWindow())
-            .then((data) => props.updateBurnWindow())
-            .then(() => setIsLoading(false));
+                .then((data) => props.resetBurnWindow())
+                .then((data) => props.updateBurnWindow())
+                .then(() => setIsLoading(false));
         }
     }
 
@@ -305,34 +296,39 @@ export default function Filters(props: IFiltersProps) {
         <div className="filter-drawer">
             <React.Fragment key={"isOpen"}>
                 <Tooltip title="Select from multiple filter categories" arrow>
-                    <Button className = "filter-button" variant="contained" onClick={toggleDrawer(true)}>
+                    <Button className="filter-button" variant="contained" onClick={toggleDrawer(true)}>
                         Filters
                     </Button>
                 </Tooltip>
                 <Typography variant="body2" color="blue" align="center">
                     <strong>Filters Applied</strong>
                 </Typography>
-            
+
                 <Typography variant="body2" color="blue" fontStyle="italic" align="center">
-                    <div className = "filtersDescription">{filtersDescription}</div>
+                    <div className="filtersDescription">{filtersDescription}</div>
                 </Typography>
-                
+
                 <Button className='burn-window' variant="contained">Burn Window</Button>
                 <p>Start Date</p>
-                <input className='date-change' type="date" onChange={(e) => setDate(e.target.value)} ref={dateInputRef} />
+                <input className='date-change' type="date" onChange={(e) => setDate(e.target.value)}
+                       ref={dateInputRef} value={date}/>
                 <p>End Date</p>
-                <input className='date-change' type="date" onChange={(e) => setDate2(e.target.value)} ref={date2InputRef} />
+                <input className='date-change' type="date" onChange={(e) => setDate2(e.target.value)}
+                       ref={date2InputRef} value={date2}/>
                 <Tooltip title="Search counties in burn window during a time period" arrow>
-                    <Button className = "filter-button"
+                    <Button className="filter-button"
                             variant="contained"
                             onClick={() => handleWindow()}
-                            disabled = {date === '' || date2 === '' || toDate(date2) < toDate(date)}>
+                            disabled={date === '' || date2 === '' || toDate(date2) < toDate(date)}>
                         Search
                     </Button>
                 </Tooltip>
-                <FormControlLabel sx={{ marginLeft: 1 }} control={<Checkbox onChange={handleDownloadRaster}/>} checked={checkedDownloadRaster} 
-                                  label={<Box component="div" fontSize={12}>Show Burn Window Raster</Box>} labelPlacement="end"/>
-                {isLoading === true && <ReactLoading className = "burn-window-loading" type="spin" color="blue" height={35} width={30} />}
+                <FormControlLabel sx={{marginLeft: 1}} control={<Checkbox onChange={handleDownloadRaster}/>}
+                                  checked={checkedDownloadRaster}
+                                  label={<Box component="div" fontSize={12}>Show Burn Window Raster</Box>}
+                                  labelPlacement="end"/>
+                {isLoading &&
+                    <ReactLoading className="burn-window-loading" type="spin" color="blue" height={35} width={30}/>}
                 <Drawer
                     anchor={"right"}
                     open={isOpen}
