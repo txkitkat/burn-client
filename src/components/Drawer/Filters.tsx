@@ -20,6 +20,7 @@ import {Checkbox} from '@mui/material';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Tooltip from '@mui/material/Tooltip';
 import ReactLoading from "react-loading";
+import EscapedTypeFilter from './EscapedTypeFilter';
 
 
 interface IFiltersProps {
@@ -52,6 +53,7 @@ export interface IFiltersState {
     minSeverity: number
     maxSeverity: number
     fireType: string
+    escaped: string
 }
 
 export interface IFiltersInteracted {
@@ -68,6 +70,7 @@ export interface IFiltersInteracted {
     minSeverity: boolean
     maxSeverity: boolean
     fireType: boolean
+    escaped: boolean
 }
 
 export default function Filters(props: IFiltersProps) {
@@ -86,7 +89,8 @@ export default function Filters(props: IFiltersProps) {
         owner: "",
         minSeverity: 0,
         maxSeverity: 0,
-        fireType: "PRESCRIBED"
+        fireType: "PRESCRIBED",
+        escaped: "FALSE"
     });
 
     const [interacted, setInteracted] = useState<IFiltersInteracted>({
@@ -102,7 +106,8 @@ export default function Filters(props: IFiltersProps) {
         owner: false,
         minSeverity: false,
         maxSeverity: false,
-        fireType: true
+        fireType: true,
+        escaped: false
     })
 
     const toggleDrawer =
@@ -128,7 +133,7 @@ export default function Filters(props: IFiltersProps) {
     }
 
     const removeInapplicableFilters = () => {
-        if (state.fireType === "ESCAPED") {
+        if (["ESCAPED","WILDFIRE","WILDLAND FIRE USE","UNKNOWN","ALL"].includes(state.fireType)) {
             setInteracted({...interacted, "burnType": false});
             setState({...state, "source": "CALFIRE"});
         }
@@ -256,10 +261,11 @@ export default function Filters(props: IFiltersProps) {
                     Click on Apply Filter(s) when finished
                 </Typography>
                 <FireTypeFilter {...filterImplProps} />
+                <EscapedTypeFilter {...filterImplProps} />
+                <BurnTypeFilter {...filterImplProps} />
                 <SourceFilter {...filterImplProps} />
                 <LocationFilter {...filterImplProps} />
                 <SizeFilter {...filterImplProps} />
-                <BurnTypeFilter {...filterImplProps} />
                 <TimeFilter {...filterImplProps} />
                 <TimeMonthFilter {...filterImplProps} />
                 <OwnerFiler {...filterImplProps} />

@@ -39,8 +39,8 @@ export default function FireTypeFilter(props: IFilterImplProps) {
                             onChange={handleChangeFireType}
                         >
                             <MenuItem value={"PRESCRIBED"}>PRESCRIBED</MenuItem>
-                            <MenuItem value={"ESCAPED"}>ESCAPED</MenuItem>
                             <MenuItem value={"WILDFIRE"}>WILDFIRE</MenuItem>
+                            <MenuItem value={"WILDLAND FIRE USE"}>WILDLAND FIRE USE</MenuItem>
                             <MenuItem value={"UNKNOWN"}>UNKNOWN</MenuItem>
                             <MenuItem value={"ALL"}>ALL</MenuItem>
                         </Select>

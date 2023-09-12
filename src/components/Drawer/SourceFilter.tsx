@@ -38,9 +38,9 @@ export default function SourceFilter(props: IFilterImplProps) {
                             autoWidth
                             onChange={handleChangeDataset}
                         >
-                            <MenuItem value={"CALFIRE"}>CALFIRES</MenuItem>
-                            <MenuItem disabled={props.filterState.fireType==="ESCAPED"} value={"PFIRS"}>PFIRx</MenuItem>
-                            <MenuItem disabled={props.filterState.fireType==="ESCAPED"} value={"MTBS"}>MTBS</MenuItem>
+                            <MenuItem disabled={["WILDFIRE", "WILDLAND FIRE USE"].includes(props.filterState.fireType)} value={"CALFIRE"}>CALFIRES</MenuItem>
+                            <MenuItem disabled={["WILDFIRE", "WILDLAND FIRE USE"].includes(props.filterState.fireType)} value={"PFIRS"}>PFIRx</MenuItem>
+                            <MenuItem value={"MTBS"}>MTBS</MenuItem>
                         </Select>
                     </FormControl>
                 </ListItem>

@@ -23,7 +23,7 @@ export async function getAllFires(): Promise<IFire[]> {
 }
 
 export async function getAllPrescribedFires(){
-    return (await http.get<IServerResp>(`${host}/fires/search/findByEscapedFalse`)).data._embedded.fires;
+    return (await http.get<IServerResp>(`${host}/fires/search/findByFireType?fireType=PRESCRIBED%20FIRE`)).data._embedded.fires;
 }
 
 export async function getAllEscapedFires(){
@@ -77,11 +77,11 @@ export async function getFiresByFilters(filterState: IFiltersState, interactedFi
                     case "PRESCRIBED":
                         query += 'fireType=PRESCRIBED%20FIRE&';
                         break;
-                    case "ESCAPED":
-                        query += 'fireType=ESCAPED%20FIRE&';
-                        break;
                     case "WILDFIRE":
                         query += 'fireType=WILDFIRE&';
+                        break;
+                    case "WILDLAND FIRE USE":
+                        query += 'fireType=WILDLAND%20FIRE%20USE&';
                         break;
                     case "UNKNOWN":
                         query += 'fireType=UNKNOWN&';
@@ -137,11 +137,11 @@ export async function getFireStatistics(filterState: IFiltersState, interactedFi
                     case "PRESCRIBED":
                         statQuery += 'fireType=PRESCRIBED%20FIRE&';
                         break;
-                    case "ESCAPED":
-                        statQuery += 'fireType=ESCAPED%20FIRE&';
-                        break;
                     case "WILDFIRE":
                         statQuery += 'fireType=WILDFIRE&';
+                        break;
+                    case "WILDLAND FIRE USE":
+                        statQuery += 'fireType=WILDLAND%20FIRE%20USE&';
                         break;
                     case "UNKNOWN":
                         statQuery += 'fireType=UNKNOWN&';
