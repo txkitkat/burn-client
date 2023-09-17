@@ -34,8 +34,8 @@ export default function EscapedTypeFilter(props: IFilterImplProps) {
     return (
         <div>
             <Divider/>
-            <ListItem key={"Sort by Prescribed Fire"} onClick={() => setDropDownEscaped(!["WILDFIRE","WILDLAND FIRE USE","UNKNOWN","ALL"].includes(props.filterState.fireType) && !dropDownEscaped)}>
-                <ListItemText primary={"Sort by Prescribed Fire"} 
+            <ListItem key={"Sort By Escaped"} onClick={() => setDropDownEscaped(!["WILDFIRE","WILDLAND FIRE USE","UNKNOWN","ALL"].includes(props.filterState.fireType) && !dropDownEscaped)}>
+                <ListItemText primary={"Sort By Escaped"} 
                     primaryTypographyProps={["WILDFIRE","WILDLAND FIRE USE","UNKNOWN","ALL"].includes(props.filterState.fireType) ? { style: disabledStyle}: {style: enabledStyle}}/>
                 {dropDownEscaped ? <ExpandLess color={(["WILDFIRE","WILDLAND FIRE USE","UNKNOWN","ALL"].includes(props.filterState.fireType))? "disabled": "inherit"}/> : <ExpandMore color={(["WILDFIRE","WILDLAND FIRE USE","UNKNOWN","ALL"].includes(props.filterState.fireType))? "disabled": "inherit"}/>}
             </ListItem>
@@ -51,8 +51,8 @@ export default function EscapedTypeFilter(props: IFilterImplProps) {
                             autoWidth
                             onChange={handleChangeEscaped}
                         >
-                            <MenuItem value={"TRUE"}>TRUE</MenuItem>
-                            <MenuItem value={"FALSE"}>FALSE</MenuItem>
+                            <MenuItem value={"TRUE"}>Escaped</MenuItem>
+                            <MenuItem value={"FALSE"}>Not Escaped</MenuItem>
                         </Select>
                     </FormControl>
                 </ListItem>

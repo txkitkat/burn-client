@@ -21,7 +21,7 @@ var legendUrl = `${process.env.REACT_APP_FIRE_WINDOW_BACKEND}/temperature_legend
 
       if(props.isOn === true){
         legend.addTo(props.map);
-        prevLegend = legend; //use global variable to get the current legend for deletion
+        prevLegend = legend; //use global variable to delete the current legend
       }
       else if(props.isOn === false){
         if(prevLegend != null)
