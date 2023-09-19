@@ -4,7 +4,8 @@ import L, {Control} from "leaflet";
 const LayerNames = [
     "Vegetation Overlay",
     "Burn Window",
-    "Average Temperature"
+    "Average Temperature",
+    "Maximum Temperature"
 ];
 
 const CreateCustomLayersControl = (props: { map: any, seed: number, setValue: any }) => {
@@ -34,31 +35,47 @@ const CreateCustomLayersControl = (props: { map: any, seed: number, setValue: an
                 return div;
             };
 
-            //Add Burn Window Slider and Temperature Slider
+            //Add Burn Window Slider, Average Temperature Slider, and Max Temperature Slider
             if (props.seed > 1 && !sliderRendered) {
                 controlInstance.onAdd = () => {
-                    const burnWindowLayer = document.createElement("div");
-                    burnWindowLayer.textContent = LayerNames[1];
-                    burnWindowLayer.style.textAlign = "center";
+                    //Burn Window
+                    const burnWindowLayerDiv = document.createElement("div");
+                    burnWindowLayerDiv.textContent = LayerNames[1];
+                    burnWindowLayerDiv.style.textAlign = "center";
 
-                    const slider = createSlider({map: props.map, startingValue: "1", setValue: props.setValue[1]});
+                    const burnSlider = createSlider({map: props.map, startingValue: "1", setValue: props.setValue[1]});
 
-                    div.appendChild(burnWindowLayer);
-                    div.appendChild(slider); // Append the slider to the control div
+                    div.appendChild(burnWindowLayerDiv);
+                    div.appendChild(burnSlider); // Append the slider to the control div
 
-                    // Temperature
-                    const layerDiv = document.createElement("dßv");
-                    layerDiv.textContent = LayerNames[2];
-                    layerDiv.style.textAlign = "center";
+                    // Average Temperature
+                    const avgTempLayerDiv = document.createElement("dßv");
+                    avgTempLayerDiv.textContent = LayerNames[2];
+                    avgTempLayerDiv.style.textAlign = "center";
 
-                    const temperatureSlider = createSlider({
+                    const avgTemperatureSlider = createSlider({
                         map: props.map,
                         startingValue: "1",
                         setValue: props.setValue[2]
                     });
 
-                    div.appendChild(layerDiv);
-                    div.appendChild(temperatureSlider);
+                    div.appendChild(avgTempLayerDiv);
+                    div.appendChild(avgTemperatureSlider); 
+
+                    // Maximum Temperature
+                    const maxTempLayerDiv = document.createElement("dßv");
+                    maxTempLayerDiv.textContent = LayerNames[3];
+                    maxTempLayerDiv.style.textAlign = "center";
+
+                    const maxTemperatureSlider = createSlider({
+                        map: props.map,
+                        startingValue: "1",
+                        setValue: props.setValue[3]
+                    });
+
+                    div.appendChild(maxTempLayerDiv);
+                    div.appendChild(maxTemperatureSlider); 
+                    
                     return div;
                 };
 

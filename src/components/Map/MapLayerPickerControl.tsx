@@ -5,7 +5,8 @@ import IFire from "../../types/fireType";
 import Fire from "../Fire";
 import { useState } from "react";
 import BurnWindowLegend from "./BurnWindowLegend";
-import TemperatureLegend from "./TemperatureLegend";
+import TemperatureAvgLegend from "./TemperatureAvgLegend";
+import TemperatureMaxLegend from "./TemperatureMaxLegend";
 
 import Legend from "./Legend";
 import TifLayer from "./TifLayer";
@@ -13,7 +14,8 @@ import TifLayer from "./TifLayer";
 export default function MapLayerPickerControl(props: {seed: number, fireData: IFire[], map: any, valueSliderValue: number[], counties: string[], countyRefresh: number}) {
     const [vegetationTypeLegend, setVegetationTypeLegend] = useState(false);
     const [burnWindowLegend, setBurnWindowLegend] = useState(false);
-    const [temperatureLegend, setTemperatureLegend] = useState(false);
+    const [temperatureAvgLegend, setTemperatureAvgLegend] = useState(false);
+    const [temperatureMaxLegend, setTemperatureMaxLegend] = useState(false);
     const [vegetationCoverLegend, setVegetationCoverLegend] = useState(false);
 
     // @ts-ignore
@@ -48,7 +50,7 @@ export default function MapLayerPickerControl(props: {seed: number, fireData: IF
                         remove: (e) => {setBurnWindowLegend(false);},
                     }}>
                     {/*Image bounds below work for svg image created by burn-window*/}
-                    <ImageOverlay url={`${process.env.REACT_APP_FIRE_WINDOW_BACKEND}/image`} bounds={[[43.375, -127.624903], [31.05, -111.356167]]} opacity={props.valueSliderValue[1]}/>
+                    <ImageOverlay url={`${process.env.REACT_APP_FIRE_WINDOW_BACKEND}/burn_window_image`} bounds={[[43.375, -127.624903], [31.05, -111.356167]]} opacity={props.valueSliderValue[1]}/>
                     <BurnWindowLegend map = {props.map} isOn = {burnWindowLegend}/>
                 </LayerGroup>
             </LayersControl.Overlay>
@@ -58,16 +60,30 @@ export default function MapLayerPickerControl(props: {seed: number, fireData: IF
             {(props.seed > 1) ? (
             <LayersControl.Overlay name="Average Temperature">
                 <LayerGroup eventHandlers={{
-                        add: (e) => {setTemperatureLegend(true);},
-                        remove: (e) => {setTemperatureLegend(false);},
+                        add: (e) => {setTemperatureAvgLegend(true);},
+                        remove: (e) => {setTemperatureAvgLegend(false);},
                     }}>
                     {/*Image bounds below work for svg image created by burn-window*/}
-                    <ImageOverlay url={`${process.env.REACT_APP_FIRE_WINDOW_BACKEND}/temperature_image`} bounds={[[43.375, -127.624903], [31.05, -111.356167]]} opacity={props.valueSliderValue[2]}/>
-                    <TemperatureLegend map = {props.map} isOn = {temperatureLegend}/>
+                    <ImageOverlay url={`${process.env.REACT_APP_FIRE_WINDOW_BACKEND}/temperature_avg_image`} bounds={[[43.375, -127.624903], [31.05, -111.356167]]} opacity={props.valueSliderValue[2]}/>
+                    <TemperatureAvgLegend map = {props.map} isOn = {temperatureAvgLegend}/>
                 </LayerGroup>
             </LayersControl.Overlay>
             ) : 
-            (<TemperatureLegend map = {props.map} isOn = {false}/>)}
+            (<TemperatureAvgLegend map = {props.map} isOn = {false}/>)}
+
+            {(props.seed > 1) ? (
+            <LayersControl.Overlay name="Maximum Temperature">
+                <LayerGroup eventHandlers={{
+                        add: (e) => {setTemperatureMaxLegend(true);},
+                        remove: (e) => {setTemperatureMaxLegend(false);},
+                    }}>
+                    {/*Image bounds below work for svg image created by burn-window*/}
+                    <ImageOverlay url={`${process.env.REACT_APP_FIRE_WINDOW_BACKEND}/temperature_max_image`} bounds={[[43.375, -127.624903], [31.05, -111.356167]]} opacity={props.valueSliderValue[3]}/>
+                    <TemperatureMaxLegend map = {props.map} isOn = {temperatureMaxLegend}/>
+                </LayerGroup>
+            </LayersControl.Overlay>
+            ) : 
+            (<TemperatureMaxLegend map = {props.map} isOn = {false}/>)}    
 
 
             <LayersControl.Overlay name="Vegetation Cover">

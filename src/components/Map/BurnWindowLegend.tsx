@@ -5,8 +5,8 @@ import "./Legend.css";
 function BurnWindowLegend(props: {map: any, isOn: boolean}) {
   const [currLegend, setCurrLegend] = useState<L.Control>(); 
 
-//\"http://placehold.it/350x350\" //placeholder image url
-var legendUrl = `${process.env.REACT_APP_FIRE_WINDOW_BACKEND}/legend`; //For png image
+  //\"http://placehold.it/350x350\" //placeholder image url
+  var legendUrl = `${process.env.REACT_APP_FIRE_WINDOW_BACKEND}/legend`; //For png image
 
   useEffect(() => {
     if (props.map) {
