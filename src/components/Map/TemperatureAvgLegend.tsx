@@ -21,7 +21,7 @@ function TemperatureAvgLegend(props: {map: any, isOn: boolean}) {
 
       if(props.isOn === true){
         legend.addTo(props.map);
-        prevLegend = legend; //use global variable to get the current legend for deletion
+        prevLegend = legend; //use global variable to delete the current legend
       }
       else if(props.isOn === false){
         if(prevLegend != null)

@@ -2,6 +2,7 @@ import {GeoJSON, LayerGroup} from "react-leaflet";
 import borderData from "../data/California_County_Boundaries.json";
 import Legend from "./Map/Legend";
 import {useState} from "react";
+import CountyLegend from "./Map/CountyLegend";
 
 function CountyBorders(props: { counties: string[]; countyRefresh: number, map: any }) {
     const countyBorders: any = borderData;
@@ -64,12 +65,10 @@ function CountyBorders(props: { counties: string[]; countyRefresh: number, map: 
                         pathOptions={{color: "black", weight: 0.75}}
                         style={style}
                     />
-                    <Legend map={props.map} isOn={legend} colors={[]} labels={[]} legendTitle={"Burn Window Percentage"}
-                            multiColor={[["#FFFFFF", "#800080"]]} multiColorLabels={["0% - 100%"]}
-                    />
+                    <CountyLegend map = {props.map} isOn = {legend}/>
                 </LayerGroup>
             ) : (
-                <></>
+                <CountyLegend map = {props.map} isOn = {false}/>
             )}
         </>
     );

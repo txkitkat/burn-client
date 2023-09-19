@@ -12,8 +12,9 @@ interface LegendProps {
     multiColorLabels?: string[]
 }
 
+//Used with static legends (not dynamically created)
 function Legend(props: LegendProps) {
-    const [currLegend, setCurrLegend] = useState<L.Control>();
+    const [currLegend, setCurrLegend] = useState<L.Control>(); 
 
     useEffect(() => {
         if (props.map) {
