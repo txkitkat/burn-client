@@ -5,7 +5,8 @@ const LayerNames = [
     "Vegetation Overlay",
     "Burn Window",
     "Average Temperature",
-    "Maximum Temperature"
+    "Maximum Temperature",
+    "Minimum Humidity"
 ];
 
 const CreateCustomLayersControl = (props: { map: any, seed: number, setValue: any }) => {
@@ -35,7 +36,7 @@ const CreateCustomLayersControl = (props: { map: any, seed: number, setValue: an
                 return div;
             };
 
-            //Add Burn Window Slider, Average Temperature Slider, and Max Temperature Slider
+            //Add Burn Window Slider, Average Temperature Slider, Max Temperature Slider, Min Humidity Slider
             if (props.seed > 1 && !sliderRendered) {
                 controlInstance.onAdd = () => {
                     //Burn Window
@@ -49,7 +50,7 @@ const CreateCustomLayersControl = (props: { map: any, seed: number, setValue: an
                     div.appendChild(burnSlider); // Append the slider to the control div
 
                     // Average Temperature
-                    const avgTempLayerDiv = document.createElement("dßv");
+                    const avgTempLayerDiv = document.createElement("div");
                     avgTempLayerDiv.textContent = LayerNames[2];
                     avgTempLayerDiv.style.textAlign = "center";
 
@@ -63,7 +64,7 @@ const CreateCustomLayersControl = (props: { map: any, seed: number, setValue: an
                     div.appendChild(avgTemperatureSlider); 
 
                     // Maximum Temperature
-                    const maxTempLayerDiv = document.createElement("dßv");
+                    const maxTempLayerDiv = document.createElement("div");
                     maxTempLayerDiv.textContent = LayerNames[3];
                     maxTempLayerDiv.style.textAlign = "center";
 
@@ -75,6 +76,20 @@ const CreateCustomLayersControl = (props: { map: any, seed: number, setValue: an
 
                     div.appendChild(maxTempLayerDiv);
                     div.appendChild(maxTemperatureSlider); 
+
+                    // Minimum Humidity
+                    const minHumidityLayerDiv = document.createElement("div");
+                    minHumidityLayerDiv.textContent = LayerNames[4];
+                    minHumidityLayerDiv.style.textAlign = "center";
+
+                    const minHumiditySlider = createSlider({
+                        map: props.map,
+                        startingValue: "1",
+                        setValue: props.setValue[4]
+                    });
+
+                    div.appendChild(minHumidityLayerDiv);
+                    div.appendChild(minHumiditySlider); 
                     
                     return div;
                 };

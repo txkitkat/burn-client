@@ -7,6 +7,7 @@ import { useState } from "react";
 import BurnWindowLegend from "./BurnWindowLegend";
 import TemperatureAvgLegend from "./TemperatureAvgLegend";
 import TemperatureMaxLegend from "./TemperatureMaxLegend";
+import HumidityMinLegend from "./HumidityMinLegend";
 
 import Legend from "./Legend";
 import TifLayer from "./TifLayer";
@@ -16,6 +17,7 @@ export default function MapLayerPickerControl(props: {seed: number, fireData: IF
     const [burnWindowLegend, setBurnWindowLegend] = useState(false);
     const [temperatureAvgLegend, setTemperatureAvgLegend] = useState(false);
     const [temperatureMaxLegend, setTemperatureMaxLegend] = useState(false);
+    const [humidityMinLegend, setHumidityMinLegend] = useState(false);
     const [vegetationCoverLegend, setVegetationCoverLegend] = useState(false);
 
     // @ts-ignore
@@ -84,6 +86,20 @@ export default function MapLayerPickerControl(props: {seed: number, fireData: IF
             </LayersControl.Overlay>
             ) : 
             (<TemperatureMaxLegend map = {props.map} isOn = {false}/>)}    
+
+            {(props.seed > 1) ? (
+            <LayersControl.Overlay name="Minimum Humidity">
+                <LayerGroup eventHandlers={{
+                        add: (e) => {setHumidityMinLegend(true);},
+                        remove: (e) => {setHumidityMinLegend(false);},
+                    }}>
+                    {/*Image bounds below work for svg image created by burn-window*/}
+                    <ImageOverlay url={`${process.env.REACT_APP_FIRE_WINDOW_BACKEND}/humidity_min_image`} bounds={[[43.375, -127.624903], [31.05, -111.356167]]} opacity={props.valueSliderValue[4]}/>
+                    <HumidityMinLegend map = {props.map} isOn = {humidityMinLegend}/>
+                </LayerGroup>
+            </LayersControl.Overlay>
+            ) : 
+            (<HumidityMinLegend map = {props.map} isOn = {false}/>)}
 
 
             <LayersControl.Overlay name="Vegetation Cover">
