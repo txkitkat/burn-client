@@ -26,7 +26,7 @@ export default function StatisticsPane(props: IStatisticsPaneProps) {
                     </Tooltip>
                 </Grid>
                 <Grid item xs={6}>
-                    <Tooltip title="Percentage of area that is in burn window for at least one day" >
+                    <Tooltip title="Average percentage of area that is in burn window during selected days" >
                         <p>Percentage</p >
                     </Tooltip>
                 </Grid>
