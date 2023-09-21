@@ -4,12 +4,12 @@ import vegetationImage from "../../data/WHR13_vegetation.png"
 import IFire from "../../types/fireType";
 import Fire from "../Fire";
 import { useState } from "react";
-import BurnWindowLegend from "./BurnWindowLegend";
-import TemperatureAvgLegend from "./TemperatureAvgLegend";
-import TemperatureMaxLegend from "./TemperatureMaxLegend";
-import HumidityMinLegend from "./HumidityMinLegend";
+import BurnWindowLegend from "./Legend/BurnWindowLegend";
+import TemperatureAvgLegend from "./Legend/TemperatureAvgLegend";
+import TemperatureMaxLegend from "./Legend/TemperatureMaxLegend";
+import HumidityMinLegend from "./Legend/HumidityMinLegend";
 
-import Legend from "./Legend";
+import Legend from "./Legend/Legend";
 import TifLayer from "./TifLayer";
 
 export default function MapLayerPickerControl(props: {seed: number, fireData: IFire[], map: any, valueSliderValue: number[], counties: string[], countyRefresh: number}) {
