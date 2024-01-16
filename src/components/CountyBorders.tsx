@@ -1,8 +1,7 @@
 import {GeoJSON, LayerGroup} from "react-leaflet";
 import borderData from "../data/California_County_Boundaries.json";
-import Legend from "./Map/Legend";
 import {useState} from "react";
-import CountyLegend from "./Map/CountyLegend";
+import CountyLegend from "./Map/Legend/CountyLegend";
 
 function CountyBorders(props: { counties: string[]; countyRefresh: number, map: any }) {
     const countyBorders: any = borderData;

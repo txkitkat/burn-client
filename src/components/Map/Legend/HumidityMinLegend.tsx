@@ -4,14 +4,14 @@ import "./Legend.css";
 
 var prevLegend: L.Control;
 
-function BurnWindowLegend(props: {map: any, isOn: boolean}) {
+function HumidityMinLegend(props: {map: any, isOn: boolean}) {
 
   //\"http://placehold.it/350x350\" //placeholder image url
-  var legendUrl = `${process.env.REACT_APP_FIRE_WINDOW_BACKEND}/burn_legend`; //For png image
+  var legendUrl = `${process.env.REACT_APP_FIRE_WINDOW_BACKEND}/humidity_min_legend`; //For png image
 
   useEffect(() => {
     if (props.map) {
-      const legend = new Control({ position: "topright" });
+      const legend = new Control({ position: "bottomleft" });
 
       legend.onAdd = () => {
         const div = L.DomUtil.create("div", "info legend");
@@ -33,4 +33,4 @@ function BurnWindowLegend(props: {map: any, isOn: boolean}) {
   return null;
 }
 
-export default BurnWindowLegend;
+export default HumidityMinLegend;

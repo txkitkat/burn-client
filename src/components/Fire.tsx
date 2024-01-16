@@ -10,7 +10,7 @@ function Fire(props: any) {
             rgb: "rgb(0, 76, 153)",
         },
         hoveredFireColor: {
-            rgb: "rgb(255, 255, 255)",
+            rgb: "rgb(2, 178, 222)",
         },
     };
 
