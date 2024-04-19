@@ -12,6 +12,9 @@ import HumidityMinLegend from "./Legend/HumidityMinLegend";
 import Legend from "./Legend/Legend";
 import TifLayer from "./TifLayer";
 
+// need to investigate the props variable passin. does not print even with console.log? 
+// option 1. Use current format and debug props value
+// option 2. Add safety condition that will return a rejection is the item is not found and leave the box unselected.
 export default function MapLayerPickerControl(props: {seed: number, fireData: IFire[], map: any, valueSliderValue: number[], counties: string[], countyRefresh: number}) {
     const [vegetationTypeLegend, setVegetationTypeLegend] = useState(false);
     const [burnWindowLegend, setBurnWindowLegend] = useState(false);
@@ -45,21 +48,20 @@ export default function MapLayerPickerControl(props: {seed: number, fireData: IF
                 </LayerGroup>
             </LayersControl.Overlay>
 
-            {(props.seed > 1) ? (
+            
             <LayersControl.Overlay name="Burn Window">
                 <LayerGroup eventHandlers={{
                         add: (e) => {setBurnWindowLegend(true);},
                         remove: (e) => {setBurnWindowLegend(false);},
                     }}>
-                    {/*Image bounds below work for svg image created by burn-window*/}
+                    {/*Image bounds below work for svg image created by burn-window*/} 
                     <ImageOverlay url={`${process.env.REACT_APP_FIRE_WINDOW_BACKEND}/burn_window_image`} bounds={[[43.375, -127.624903], [31.05, -111.356167]]} opacity={props.valueSliderValue[1]}/>
                     <BurnWindowLegend map = {props.map} isOn = {burnWindowLegend}/>
                 </LayerGroup>
             </LayersControl.Overlay>
-            ) : 
-            (<BurnWindowLegend map = {props.map} isOn = {false}/>)}
+             
+            (<BurnWindowLegend map = {props.map} isOn = {false}/>)
 
-            {(props.seed > 1) ? (
             <LayersControl.Overlay name="Average Temperature">
                 <LayerGroup eventHandlers={{
                         add: (e) => {setTemperatureAvgLegend(true);},
@@ -70,10 +72,10 @@ export default function MapLayerPickerControl(props: {seed: number, fireData: IF
                     <TemperatureAvgLegend map = {props.map} isOn = {temperatureAvgLegend}/>
                 </LayerGroup>
             </LayersControl.Overlay>
-            ) : 
-            (<TemperatureAvgLegend map = {props.map} isOn = {false}/>)}
+           
+            (<TemperatureAvgLegend map = {props.map} isOn = {false}/>)
 
-            {(props.seed > 1) ? (
+            
             <LayersControl.Overlay name="Maximum Temperature">
                 <LayerGroup eventHandlers={{
                         add: (e) => {setTemperatureMaxLegend(true);},
@@ -84,10 +86,10 @@ export default function MapLayerPickerControl(props: {seed: number, fireData: IF
                     <TemperatureMaxLegend map = {props.map} isOn = {temperatureMaxLegend}/>
                 </LayerGroup>
             </LayersControl.Overlay>
-            ) : 
-            (<TemperatureMaxLegend map = {props.map} isOn = {false}/>)}    
+            
+            (<TemperatureMaxLegend map = {props.map} isOn = {false}/>)    
 
-            {(props.seed > 1) ? (
+            
             <LayersControl.Overlay name="Minimum Humidity">
                 <LayerGroup eventHandlers={{
                         add: (e) => {setHumidityMinLegend(true);},
@@ -98,8 +100,8 @@ export default function MapLayerPickerControl(props: {seed: number, fireData: IF
                     <HumidityMinLegend map = {props.map} isOn = {humidityMinLegend}/>
                 </LayerGroup>
             </LayersControl.Overlay>
-            ) : 
-            (<HumidityMinLegend map = {props.map} isOn = {false}/>)}
+            
+            (<HumidityMinLegend map = {props.map} isOn = {false}/>)
 
 
             <LayersControl.Overlay name="Vegetation Cover">
