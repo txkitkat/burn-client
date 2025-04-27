@@ -1,11 +1,13 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { LatLngExpression } from "leaflet";
 import { MapContainer, TileLayer } from "react-leaflet";
 import IFire from "../../types/fireType";
 import MapLayerPickerControl from "./MapLayerPickerControl";
 import L from "leaflet";
 import CustomSliderLayersControl from "./CustomSliderLayersControl";
+import fireCursorIcon from './assets/firecursor.png'
 import "./Map.css";
+import { ModelStage } from "../../enums/modelStage";
 
 export interface MapProps {
     fireData: IFire[];
@@ -13,11 +15,15 @@ export interface MapProps {
     seed: number;
     counties: string[];
     countyRefresh: number;
+    modelStage: ModelStage;
+    handleSelectLocation: (latitude: number, longitude: number) => void;
 }
 
 // Improve performance of using Callback functions
 const MemoizedMapLayerPickerControl = React.memo(MapLayerPickerControl);
 const MemoizedCustomSliderLayersControl = React.memo(CustomSliderLayersControl);
+
+const fireCursor = `url(${fireCursorIcon}) 14 14, auto`;
 
 const Map = (props: MapProps) => {
     const [value1, setValue1] = useState(1);
@@ -36,14 +42,46 @@ const Map = (props: MapProps) => {
     const updateValue3 = useCallback((newValue: number) => {setValue3(newValue); },[] );
     const updateValue4 = useCallback((newValue: number) => {setValue4(newValue); },[] );
     const updateValue5 = useCallback((newValue: number) => {setValue5(newValue); },[] );
-
     
+    const handleGetLocation = (latlng: L.LatLng) => {
+        if (props.modelStage === ModelStage.SelectingLocation) {
+            console.log("Clicking");
+            const lat = latlng.lat;
+            const lon = latlng.lng;
+            props.handleSelectLocation(lat, lon);
+        }
+    }
+
+    useEffect(() => {
+        if (!map)
+            return;
+
+        const container = map.getContainer();
+        if (props.modelStage === ModelStage.SelectingLocation) {
+            container.classList.add("selecting-cursor");
+            console.log(container.className)
+        } else {
+            container.classList.remove("selecting-cursor");
+            console.log(container.className)
+        }
+
+        const handleClick = (e: L.LeafletMouseEvent) => {
+            handleGetLocation(e.latlng)
+        }
+
+        map.on('click', handleClick);
+
+        return () => {
+            map.off('click', handleClick);
+        };
+    }, [map, props.modelStage]);
+
     return (
-        <div className="map__container">           
+        <div>           
             <MapContainer
+                className="map__container"
                 center={defaultPosition}
                 zoom={6}
-                style={{ height: "100%" }}
                 whenCreated={ (mapInstance) => {setMap(mapInstance)}} //get instance of the map
             >
 
@@ -53,7 +91,7 @@ const Map = (props: MapProps) => {
                 />
 
                 <MemoizedMapLayerPickerControl seed={props.seed} fireData={props.fireData} map={map} counties={props.counties}
-                    valueSliderValue={[value1, value2, value3, value4, value5]} countyRefresh={props.countyRefresh}/>
+                    valueSliderValue={[value1, value2, value3, value4, value5]} countyRefresh={props.countyRefresh} />
                     
                 <MemoizedCustomSliderLayersControl seed={props.seed} setValue = {[updateValue1, updateValue2, updateValue3, updateValue4, updateValue5]} map={map} />
 

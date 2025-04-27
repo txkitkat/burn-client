@@ -5,3 +5,7 @@
   z-index: 1;
   float: left;
 }
+
+.selecting-cursor {
+  cursor: url('./assets/firecursor.png') 14 14, auto;
+}
