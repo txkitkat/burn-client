@@ -41,7 +41,7 @@ export default function SizeFilter(props: IFilterImplProps) {
     return (
         <div>
             <Divider />
-            <ListItem button key={"Sort by Size"} onClick={() => setDropDownSize(!dropDownSize)}>
+            <ListItem component="button" key={"Sort by Size"} onClick={() => setDropDownSize(!dropDownSize)}>
                 <ListItemText primary={"Sort by Size"} />
                 {dropDownSize ? <ExpandLess /> : <ExpandMore />}
             </ListItem>

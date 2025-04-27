@@ -1,7 +1,7 @@
 import React from "react";
 import "./StatisticsPane.css";
 import Tooltip from '@mui/material/Tooltip';
-import {Grid} from "@mui/material";
+import Grid from "@mui/material/Grid";
 interface IStatisticsPaneProps {
     counties: string[];
     statistics: string;

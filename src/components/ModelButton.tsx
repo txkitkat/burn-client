@@ -6,9 +6,9 @@ interface ModelButtonProps {
   startModel: () => void;
 }
 
-const ModelButton: React.FC<ModelButtonProps> = ({ startModel }) => {
+export default function ModelButton(props: { startModel: () => void }) {
   const handleClick = () => {
-    startModel();
+    props.startModel();
     console.log("Model stage set to: SelectingLocation");
   };
 
@@ -18,5 +18,3 @@ const ModelButton: React.FC<ModelButtonProps> = ({ startModel }) => {
     </button>
   );
 };
-
-export default ModelButton;

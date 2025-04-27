@@ -82,7 +82,6 @@ const Map = (props: MapProps) => {
                 className="map__container"
                 center={defaultPosition}
                 zoom={6}
-                whenCreated={ (mapInstance) => {setMap(mapInstance)}} //get instance of the map
             >
 
                 <TileLayer

@@ -27,7 +27,7 @@ export default function OwnerFiler(props: IFilterImplProps) {
     return (
         <div>
             <Divider/>
-            <ListItem button key={"Sort by Owner"} onClick={() => setDropDownSize(!dropDownSize)}>
+            <ListItem component="button" key={"Sort by Owner"} onClick={() => setDropDownSize(!dropDownSize)}>
                 <ListItemText primary={"Sort by Owner"}/>
                 {dropDownSize ? <ExpandLess/> : <ExpandMore/>}
             </ListItem>

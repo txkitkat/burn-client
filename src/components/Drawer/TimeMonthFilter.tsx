@@ -42,7 +42,7 @@ export default function TimeMonthFilter(props: IFilterImplProps) {
     return (
         <div>
             <Divider />
-            <ListItem button key={"Sort by Month"} onClick={() => setDropDownMonth(!dropDownMonth)}>
+            <ListItem component="button" key={"Sort by Month"} onClick={() => setDropDownMonth(!dropDownMonth)}>
                 <ListItemText primary={"Sort by Month"} />
                 {dropDownMonth ? <ExpandLess /> : <ExpandMore />}
             </ListItem>

@@ -22,7 +22,7 @@ export default function SourceFilter(props: IFilterImplProps) {
     return (
         <div>
             <Divider/>
-            <ListItem button key={"Sort by Dataset"} onClick={() => setDropDownDataset(!dropDownDataset)}>
+            <ListItem component="button" key={"Sort by Dataset"} onClick={() => setDropDownDataset(!dropDownDataset)}>
                 <ListItemText primary={"Sort by Dataset"}/>
                 {dropDownDataset ? <ExpandLess/> : <ExpandMore/>}
             </ListItem>
