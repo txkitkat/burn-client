@@ -14,6 +14,7 @@ import DateEntry from "./components/DateEntry";
 import ModelButton from "./components/ModelButton";
 import PredictionBox from "./components/PredictionBox";
 import { getModelPrediction, IPrediction } from "./service/mlService";
+import SelectLocationPromptBox from "./components/SelectLocationPromptBox";
 
 function App() {
     const [fireData, setFireData] = useState<IFire[]>([]);
@@ -38,7 +39,6 @@ function App() {
     }, []);
 
     const handleStartModel = () => {
-        console.log("Hitting this")
         setModelStage(ModelStage.SelectingLocation);
     }
 
@@ -63,8 +63,9 @@ function App() {
             <Navbar/>
             <Switch>
                 <Route path="/" exact>
-                    <ModelButton startModel={handleStartModel} />
+                    <ModelButton startModel={handleStartModel} currentStage={modelStage} />
                     <StatisticsPane statistics={statistics} counties={counties}/>
+                    {modelStage === ModelStage.SelectingLocation && <SelectLocationPromptBox />}
                     <Map fireData={fireData} setFireData={setFireData} seed={seed} counties={counties} countyRefresh={countyRefresh} modelStage={modelStage} handleSelectLocation={handleSelectLocation}/>
                     <Filters setFireData={setFireData} setStatistics={setStatistics} setCountyRefresh={setCountyRefresh}
                       updateBurnWindow={updateBurnWindow} resetBurnWindow={resetBurnWindow} setCounties={setCounties}/>
