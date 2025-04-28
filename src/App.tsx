@@ -12,16 +12,8 @@ import {getAllPrescribedFires} from "./service/burnService";
 import { ModelStage } from "./enums/modelStage";
 import DateEntry from "./components/DateEntry";
 import ModelButton from "./components/ModelButton";
-
-function PredictionBox (props: {confidence: number, predicted_reach: number}) {
-    return (
-    <div className="dialogue_box"> 
-        <strong style={{fontSize: "18px"}}>Escaped Fire Prediction</strong> 
-        <p><strong>Model confidence</strong>: {props.confidence*100}%</p>
-        <p><strong>Estimated reach:</strong> {props.predicted_reach} acres</p>
-    </div>
-    )
-}
+import PredictionBox from "./components/PredictionBox";
+import { getModelPrediction, IPrediction } from "./service/mlService";
 
 function App() {
     const [fireData, setFireData] = useState<IFire[]>([]);
@@ -35,7 +27,8 @@ function App() {
     const [modelLocationLatitude, setModelLocationLatitude] = useState<number | null>(null);
     const [modelLocationLongitude, setModelLocationLongitude] = useState<number | null>(null);
     const [modelDate, setModelDate] = useState<Date | null>(null);
-
+    const [predictionAcreage, setPredictionAcreage] = useState<number | null>(null);
+    const [predictionConfidence, setPredictionConfidence] = useState<number | null>(null);
 
     // Loads all non-escaped fire 12K+ records will be slow on first load/page refresh/Home button click
     useEffect(() => {
@@ -45,6 +38,7 @@ function App() {
     }, []);
 
     const handleStartModel = () => {
+        console.log("Hitting this")
         setModelStage(ModelStage.SelectingLocation);
     }
 
@@ -52,15 +46,16 @@ function App() {
         setModelLocationLatitude(latitude);
         setModelLocationLongitude(longitude);
         setModelStage(ModelStage.SelectingDate);
-
-        // Handling presenting the date
     }
  
-    const handleSelectDate = (date: Date) => {
+    const handleSelectDate = async (date: Date) => {
         setModelDate(date);
-        setModelStage(ModelStage.Result);
-        // API call to model
-        console.log("Done!");
+        setModelStage(ModelStage.Loading);
+        await getModelPrediction(modelLocationLatitude!, modelLocationLongitude!, date).then((prediction: IPrediction) => {
+            setPredictionAcreage(prediction.acreage);
+            setPredictionConfidence(prediction.confidence);
+            setModelStage(ModelStage.Result); // Display result
+        });
     }
 
     return (
@@ -68,15 +63,13 @@ function App() {
             <Navbar/>
             <Switch>
                 <Route path="/" exact>
-                    <ModelButton
-                        startModel={handleStartModel}
-                    />
+                    <ModelButton startModel={handleStartModel} />
                     <StatisticsPane statistics={statistics} counties={counties}/>
                     <Map fireData={fireData} setFireData={setFireData} seed={seed} counties={counties} countyRefresh={countyRefresh} modelStage={modelStage} handleSelectLocation={handleSelectLocation}/>
                     <Filters setFireData={setFireData} setStatistics={setStatistics} setCountyRefresh={setCountyRefresh}
                       updateBurnWindow={updateBurnWindow} resetBurnWindow={resetBurnWindow} setCounties={setCounties}/>
                     {modelStage === ModelStage.SelectingDate && <DateEntry selectDate={handleSelectDate} />}
-                    {modelStage === ModelStage.Result && <PredictionBox confidence={.55} predicted_reach={65} />}
+                    {modelStage === ModelStage.Result && <PredictionBox confidence={predictionConfidence!} predicted_reach={predictionAcreage!} />}
                 </Route>
                 <Route path="/about">
                     <About/>
