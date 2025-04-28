@@ -87,7 +87,7 @@ export default function TimeFilter(props: IFilterImplProps) {
     return (
         <div>
             <Divider />
-            <ListItem button key={"Sort by Year"} onClick={() => setDropDownTime(!dropDownTime)}>
+            <ListItem component="button" key={"Sort by Year"} onClick={() => setDropDownTime(!dropDownTime)}>
                 <ListItemText primary={"Sort by Year"} />
                 {dropDownTime ? <ExpandLess /> : <ExpandMore />}
             </ListItem>

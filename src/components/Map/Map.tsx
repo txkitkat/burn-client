@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { LatLngExpression } from "leaflet";
 import { MapContainer, TileLayer } from "react-leaflet";
 import IFire from "../../types/fireType";
@@ -33,7 +33,7 @@ const Map = (props: MapProps) => {
     const [value5, setValue5] = useState(1);
 
     
-    const [map, setMap] = useState<L.Map>()
+    const mapRef = useRef<L.Map | null>(null);
 
     const defaultPosition: LatLngExpression = [36.7783, -119.4179]; // California position
 
@@ -53,10 +53,11 @@ const Map = (props: MapProps) => {
     }
 
     useEffect(() => {
-        if (!map)
+        console.log("Hit!");
+        if (!mapRef.current)
             return;
 
-        const container = map.getContainer();
+        const container = mapRef.current.getContainer();
         if (props.modelStage === ModelStage.SelectingLocation) {
             container.classList.add("selecting-cursor");
             console.log(container.className)
@@ -69,12 +70,14 @@ const Map = (props: MapProps) => {
             handleGetLocation(e.latlng)
         }
 
-        map.on('click', handleClick);
+        mapRef.current.on('click', handleClick);
 
         return () => {
-            map.off('click', handleClick);
+            if (mapRef.current) {
+                mapRef.current.off('click', handleClick);
+            }
         };
-    }, [map, props.modelStage]);
+    }, [mapRef, props.modelStage]);
 
     return (
         <div>           
@@ -82,7 +85,7 @@ const Map = (props: MapProps) => {
                 className="map__container"
                 center={defaultPosition}
                 zoom={6}
-                whenCreated={ (mapInstance) => {setMap(mapInstance)}} //get instance of the map
+                ref={mapRef}
             >
 
                 <TileLayer
@@ -90,10 +93,10 @@ const Map = (props: MapProps) => {
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
 
-                <MemoizedMapLayerPickerControl seed={props.seed} fireData={props.fireData} map={map} counties={props.counties}
-                    valueSliderValue={[value1, value2, value3, value4, value5]} countyRefresh={props.countyRefresh} />
+                {mapRef.current && <MemoizedMapLayerPickerControl seed={props.seed} fireData={props.fireData} map={mapRef.current} counties={props.counties}
+                    valueSliderValue={[value1, value2, value3, value4, value5]} countyRefresh={props.countyRefresh} />}
                     
-                <MemoizedCustomSliderLayersControl seed={props.seed} setValue = {[updateValue1, updateValue2, updateValue3, updateValue4, updateValue5]} map={map} />
+                {mapRef.current && <MemoizedCustomSliderLayersControl seed={props.seed} setValue = {[updateValue1, updateValue2, updateValue3, updateValue4, updateValue5]} map={mapRef.current} />}
 
             </MapContainer>
         </div>

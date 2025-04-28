@@ -32,7 +32,7 @@ export default function SeverityFilter(props: IFilterImplProps) {
     return (
         <div>
             <Divider/>
-            <ListItem button key={"Sort by Severity"} onClick={() => setDropDownSeverity(!dropDownSeverity)}>
+            <ListItem component="button" key={"Sort by Severity"} onClick={() => setDropDownSeverity(!dropDownSeverity)}>
                 <ListItemText primary={"Sort by Severity"}/>
                 {dropDownSeverity ? <ExpandLess/> : <ExpandMore/>}
             </ListItem>

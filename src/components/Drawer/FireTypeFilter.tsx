@@ -22,7 +22,7 @@ export default function FireTypeFilter(props: IFilterImplProps) {
     return (
         <div>
             <Divider/>
-            <ListItem button key={"Type of Fire"} onClick={() => setDropDownFireType(!dropDownFireType)}>
+            <ListItem component="button" key="Type of Fire" onClick={() => setDropDownFireType(!dropDownFireType)}>
                 <ListItemText primary={"Type of Fire"}/>
                 {dropDownFireType ? <ExpandLess/> : <ExpandMore/>}
             </ListItem>

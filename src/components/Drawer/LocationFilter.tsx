@@ -20,7 +20,7 @@ export default function LocationFilter(props: IFilterImplProps) {
     return (
         <div>
             <Divider/>
-            <ListItem button key={"Sort by Location"} onClick={() => setDropDownLocation(!dropDownLocation)}>
+            <ListItem component="button" key={"Sort by Location"} onClick={() => setDropDownLocation(!dropDownLocation)}>
                 <ListItemText primary={"Sort by Location"}/>
                 {dropDownLocation ? <ExpandLess/> : <ExpandMore/>}
             </ListItem>
