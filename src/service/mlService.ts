@@ -30,7 +30,7 @@ const samplePrediction: IPrediction = {
 }
 
 export async function getModelPrediction(latitude: number, longitude: number, date: Date): Promise<IPrediction> {
-    const query = `${mlHost}/query?latitude=${latitude}&longitude=${longitude}&date=${date.toString()}`;
+    const query = `${mlHost}/query?latitude=${latitude}&longitude=${longitude}&year=${date.getFullYear().toString()}&month=${date.getMonth().toString()}&day=${date.getDate().toString()}`;
     console.log(query);
     
     return await axios.post(query)
@@ -53,5 +53,5 @@ export async function getModelPrediction(latitude: number, longitude: number, da
         })
         .finally(() => {
             return samplePrediction;
-        })
+        });
 }
