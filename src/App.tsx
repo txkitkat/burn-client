@@ -59,7 +59,7 @@ function App() {
     const handleSelectDate = async (date: Date) => {
         setModelDate(date);
         setModelStage(ModelStage.Loading);
-        await getModelPrediction(modelLocationLatitude!, modelLocationLongitude!, date).then((prediction: IPrediction) => {
+        await getModelPrediction(modelLocationLatitude!, modelLocationLongitude!, date, true).then((prediction: IPrediction) => {
             setPredictionAcreage(prediction.acreage);
             setPredictionConfidence(prediction.confidence);
             setPredictionFeatures(prediction.features!);
