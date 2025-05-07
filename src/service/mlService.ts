@@ -29,7 +29,21 @@ const samplePrediction: IPrediction = {
     }
 }
 
-export async function getModelPrediction(latitude: number, longitude: number, date: Date): Promise<IPrediction> {
+const partialPrediction: IPrediction = {
+    acreage: -1,
+    confidence: -1,
+    features: {
+       elevationAvg: 40,
+       elevationMin: 20,
+       elevationMax: 60,
+       elevationStd: 10,
+       vegetationCover: .50,
+       vegetationHeight: 3,
+       vegetationDeparture: .20
+    }
+}
+
+export async function getModelPrediction(latitude: number, longitude: number, date: Date, testing: boolean = false): Promise<IPrediction> {
     const query = `${mlHost}/query?latitude=${latitude}&longitude=${longitude}&year=${date.getFullYear().toString()}&month=${date.getMonth().toString()}&day=${date.getDate().toString()}`;
     console.log(query);
     
@@ -43,7 +57,7 @@ export async function getModelPrediction(latitude: number, longitude: number, da
             else {
                 // Throw an error here, but for now return a static value.
                 console.log(response);
-                return samplePrediction;
+                return testing ? partialPrediction : samplePrediction;
             }
         })
         .catch((error: AxiosError) => {
