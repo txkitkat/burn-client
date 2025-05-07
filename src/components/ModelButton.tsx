@@ -1,21 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import './ModelButton.css';
 import { ModelStage } from '../enums/modelStage';
+import IFeatureType from '../types/featureType';
 
 interface ModelButtonProps {
   startModel: () => void;
-  currentStage?: ModelStage;
+  resubmitModel: () => void;
+  currentStage: ModelStage;
+  errorFields: boolean;
 }
 
 export default function ModelButton(props: ModelButtonProps) {
   const [buttonText, setButtonText] = useState("Predict Prescribed Fire Spread");
 
   const handleClick = () => {
-    props.startModel();
+    if (props.currentStage === ModelStage.MissingFeatures) {
+      props.resubmitModel();
+    }
+    else {
+      props.startModel();
+    }
   };
 
   useEffect(() => {
-    console.log("Clicked!");
     setButtonText(getButtonLabel());
   }, [props.currentStage]);
 
@@ -27,6 +34,8 @@ export default function ModelButton(props: ModelButtonProps) {
         return "Restart Predictor";
       case (ModelStage.Loading):
         return "Loading...";
+      case (ModelStage.MissingFeatures):
+        return "Re-Submit Features";
       default:
         return "Predict Prescribed Fire Spread"
     }

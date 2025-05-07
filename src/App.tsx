@@ -18,6 +18,7 @@ import SelectLocationPromptBox from "./components/SelectLocationPromptBox";
 import FeaturesDisplay from "./components/FeaturesDisplay";
 import IFeatureType from "./types/featureType";
 import ExitModelButton from "./components/ExitModelButton";
+import hasAllFeatures from "./components/hooks/hasAllFeatures";
 
 function App() {
     const [fireData, setFireData] = useState<IFire[]>([]);
@@ -34,6 +35,7 @@ function App() {
     const [predictionAcreage, setPredictionAcreage] = useState<number | null>(null);
     const [predictionConfidence, setPredictionConfidence] = useState<number | null>(null);
     const [predictionFeatures, setPredictionFeatures] = useState<IFeatureType | undefined>(undefined);
+    const [showErrorFields, setShowErrorFields] = useState<boolean>(false);
 
     // Loads all non-escaped fire 12K+ records will be slow on first load/page refresh/Home button click
     useEffect(() => {
@@ -50,6 +52,15 @@ function App() {
         setModelStage(ModelStage.Standby);
     }
 
+    const handleResubmitModel = () => {
+        if (!hasAllFeatures(predictionFeatures)) {
+            setShowErrorFields(true);
+        }
+        else {
+            handleSubmitModel();
+        }
+    }
+
     const handleSelectLocation = (latitude: number, longitude: number) => {
         setModelLocationLatitude(latitude);
         setModelLocationLongitude(longitude);
@@ -57,14 +68,27 @@ function App() {
     }
  
     const handleSelectDate = async (date: Date) => {
-        setModelDate(date);
+        await setModelDate(date);
         setModelStage(ModelStage.Loading);
-        await getModelPrediction(modelLocationLatitude!, modelLocationLongitude!, date, true).then((prediction: IPrediction) => {
-            setPredictionAcreage(prediction.acreage);
-            setPredictionConfidence(prediction.confidence);
-            setPredictionFeatures(prediction.features!);
-            setModelStage(ModelStage.Result); // Display result
+        handleSubmitModel(date);
+    }
+
+    const handleSubmitModel = async (date?: Date) => {
+        await getModelPrediction(modelLocationLatitude!, modelLocationLongitude!, modelDate || date!, true).then((prediction: IPrediction) => {
+            setPredictionFeatures(prediction.features);
+            if (!hasAllFeatures(prediction.features)) {
+                setModelStage(ModelStage.MissingFeatures);
+            }
+            else {
+                setPredictionAcreage(prediction.acreage);
+                setPredictionConfidence(prediction.confidence);
+                setModelStage(ModelStage.Result);
+            }
         });
+    }
+
+    const handleSetFeatures = (features: IFeatureType): void => {
+        setPredictionFeatures(features);
     }
 
     return (
@@ -75,9 +99,9 @@ function App() {
                     <span className="model-container">
                         {modelStage === ModelStage.SelectingLocation && <SelectLocationPromptBox />}
                         {modelStage === ModelStage.Result && <PredictionBox confidence={predictionConfidence!} predicted_reach={predictionAcreage!} />}
-                        {modelStage === ModelStage.Result && <FeaturesDisplay features={predictionFeatures}/>}
+                        {(modelStage === ModelStage.MissingFeatures || modelStage === ModelStage.Result) && <FeaturesDisplay features={predictionFeatures} setFeatures={handleSetFeatures} showErrors={showErrorFields}/>}
                         <span>
-                            <ModelButton startModel={handleStartModel} currentStage={modelStage} />
+                            {modelStage !== ModelStage.SelectingDate && <ModelButton startModel={handleStartModel} resubmitModel={handleResubmitModel} errorFields={showErrorFields} currentStage={modelStage} />}
                             {modelStage !== ModelStage.Standby && <ExitModelButton onExit={handleExitModel}/>}
                         </span>
                     </span>

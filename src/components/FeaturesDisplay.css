@@ -10,3 +10,12 @@
 .feature_text {
     text-align: left;
 }
+
+.feature-input {
+    width: 50px;
+}
+
+.input-error {
+    width: 50px;
+    border-color: rgb(221, 48, 48);
+}
