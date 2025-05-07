@@ -3,5 +3,6 @@ export enum ModelStage {
     SelectingLocation,
     SelectingDate,
     Loading,
+    MissingFeatures,
     Result
 }

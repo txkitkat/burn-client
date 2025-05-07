@@ -63,9 +63,9 @@ export async function getModelPrediction(latitude: number, longitude: number, da
         .catch((error: AxiosError) => {
             // We'll need to show an error here. But for now, we'll return a static value.
             console.log(error);
-            return samplePrediction;
+            return testing ? partialPrediction : samplePrediction;
         })
         .finally(() => {
-            return samplePrediction;
+            return testing ? partialPrediction : samplePrediction;
         });
 }
