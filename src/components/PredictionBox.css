@@ -1,7 +1,4 @@
 .dialogue_box {
-    position: absolute;
-    bottom: 50%;
-    left: 15%;
     background: rgb(255, 255, 255);
     border-radius: 1%;
     padding: 1.5% 1.5%;

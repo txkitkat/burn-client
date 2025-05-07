@@ -1,7 +1,4 @@
 .model-button {
-  position: absolute;
-  bottom: 2%;
-  left: 15%;
   background-color: #4CAF50; /* Green */
   border: none;
   color: white;
@@ -15,4 +12,18 @@
 .model-button:hover {
   background-color: #45a049;
 }
+
+.exit-model-button {
+  background-color: #af4c4c;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+  z-index: 920;
+}
   
+.exit-model-button:hover {
+  background-color: #a04545;
+}
