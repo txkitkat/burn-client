@@ -15,6 +15,9 @@ import ModelButton from "./components/ModelButton";
 import PredictionBox from "./components/PredictionBox";
 import { getModelPrediction, IPrediction } from "./service/mlService";
 import SelectLocationPromptBox from "./components/SelectLocationPromptBox";
+import FeaturesDisplay from "./components/FeaturesDisplay";
+import IFeatureType from "./types/featureType";
+import ExitModelButton from "./components/ExitModelButton";
 
 function App() {
     const [fireData, setFireData] = useState<IFire[]>([]);
@@ -30,6 +33,7 @@ function App() {
     const [modelDate, setModelDate] = useState<Date | null>(null);
     const [predictionAcreage, setPredictionAcreage] = useState<number | null>(null);
     const [predictionConfidence, setPredictionConfidence] = useState<number | null>(null);
+    const [predictionFeatures, setPredictionFeatures] = useState<IFeatureType | undefined>(undefined);
 
     // Loads all non-escaped fire 12K+ records will be slow on first load/page refresh/Home button click
     useEffect(() => {
@@ -40,6 +44,10 @@ function App() {
 
     const handleStartModel = () => {
         setModelStage(ModelStage.SelectingLocation);
+    }
+
+    const handleExitModel = () => {
+        setModelStage(ModelStage.Standby);
     }
 
     const handleSelectLocation = (latitude: number, longitude: number) => {
@@ -54,6 +62,7 @@ function App() {
         await getModelPrediction(modelLocationLatitude!, modelLocationLongitude!, date).then((prediction: IPrediction) => {
             setPredictionAcreage(prediction.acreage);
             setPredictionConfidence(prediction.confidence);
+            setPredictionFeatures(prediction.features!);
             setModelStage(ModelStage.Result); // Display result
         });
     }
@@ -63,14 +72,20 @@ function App() {
             <Navbar/>
             <Switch>
                 <Route path="/" exact>
-                    <ModelButton startModel={handleStartModel} currentStage={modelStage} />
+                    <span className="model-container">
+                        {modelStage === ModelStage.SelectingLocation && <SelectLocationPromptBox />}
+                        {modelStage === ModelStage.Result && <PredictionBox confidence={predictionConfidence!} predicted_reach={predictionAcreage!} />}
+                        {modelStage === ModelStage.Result && <FeaturesDisplay features={predictionFeatures}/>}
+                        <span>
+                            <ModelButton startModel={handleStartModel} currentStage={modelStage} />
+                            {modelStage !== ModelStage.Standby && <ExitModelButton onExit={handleExitModel}/>}
+                        </span>
+                    </span>
                     <StatisticsPane statistics={statistics} counties={counties}/>
-                    {modelStage === ModelStage.SelectingLocation && <SelectLocationPromptBox />}
                     <Map fireData={fireData} setFireData={setFireData} seed={seed} counties={counties} countyRefresh={countyRefresh} modelStage={modelStage} handleSelectLocation={handleSelectLocation}/>
                     <Filters setFireData={setFireData} setStatistics={setStatistics} setCountyRefresh={setCountyRefresh}
                       updateBurnWindow={updateBurnWindow} resetBurnWindow={resetBurnWindow} setCounties={setCounties}/>
-                    {modelStage === ModelStage.SelectingDate && <DateEntry selectDate={handleSelectDate} />}
-                    {modelStage === ModelStage.Result && <PredictionBox confidence={predictionConfidence!} predicted_reach={predictionAcreage!} />}
+                    {modelStage === ModelStage.SelectingDate && <DateEntry selectDate={handleSelectDate} /> /* Keeping this one separate for its screen-spanning */}
                 </Route>
                 <Route path="/about">
                     <About/>
