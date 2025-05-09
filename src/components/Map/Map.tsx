@@ -18,6 +18,7 @@ export interface MapProps {
     countyRefresh: number;
     modelStage: ModelStage;
     handleSelectLocation: (latitude: number, longitude: number) => void;
+    handleUpdateLocation: (latitude: number, longitude: number) => void;
 }
 
 // Improve performance of using Callback functions
@@ -48,6 +49,7 @@ const Map = (props: MapProps) => {
         ModelStage.SelectingDate,
         ModelStage.Loading,
         ModelStage.MissingFeatures,
+        ModelStage.ReadyForResubmit,
         ModelStage.Result,
     ].includes(props.modelStage);
 
@@ -90,19 +92,28 @@ const Map = (props: MapProps) => {
         setCurrentPosition(newLatLng);
       };
       
-      const handleDocumentMouseUp = () => {
+      const handleDocumentMouseUp = (e: globalThis.MouseEvent) => {
         isDraggingIconRef.current = false;
-        if (mapRef.current) mapRef.current.dragging.enable();
+        if (mapRef.current) {
+            mapRef.current.dragging.enable();
+
+            const rect = mapRef.current.getContainer().getBoundingClientRect();
+            const relativeX = e.clientX - rect.left;
+            const relativeY = e.clientY - rect.top;
+
+            const latlng = mapRef.current.containerPointToLatLng(L.point(relativeX, relativeY));
+        
+            props.handleUpdateLocation(latlng.lat, latlng.lng);
+        }
       
         document.removeEventListener("mousemove", handleDocumentMouseMove);
         document.removeEventListener("mouseup", handleDocumentMouseUp);
 
-        // Re-submit?
       };
       
 
     const handleIconMouseDown = (e: React.MouseEvent) => {
-        if (props.modelStage === ModelStage.MissingFeatures || props.modelStage === ModelStage.Result) {
+        if (props.modelStage === ModelStage.MissingFeatures || props.modelStage === ModelStage.ReadyForResubmit || props.modelStage === ModelStage.Result) {
           isDraggingIconRef.current = true;
           if (mapRef.current) {
             mapRef.current.dragging.disable();
