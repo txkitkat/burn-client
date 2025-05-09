@@ -9,3 +9,14 @@
 .selecting-cursor {
   cursor: url('./assets/firecursor.png') 14 14, auto;
 }
+
+.latlng-cursor-box {
+  position: fixed;
+  pointer-events: none;
+  background: white;
+  border: 1px solid black;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  z-index: 1000;
+}

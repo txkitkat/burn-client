@@ -20,6 +20,8 @@ import IFeatureType from "./types/featureType";
 import ExitModelButton from "./components/ExitModelButton";
 import hasAllFeatures from "./components/hooks/hasAllFeatures";
 
+const testingFeatureInput: boolean = false;
+
 function App() {
     const [fireData, setFireData] = useState<IFire[]>([]);
     const [statistics, setStatistics] = useState("");
@@ -68,13 +70,13 @@ function App() {
     }
  
     const handleSelectDate = async (date: Date) => {
-        await setModelDate(date);
+        setModelDate(date);
         setModelStage(ModelStage.Loading);
         handleSubmitModel(date);
     }
 
     const handleSubmitModel = async (date?: Date) => {
-        await getModelPrediction(modelLocationLatitude!, modelLocationLongitude!, modelDate || date!, true).then((prediction: IPrediction) => {
+        await getModelPrediction(modelLocationLatitude!, modelLocationLongitude!, modelDate || date!, testingFeatureInput).then((prediction: IPrediction) => {
             setPredictionFeatures(prediction.features);
             if (!hasAllFeatures(prediction.features)) {
                 setModelStage(ModelStage.MissingFeatures);

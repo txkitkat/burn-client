@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { LatLngExpression } from "leaflet";
+import { LatLng, LatLngExpression } from "leaflet";
 import { MapContainer, TileLayer } from "react-leaflet";
 import IFire from "../../types/fireType";
 import MapLayerPickerControl from "./MapLayerPickerControl";
@@ -8,6 +8,7 @@ import CustomSliderLayersControl from "./CustomSliderLayersControl";
 import fireCursorIcon from './assets/firecursor.png'
 import "./Map.css";
 import { ModelStage } from "../../enums/modelStage";
+import { FormatListNumbered } from "@mui/icons-material";
 
 export interface MapProps {
     fireData: IFire[];
@@ -23,8 +24,6 @@ export interface MapProps {
 const MemoizedMapLayerPickerControl = React.memo(MapLayerPickerControl);
 const MemoizedCustomSliderLayersControl = React.memo(CustomSliderLayersControl);
 
-const fireCursor = `url(${fireCursorIcon}) 14 14, auto`;
-
 const Map = (props: MapProps) => {
     const [value1, setValue1] = useState(1);
     const [value2, setValue2] = useState(1);
@@ -36,6 +35,9 @@ const Map = (props: MapProps) => {
     const mapRef = useRef<L.Map | null>(null);
 
     const defaultPosition: LatLngExpression = [36.7783, -119.4179]; // California position
+    const [currentPosition, setCurrentPosition] = useState<LatLng>(new LatLng(defaultPosition[0], defaultPosition[1]));
+    const [mouseScreenPosition, setMouseScreenPosition] = useState<{x: number, y: number}>({x: -1, y: -1});
+    const [mouseOnMap, setMouseOnMap] = useState(false);
 
     const updateValue1 = useCallback((newValue: number) => {setValue1(newValue); },[] );
     const updateValue2 = useCallback((newValue: number) => {setValue2(newValue); },[] );
@@ -45,12 +47,20 @@ const Map = (props: MapProps) => {
     
     const handleGetLocation = (latlng: L.LatLng) => {
         if (props.modelStage === ModelStage.SelectingLocation) {
-            console.log("Clicking");
             const lat = latlng.lat;
             const lon = latlng.lng;
             props.handleSelectLocation(lat, lon);
         }
     }
+
+    const getLatLngPrecision = (zoom: number) => {
+        if (zoom >= 15) return 6;
+        if (zoom >= 12) return 5;
+        if (zoom >= 10) return 4;
+        if (zoom >= 8) return 3;
+        if (zoom >= 6) return 2;
+        return 1;
+    };
 
     useEffect(() => {
         console.log("Hit!");
@@ -60,21 +70,38 @@ const Map = (props: MapProps) => {
         const container = mapRef.current.getContainer();
         if (props.modelStage === ModelStage.SelectingLocation) {
             container.classList.add("selecting-cursor");
-            console.log(container.className)
         } else {
             container.classList.remove("selecting-cursor");
-            console.log(container.className)
         }
 
         const handleClick = (e: L.LeafletMouseEvent) => {
-            handleGetLocation(e.latlng)
+            handleGetLocation(e.latlng);
+        }
+
+        const handleHover = (e: L.LeafletMouseEvent) => {
+            setMouseScreenPosition({x: e.originalEvent.clientX, y: e.originalEvent.clientY});
+            setCurrentPosition(e.latlng);
+        }
+
+        const handleMouseEnter = () => {
+            setMouseOnMap(true);
+        }
+
+        const handleMouseLeave = () => {
+            setMouseOnMap(false);
         }
 
         mapRef.current.on('click', handleClick);
+        mapRef.current.on('mousemove', handleHover);
+        mapRef.current.getContainer().addEventListener('mouseenter', handleMouseEnter);
+        mapRef.current.getContainer().addEventListener('mouseleave', handleMouseLeave);
 
         return () => {
             if (mapRef.current) {
                 mapRef.current.off('click', handleClick);
+                mapRef.current.off('mousemove', handleHover);
+                mapRef.current.getContainer().removeEventListener('mouseenter', handleMouseEnter);
+                mapRef.current.getContainer().removeEventListener('mouseleave', handleMouseLeave);
             }
         };
     }, [mapRef, props.modelStage]);
@@ -98,6 +125,17 @@ const Map = (props: MapProps) => {
                     
                 {mapRef.current && <MemoizedCustomSliderLayersControl seed={props.seed} setValue = {[updateValue1, updateValue2, updateValue3, updateValue4, updateValue5]} map={mapRef.current} />}
 
+                {props.modelStage === ModelStage.SelectingLocation && mouseOnMap && (
+                    <p 
+                        className="latlng-cursor-box"
+                        style={{
+                            top: mouseScreenPosition.y + 10,
+                            left: mouseScreenPosition.x + 10
+                        }}
+                    >
+                        [{currentPosition.lat.toFixed(getLatLngPrecision(mapRef.current?.getZoom() ?? 6))}, {currentPosition.lng.toFixed(getLatLngPrecision(mapRef.current?.getZoom() ?? 6))}]
+                    </p>
+                )}
             </MapContainer>
         </div>
     );
