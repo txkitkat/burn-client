@@ -18,5 +18,16 @@
   padding: 4px 8px;
   border-radius: 4px;
   font-size: 12px;
-  z-index: 1000;
+  user-select: none;
+  z-index: 950;
+}
+
+.fixed-fire-icon {
+  position: fixed;
+  width: 24px;
+  height: 24px;
+  pointer-events: auto;
+  cursor: grab;
+  transform: translate(-50%, -50%);
+  z-index: 950;
 }

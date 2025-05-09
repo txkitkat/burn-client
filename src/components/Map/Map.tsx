@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { MouseEvent, useCallback, useEffect, useRef, useState } from "react";
 import { LatLng, LatLngExpression } from "leaflet";
 import { MapContainer, TileLayer } from "react-leaflet";
 import IFire from "../../types/fireType";
@@ -31,13 +31,32 @@ const Map = (props: MapProps) => {
     const [value4, setValue4] = useState(1);
     const [value5, setValue5] = useState(1);
 
-    
     const mapRef = useRef<L.Map | null>(null);
 
     const defaultPosition: LatLngExpression = [36.7783, -119.4179]; // California position
     const [currentPosition, setCurrentPosition] = useState<LatLng>(new LatLng(defaultPosition[0], defaultPosition[1]));
     const [mouseScreenPosition, setMouseScreenPosition] = useState<{x: number, y: number}>({x: -1, y: -1});
     const [mouseOnMap, setMouseOnMap] = useState(false);
+
+    const isDraggingIconRef = useRef(false);
+
+    // Don't need state here! We don't want to re-render
+    let screenX = 0; let screenY = 0;
+
+    // Upon the user finishing selection
+    const showFireIcon = [
+        ModelStage.SelectingDate,
+        ModelStage.Loading,
+        ModelStage.MissingFeatures,
+        ModelStage.Result,
+    ].includes(props.modelStage);
+
+    if (showFireIcon && mapRef.current) {
+        const containerPoint = mapRef.current.latLngToContainerPoint(currentPosition);
+        const mapRect = mapRef.current.getContainer().getBoundingClientRect();
+        screenX = mapRect.left + containerPoint.x;
+        screenY = mapRect.top + containerPoint.y;
+    }
 
     const updateValue1 = useCallback((newValue: number) => {setValue1(newValue); },[] );
     const updateValue2 = useCallback((newValue: number) => {setValue2(newValue); },[] );
@@ -62,6 +81,44 @@ const Map = (props: MapProps) => {
         return 1;
     };
 
+    const handleDocumentMouseMove = (e: globalThis.MouseEvent) => {
+        if (!isDraggingIconRef.current || !mapRef.current) return;
+        const rect = mapRef.current.getContainer().getBoundingClientRect();
+        const newLatLng = mapRef.current.containerPointToLatLng(
+          L.point(e.clientX - rect.left, e.clientY - rect.top)
+        );
+        setCurrentPosition(newLatLng);
+      };
+      
+      const handleDocumentMouseUp = () => {
+        isDraggingIconRef.current = false;
+        if (mapRef.current) mapRef.current.dragging.enable();
+      
+        document.removeEventListener("mousemove", handleDocumentMouseMove);
+        document.removeEventListener("mouseup", handleDocumentMouseUp);
+
+        // Re-submit?
+      };
+      
+
+    const handleIconMouseDown = (e: React.MouseEvent) => {
+        if (props.modelStage === ModelStage.MissingFeatures || props.modelStage === ModelStage.Result) {
+          isDraggingIconRef.current = true;
+          if (mapRef.current) {
+            mapRef.current.dragging.disable();
+      
+            const rect = mapRef.current.getContainer().getBoundingClientRect();
+            const start = mapRef.current.containerPointToLatLng(
+              L.point(e.clientX - rect.left, e.clientY - rect.top)
+            );
+            if (start) setCurrentPosition(start);
+          }
+    
+          document.addEventListener("mousemove", handleDocumentMouseMove);
+          document.addEventListener("mouseup", handleDocumentMouseUp);
+        }
+      };
+
     useEffect(() => {
         console.log("Hit!");
         if (!mapRef.current)
@@ -80,7 +137,9 @@ const Map = (props: MapProps) => {
 
         const handleHover = (e: L.LeafletMouseEvent) => {
             setMouseScreenPosition({x: e.originalEvent.clientX, y: e.originalEvent.clientY});
-            setCurrentPosition(e.latlng);
+            if (props.modelStage === ModelStage.SelectingLocation) {
+                setCurrentPosition(e.latlng);
+            }
         }
 
         const handleMouseEnter = () => {
@@ -125,7 +184,7 @@ const Map = (props: MapProps) => {
                     
                 {mapRef.current && <MemoizedCustomSliderLayersControl seed={props.seed} setValue = {[updateValue1, updateValue2, updateValue3, updateValue4, updateValue5]} map={mapRef.current} />}
 
-                {props.modelStage === ModelStage.SelectingLocation && mouseOnMap && (
+                {(props.modelStage === ModelStage.SelectingLocation || isDraggingIconRef.current) && mouseOnMap && (
                     <p 
                         className="latlng-cursor-box"
                         style={{
@@ -135,6 +194,21 @@ const Map = (props: MapProps) => {
                     >
                         [{currentPosition.lat.toFixed(getLatLngPrecision(mapRef.current?.getZoom() ?? 6))}, {currentPosition.lng.toFixed(getLatLngPrecision(mapRef.current?.getZoom() ?? 6))}]
                     </p>
+                )}
+
+                {showFireIcon && (
+                  <img
+                    src={fireCursorIcon}
+                    alt="Fixed Fire Icon"
+                    className="fixed-fire-icon"
+                    style={{
+                      left: `${screenX}px`,
+                      top: `${screenY}px`
+                    }}
+                    onMouseDown={handleIconMouseDown}
+                    draggable={false}
+                    onDragStart={(e) => e.preventDefault()}
+                  />
                 )}
             </MapContainer>
         </div>
