@@ -76,7 +76,7 @@ function App() {
     }
 
     const handleSubmitModel = async (date?: Date) => {
-        await getModelPrediction(modelLocationLatitude!, modelLocationLongitude!, modelDate || date!, testingFeatureInput).then((prediction: IPrediction) => {
+        await getModelPrediction(modelLocationLatitude!, modelLocationLongitude!, modelDate || date!, predictionFeatures || {}, testingFeatureInput).then((prediction: IPrediction) => {
             setPredictionFeatures(prediction.features);
             if (!hasAllFeatures(prediction.features)) {
                 setModelStage(ModelStage.MissingFeatures);
