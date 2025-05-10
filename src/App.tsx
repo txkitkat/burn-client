@@ -68,6 +68,14 @@ function App() {
         setModelLocationLongitude(longitude);
         setModelStage(ModelStage.SelectingDate);
     }
+
+    const handleReselectLocation = (latitude: number, longitude: number) => {
+        setModelLocationLatitude(latitude);
+        setModelLocationLongitude(longitude);
+        if (modelStage !== ModelStage.MissingFeatures) {
+            setModelStage(ModelStage.ReadyForResubmit);
+        }
+    }
  
     const handleSelectDate = async (date: Date) => {
         setModelDate(date);
@@ -101,14 +109,14 @@ function App() {
                     <span className="model-container">
                         {modelStage === ModelStage.SelectingLocation && <SelectLocationPromptBox />}
                         {modelStage === ModelStage.Result && <PredictionBox confidence={predictionConfidence!} predicted_reach={predictionAcreage!} />}
-                        {(modelStage === ModelStage.MissingFeatures || modelStage === ModelStage.Result) && <FeaturesDisplay features={predictionFeatures} setFeatures={handleSetFeatures} showErrors={showErrorFields}/>}
+                        {(modelStage === ModelStage.MissingFeatures || modelStage === ModelStage.ReadyForResubmit || modelStage === ModelStage.Result) && <FeaturesDisplay features={predictionFeatures} setFeatures={handleSetFeatures} showErrors={showErrorFields}/>}
                         <span>
                             {modelStage !== ModelStage.SelectingDate && <ModelButton startModel={handleStartModel} resubmitModel={handleResubmitModel} errorFields={showErrorFields} currentStage={modelStage} />}
                             {modelStage !== ModelStage.Standby && <ExitModelButton onExit={handleExitModel}/>}
                         </span>
                     </span>
                     <StatisticsPane statistics={statistics} counties={counties}/>
-                    <Map fireData={fireData} setFireData={setFireData} seed={seed} counties={counties} countyRefresh={countyRefresh} modelStage={modelStage} handleSelectLocation={handleSelectLocation}/>
+                    <Map fireData={fireData} setFireData={setFireData} seed={seed} counties={counties} countyRefresh={countyRefresh} modelStage={modelStage} handleSelectLocation={handleSelectLocation} handleUpdateLocation={handleReselectLocation}/>
                     <Filters setFireData={setFireData} setStatistics={setStatistics} setCountyRefresh={setCountyRefresh}
                       updateBurnWindow={updateBurnWindow} resetBurnWindow={resetBurnWindow} setCounties={setCounties}/>
                     {modelStage === ModelStage.SelectingDate && <DateEntry selectDate={handleSelectDate} /> /* Keeping this one separate for its screen-spanning */}

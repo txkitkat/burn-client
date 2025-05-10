@@ -14,7 +14,7 @@ export default function ModelButton(props: ModelButtonProps) {
   const [buttonText, setButtonText] = useState("Predict Prescribed Fire Spread");
 
   const handleClick = () => {
-    if (props.currentStage === ModelStage.MissingFeatures) {
+    if (props.currentStage === ModelStage.MissingFeatures || props.currentStage === ModelStage.ReadyForResubmit) {
       props.resubmitModel();
     }
     else {
@@ -34,8 +34,9 @@ export default function ModelButton(props: ModelButtonProps) {
         return "Restart Predictor";
       case (ModelStage.Loading):
         return "Loading...";
+      case (ModelStage.ReadyForResubmit):
       case (ModelStage.MissingFeatures):
-        return "Re-Submit Features";
+        return "Re-Submit Predictor";
       default:
         return "Predict Prescribed Fire Spread"
     }
