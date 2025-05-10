@@ -44,7 +44,7 @@ const partialPrediction: IPrediction = {
 }
 
 export async function getModelPrediction(latitude: number, longitude: number, date: Date, overrideFeatures: IFeatureType, testing: boolean = false): Promise<IPrediction> {
-    const query = mlHost?.toString();
+    const query = mlHost?.toString() + "/predict";
     console.log(query);
     
     return await axios.post(query!, {
