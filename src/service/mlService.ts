@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import IFeatureType from "../types/featureType";
 
-const mlHost: any = process.env.REACT_APP_FIRE_ML_BACKEND;
+const mlHost: string | undefined = process.env.REACT_APP_FIRE_WINDOW_BACKEND;
 
 export interface IPrediction {
     acreage: number;
@@ -43,12 +43,19 @@ const partialPrediction: IPrediction = {
     }
 }
 
-export async function getModelPrediction(latitude: number, longitude: number, date: Date, testing: boolean = false): Promise<IPrediction> {
-    const query = `${mlHost}/query?latitude=${latitude}&longitude=${longitude}&year=${date.getFullYear().toString()}&month=${date.getMonth().toString()}&day=${date.getDate().toString()}`;
+export async function getModelPrediction(latitude: number, longitude: number, date: Date, overrideFeatures: IFeatureType, testing: boolean = false): Promise<IPrediction> {
+    const query = mlHost?.toString() + "/predict";
     console.log(query);
     
-    return await axios.post(query)
-        .then((response: AxiosResponse<any>) => {
+    return await axios.post(query!, {
+                latitude,
+                longitude,
+                year: date.getFullYear().toString(),
+                month: date.getMonth().toString(),
+                day: date.getDate().toString(),
+                overrideFeatures
+            }).then((response: AxiosResponse<any>) => {
+                console.log(response);
             const data: JSON = response.data;
 
             if (response.status === 200 && data && 'spread' in data && typeof data.spread === 'number' && 'confidence' in data && typeof data.confidence === 'number' && 'features' in data) {
