@@ -85,11 +85,14 @@ function App() {
 
     const handleSubmitModel = async (date?: Date) => {
         await getModelPrediction(modelLocationLatitude!, modelLocationLongitude!, modelDate || date!, predictionFeatures || {}, testingFeatureInput).then((prediction: IPrediction) => {
+            console.log(prediction);
             setPredictionFeatures(prediction.features);
             if (!hasAllFeatures(prediction.features)) {
+                console.log("Doesn't have all features");
                 setModelStage(ModelStage.MissingFeatures);
             }
             else {
+                console.log("Has all features");
                 setPredictionAcreage(prediction.acreage);
                 setPredictionConfidence(prediction.confidence);
                 setModelStage(ModelStage.Result);
