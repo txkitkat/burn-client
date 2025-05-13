@@ -58,12 +58,13 @@ export async function getModelPrediction(latitude: number, longitude: number, da
                 console.log(response);
             const data: JSON = response.data;
 
-            if (response.status === 200 && data && 'spread' in data && typeof data.spread === 'number' && 'confidence' in data && typeof data.confidence === 'number' && 'features' in data) {
-                return { acreage: data.spread, confidence: data.confidence, features: data.features! };
+            if (response.status === 200 && data && 'predicted_acreage' in data && typeof data.predicted_acreage === 'number' && 'confidence' in data && typeof data.confidence === 'number' && 'features' in data) {
+                console.log("Here!");
+                return { acreage: data.predicted_acreage, confidence: data.confidence, features: data.features! };
             }
             else {
                 // Throw an error here, but for now return a static value.
-                console.log(response);
+                console.log("Uh-oh!");
                 return testing ? partialPrediction : samplePrediction;
             }
         })
