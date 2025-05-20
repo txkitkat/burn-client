@@ -4,7 +4,9 @@ import "./FeaturesDisplay.css"
 
 export interface FeaturesDisplayProps {
     features?: IFeatureType;
+    featureOverrides: (number | null)[];
     setFeatures: (features: IFeatureType) => void;
+    setFeatureOverrides: (featureOverrides: (number | null)[]) => void;
     showErrors: boolean;
 };
 
@@ -96,19 +98,36 @@ export default function FeaturesDisplay(props: FeaturesDisplayProps) {
         })
     }
 
+    const handleCheck = (value: number, index: number) => {
+        let newFeatureOverrides = new Array<number | null>(props.featureOverrides.length).fill(null);
+        for (let i = 0; i < props.featureOverrides.length; ++i) {
+            newFeatureOverrides[i] = index === i ? (props.featureOverrides[i] !== null ? null : value) : props.featureOverrides[i];
+        }
+        props.setFeatureOverrides(newFeatureOverrides);
+    }
+
     return (
         <div className="features_box"> 
-            {getCurrentFeatures(props.features!)?.map(([attribute, label, value, tooltip, format, unit]: [string, string, number | undefined, string, FeatureFormat, FeatureUnit]) => {
-                //if (value) return <p className="feature_text"><strong>{label}</strong>: {getFormatString(value, format) + getUnitString(unit)}</p>
-                
+            {getCurrentFeatures(props.features!)?.map(([attribute, label, value, tooltip, format, unit], index) => {
                 return <p className="feature_text">
-                    <strong>{label}</strong>: <input 
-                        className={value === undefined ? "input-error" : "feature-input"}
-                        onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(attribute, parseFloat(e.target.value))} 
-                        value={value}
-                        defaultValue={value ? getFormatString(value, format) : undefined}
-                        placeholder="Enter feature" 
-                    />{getUnitString(unit)}
+                    <input type="checkbox" checked={props.featureOverrides[index] !== null} onClick={() => handleCheck(value!, index)} />
+                    {props.featureOverrides[index] !== null ? 
+                        <>
+                            <strong>{label}</strong>: <input 
+                                className={value === undefined ? "input-error" : "feature-input"}
+                                onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(attribute, parseFloat(e.target.value))} 
+                                value={value}
+                                defaultValue={value ? getFormatString(value, format) : undefined}
+                                placeholder="Enter feature" 
+                            />{getUnitString(unit)}
+                        </> :
+                        <>
+                            <strong>{label}</strong>: <span 
+                                className={value === undefined ? "input-error" : "feature-input"}
+                                onClick={() => handleCheck(value!, index)}
+                            >{value}</span>{getUnitString(unit)}
+                        </>
+                    }
                 </p>
             })}
         </div>

@@ -38,6 +38,7 @@ function App() {
     const [predictionConfidence, setPredictionConfidence] = useState<number | null>(null);
     const [predictionFeatures, setPredictionFeatures] = useState<IFeatureType | undefined>(undefined);
     const [showErrorFields, setShowErrorFields] = useState<boolean>(false);
+    const [userOverrides, setUserOverrides] = useState<(number | null)[]>(new Array<number | null>(13).fill(null));
 
     // Loads all non-escaped fire 12K+ records will be slow on first load/page refresh/Home button click
     useEffect(() => {
@@ -84,7 +85,7 @@ function App() {
     }
 
     const handleSubmitModel = async (date?: Date) => {
-        await getModelPrediction(modelLocationLatitude!, modelLocationLongitude!, modelDate || date!, predictionFeatures || {}, testingFeatureInput).then((prediction: IPrediction) => {
+        await getModelPrediction(modelLocationLatitude!, modelLocationLongitude!, modelDate || date!, userOverrides || new Array<number | null>(13).fill(null), testingFeatureInput).then((prediction: IPrediction) => {
             console.log(prediction);
             setPredictionFeatures(prediction.features);
             if (!hasAllFeatures(prediction.features)) {
@@ -104,6 +105,12 @@ function App() {
         setPredictionFeatures(features);
     }
 
+    const handleSetOverrides = (featureOverrides: (number | null)[]): void => {
+        setUserOverrides(featureOverrides);
+    }
+
+    console.log(userOverrides);
+
     return (
         <Router>
             <Navbar/>
@@ -112,7 +119,7 @@ function App() {
                     <span className="model-container">
                         {modelStage === ModelStage.SelectingLocation && <SelectLocationPromptBox />}
                         {modelStage === ModelStage.Result && <PredictionBox confidence={predictionConfidence!} predicted_reach={predictionAcreage!} />}
-                        {(modelStage === ModelStage.MissingFeatures || modelStage === ModelStage.ReadyForResubmit || modelStage === ModelStage.Result) && <FeaturesDisplay features={predictionFeatures} setFeatures={handleSetFeatures} showErrors={showErrorFields}/>}
+                        {(modelStage === ModelStage.MissingFeatures || modelStage === ModelStage.ReadyForResubmit || modelStage === ModelStage.Result) && <FeaturesDisplay features={predictionFeatures} featureOverrides={userOverrides} setFeatures={handleSetFeatures} setFeatureOverrides={handleSetOverrides} showErrors={showErrorFields}/>}
                         <span>
                             {modelStage !== ModelStage.SelectingDate && <ModelButton startModel={handleStartModel} resubmitModel={handleResubmitModel} errorFields={showErrorFields} currentStage={modelStage} />}
                             {modelStage !== ModelStage.Standby && <ExitModelButton onExit={handleExitModel}/>}
