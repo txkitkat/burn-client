@@ -43,7 +43,7 @@ const partialPrediction: IPrediction = {
     }
 }
 
-export async function getModelPrediction(latitude: number, longitude: number, date: Date, overrideFeatures: IFeatureType, testing: boolean = false): Promise<IPrediction> {
+export async function getModelPrediction(latitude: number, longitude: number, date: Date, overrideFeatures: (number | null)[], testing: boolean = false): Promise<IPrediction> {
     const query = mlHost?.toString() + "/predict";
     console.log(query);
     
@@ -53,7 +53,7 @@ export async function getModelPrediction(latitude: number, longitude: number, da
                 year: date.getFullYear().toString(),
                 month: date.getMonth().toString(),
                 day: date.getDate().toString(),
-                overrideFeatures
+                userData: overrideFeatures
             }).then((response: AxiosResponse<any>) => {
                 console.log(response);
             const data: JSON = response.data;
