@@ -53,7 +53,7 @@ export async function getModelPrediction(latitude: number, longitude: number, da
                 year: date.getFullYear().toString(),
                 month: date.getMonth().toString(),
                 day: date.getDate().toString(),
-                user_data: overrideFeatures
+                userData: overrideFeatures
             }).then((response: AxiosResponse<any>) => {
                 console.log(response);
             const data: JSON = response.data;

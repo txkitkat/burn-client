@@ -38,7 +38,7 @@ function App() {
     const [predictionConfidence, setPredictionConfidence] = useState<number | null>(null);
     const [predictionFeatures, setPredictionFeatures] = useState<IFeatureType | undefined>(undefined);
     const [showErrorFields, setShowErrorFields] = useState<boolean>(false);
-    const [userOverrides, setUserOverrides] = useState<(number | null)[]>(new Array<number | null>(13).fill(null));
+    const [userOverrides, setUserOverrides] = useState<(string | null)[]>(new Array<string | null>(13).fill(null));
 
     // Loads all non-escaped fire 12K+ records will be slow on first load/page refresh/Home button click
     useEffect(() => {
@@ -49,10 +49,12 @@ function App() {
 
     const handleStartModel = () => {
         setModelStage(ModelStage.SelectingLocation);
+        resetOverrides();
     }
 
     const handleExitModel = () => {
         setModelStage(ModelStage.Standby);
+        resetOverrides();
     }
 
     const handleResubmitModel = () => {
@@ -84,16 +86,20 @@ function App() {
         handleSubmitModel(date);
     }
 
+    const getOverrideValues = (overrides: (string | null)[]): (number | null)[] => {
+        return overrides.map((value) => {
+            return value !== null && parseFloat(value) ? parseFloat(value) : null;
+        });
+    }
+
     const handleSubmitModel = async (date?: Date) => {
-        await getModelPrediction(modelLocationLatitude!, modelLocationLongitude!, modelDate || date!, userOverrides || new Array<number | null>(13).fill(null), testingFeatureInput).then((prediction: IPrediction) => {
+        await getModelPrediction(modelLocationLatitude!, modelLocationLongitude!, modelDate || date!, getOverrideValues(userOverrides), testingFeatureInput).then((prediction: IPrediction) => {
             console.log(prediction);
             setPredictionFeatures(prediction.features);
             if (!hasAllFeatures(prediction.features)) {
-                console.log("Doesn't have all features");
                 setModelStage(ModelStage.MissingFeatures);
             }
             else {
-                console.log("Has all features");
                 setPredictionAcreage(prediction.acreage);
                 setPredictionConfidence(prediction.confidence);
                 setModelStage(ModelStage.Result);
@@ -105,11 +111,14 @@ function App() {
         setPredictionFeatures(features);
     }
 
-    const handleSetOverrides = (featureOverrides: (number | null)[]): void => {
+    const handleSetOverrides = (featureOverrides: (string | null)[]): void => {
         setUserOverrides(featureOverrides);
+        setModelStage(ModelStage.ReadyForResubmit);
     }
 
-    console.log(userOverrides);
+    const resetOverrides = () => {
+        setUserOverrides(new Array<string | null>(13).fill(null));
+    }
 
     return (
         <Router>
@@ -120,10 +129,10 @@ function App() {
                         {modelStage === ModelStage.SelectingLocation && <SelectLocationPromptBox />}
                         {modelStage === ModelStage.Result && <PredictionBox confidence={predictionConfidence!} predicted_reach={predictionAcreage!} />}
                         {(modelStage === ModelStage.MissingFeatures || modelStage === ModelStage.ReadyForResubmit || modelStage === ModelStage.Result) && <FeaturesDisplay features={predictionFeatures} featureOverrides={userOverrides} setFeatures={handleSetFeatures} setFeatureOverrides={handleSetOverrides} showErrors={showErrorFields}/>}
-                        <span>
+                        <div className="model-buttons">
                             {modelStage !== ModelStage.SelectingDate && <ModelButton startModel={handleStartModel} resubmitModel={handleResubmitModel} errorFields={showErrorFields} currentStage={modelStage} />}
                             {modelStage !== ModelStage.Standby && <ExitModelButton onExit={handleExitModel}/>}
-                        </span>
+                        </div>
                     </span>
                     <StatisticsPane statistics={statistics} counties={counties}/>
                     <Map fireData={fireData} setFireData={setFireData} seed={seed} counties={counties} countyRefresh={countyRefresh} modelStage={modelStage} handleSelectLocation={handleSelectLocation} handleUpdateLocation={handleReselectLocation}/>

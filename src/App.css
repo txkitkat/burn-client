@@ -15,5 +15,13 @@ main {
   flex-direction: column;
   gap: 8px; 
   padding: 12px;
+  width: 15%;
   z-index: 1000;
+}
+
+.model-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  width: 100%;
 }

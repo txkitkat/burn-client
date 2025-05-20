@@ -4,9 +4,9 @@ import "./FeaturesDisplay.css"
 
 export interface FeaturesDisplayProps {
     features?: IFeatureType;
-    featureOverrides: (number | null)[];
+    featureOverrides: (string | null)[];
     setFeatures: (features: IFeatureType) => void;
-    setFeatureOverrides: (featureOverrides: (number | null)[]) => void;
+    setFeatureOverrides: (featureOverrides: (string | null)[]) => void;
     showErrors: boolean;
 };
 
@@ -34,7 +34,7 @@ const getFormatString = (value: number, format: FeatureFormat): string => {
         case (FeatureFormat.Decimal):
             return value.toFixed(2);
         case (FeatureFormat.Percentage):
-            return (value * 100).toFixed(2);
+            return value.toFixed(1);
     }
 }
 
@@ -75,34 +75,31 @@ export default function FeaturesDisplay(props: FeaturesDisplayProps) {
             ["climateAvg", "Average Temperature", features.climateAvg, "The average temperature in Fahrenheit for this latitude and longitude.", FeatureFormat.Decimal, FeatureUnit.Celcius],
             ["climateMin", "Low Temperature", features.climateMin, "The lowest temperature for the day on this latitude and longitude, in Fahrenheit.", FeatureFormat.Decimal, FeatureUnit.Celcius],
             ["climateMax", "High Temperature", features.climateMax, "The highest temperature for the day on this latitude and longitude, in Fahrenheit.", FeatureFormat.Decimal, FeatureUnit.Celcius],
-            ["climateHumidity", "Average Humidity", features.climateHumidity, "The average humidity for the day on this latitude and longitude.", FeatureFormat.Percentage, FeatureUnit.None],
+            ["climateHumidity", "Average Humidity", features.climateHumidity, "The average humidity for the day on this latitude and longitude.", FeatureFormat.Percentage, FeatureUnit.Percentage],
             ["climatePrecip", "Average Precipitation", features.climatePrecip, "The average precipitation for this day on this latitude and longitude.", FeatureFormat.Decimal, FeatureUnit.Inches],
             ["climateWindSpd", "Average Wind Speed", features.climateWindSpd, "The average wind speed for this day on this latitude and longitude.", FeatureFormat.Decimal, FeatureUnit.Mph],
             ["vegetationCover", "Vegetation Cover", features.vegetationCover, "The percent coverage of vegetation on the latitude and longitude.", FeatureFormat.Percentage, FeatureUnit.Percentage],
             ["vegetationHeight", "Vegetation Height", features.vegetationHeight, "The average vegetation height on the latitude and longitude.", FeatureFormat.Decimal, FeatureUnit.Meters],
-            ["vegetationDeparture", "Vegetation Departure", features.vegetationDeparture, "The average departure of vegetation from the area.", FeatureFormat.Percentage, FeatureUnit.Percentage] // NEEDS REVIEW
+            ["vegetationDeparture", "Vegetation Departure", features.vegetationDeparture, "The average departure of vegetation from the area.", FeatureFormat.Percentage, FeatureUnit.Percentage]
         ]
     }
 
     if (!props.features)
         return null;
 
-    const handleChange = (attribute: string, value: number | undefined) => {
-        console.log(value);
-        if (!value)
+    const handleChange = (index: number, value: string | undefined) => {
+        if (value === undefined)
             return;
 
-        props.setFeatures({
-            ...props.features,
-            [attribute]: value
-        })
+        const newFeatureOverrides = [...props.featureOverrides];
+        newFeatureOverrides[index] = value;
+        props.setFeatureOverrides(newFeatureOverrides);
     }
 
-    const handleCheck = (value: number, index: number) => {
-        let newFeatureOverrides = new Array<number | null>(props.featureOverrides.length).fill(null);
-        for (let i = 0; i < props.featureOverrides.length; ++i) {
-            newFeatureOverrides[i] = index === i ? (props.featureOverrides[i] !== null ? null : value) : props.featureOverrides[i];
-        }
+    const handleCheck = (value: number, index: number, format: FeatureFormat) => {
+        console.log("Checked!");
+        const newFeatureOverrides = [...props.featureOverrides];
+        newFeatureOverrides[index] = props.featureOverrides[index] !== null ? null : getFormatString(value, format);
         props.setFeatureOverrides(newFeatureOverrides);
     }
 
@@ -110,22 +107,21 @@ export default function FeaturesDisplay(props: FeaturesDisplayProps) {
         <div className="features_box"> 
             {getCurrentFeatures(props.features!)?.map(([attribute, label, value, tooltip, format, unit], index) => {
                 return <p className="feature_text">
-                    <input type="checkbox" checked={props.featureOverrides[index] !== null} onClick={() => handleCheck(value!, index)} />
+                    <input type="checkbox" checked={props.featureOverrides[index] !== null} onChange={() => handleCheck(value!, index, format)} />
                     {props.featureOverrides[index] !== null ? 
                         <>
                             <strong>{label}</strong>: <input 
                                 className={value === undefined ? "input-error" : "feature-input"}
-                                onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(attribute, parseFloat(e.target.value))} 
-                                value={value}
-                                defaultValue={value ? getFormatString(value, format) : undefined}
+                                onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(index, e.target.value)} 
+                                value={props.featureOverrides[index] || ""}
                                 placeholder="Enter feature" 
                             />{getUnitString(unit)}
                         </> :
                         <>
                             <strong>{label}</strong>: <span 
                                 className={value === undefined ? "input-error" : "feature-input"}
-                                onClick={() => handleCheck(value!, index)}
-                            >{value}</span>{getUnitString(unit)}
+                                onClick={() => handleCheck(value!, index, format)}
+                            >{getFormatString(value!, format)}</span>{getUnitString(unit)}
                         </>
                     }
                 </p>
