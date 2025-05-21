@@ -1,19 +1,158 @@
-body{
-    font-family: Arial, Helvetica, sans-serif;
-    font: outline;
-    font-size: medium;
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
 }
-html{
-    box-sizing: border-box;
-}
-*, *:before, *:after {
-    box-sizing: inherit;
-  }
 
-  .about {
-    margin-right: 10%;
-    margin-left: 10%;
-    text-align: justify;
-    background-color: white;
-    color: black;
-  }
+html {
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+.about {
+  margin: 40px 10%;
+  padding: 20px;
+  text-align: justify;
+  background-color: #ffffff;
+  color: #333333;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-size: 0.95em; /* Uniform text size */
+}
+
+.about h1 {
+  font-size: 2em;
+  color: #111111;
+  margin-bottom: 20px;
+}
+
+.about h2 {
+  font-size: 1.5em;
+  color: #111111;
+  margin-top: 30px;
+  margin-bottom: 15px;
+}
+
+.about p,
+.about ul li {
+  font-size: 0.95em;
+  line-height: 1.6;
+}
+
+.about ul {
+  padding-left: 20px;
+}
+
+.about ul li {
+  margin: 8px 0;
+}
+
+.about-img {
+  width: 100%;
+  max-width: 750px; /* Increased from 600px to 750px */
+  height: auto;
+  display: block;
+  margin: 20px auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+
+.caption {
+  font-size: 0.85em;
+  color: #555;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.highlights {
+  margin-top: 40px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-left: 5px solid #333333;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.highlights h2 {
+  font-size: 1.5em;
+  color: #333333;
+  margin-bottom: 15px;
+}
+
+.highlights ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.highlights li {
+  margin-bottom: 12px;
+  font-size: 0.95em;
+}
+.vision-section {
+  margin-top: 40px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-left: 5px solid #333333;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  text-align: center;
+}
+
+.vision-section h2 {
+  color: #333333;
+  font-size: 1.8em;
+  margin-bottom: 10px;
+}
+
+.vision-section p {
+  font-size: 1.2em;
+  color: #555555;
+  font-style: italic;
+}
+.vision-img {
+  max-width: 50%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  margin-top: 15px;
+}
+.about-img, .vision-img {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.about-img:hover, .vision-img:hover {
+  transform: scale(1.05);
+  cursor: pointer;
+  box-shadow: 0 0 15px 5px rgba(0, 128, 0, 0.5); /* green glow */
+}
+body, html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-image: url('/public/the-ugly-swamp-433688_1280.jpg'); /* put your image path here */
+  background-size: cover;        /* makes sure image covers entire page */
+  background-position: center;   /* centers the image */
+  background-repeat: no-repeat;  /* prevents tiling */
+  background-attachment: fixed;  /* keeps background fixed on scroll */
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: medium;
+  color: #333333;
+}
+.about {
+  background-color: rgba(255, 255, 255, 0.85); /* White with 85% opacity */
+  padding: 2rem;
+  margin: 2rem auto;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 1000px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+
+
