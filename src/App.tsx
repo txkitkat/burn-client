@@ -19,6 +19,7 @@ import FeaturesDisplay from "./components/FeaturesDisplay";
 import IFeatureType from "./types/featureType";
 import ExitModelButton from "./components/ExitModelButton";
 import hasAllFeatures from "./components/hooks/hasAllFeatures";
+import { setDate } from "date-fns";
 
 const testingFeatureInput: boolean = false;
 
@@ -116,6 +117,11 @@ function App() {
         setModelStage(ModelStage.ReadyForResubmit);
     }
 
+    const handleChangeDate = (date: Date): void => {
+        setModelDate(date);
+        setModelStage(ModelStage.ReadyForResubmit);
+    }
+
     const resetOverrides = () => {
         setUserOverrides(new Array<string | null>(13).fill(null));
     }
@@ -128,7 +134,7 @@ function App() {
                     <span className="model-container">
                         {modelStage === ModelStage.SelectingLocation && <SelectLocationPromptBox />}
                         {modelStage === ModelStage.Result && <PredictionBox confidence={predictionConfidence!} predicted_reach={predictionAcreage!} />}
-                        {(modelStage === ModelStage.MissingFeatures || modelStage === ModelStage.ReadyForResubmit || modelStage === ModelStage.Result) && <FeaturesDisplay features={predictionFeatures} featureOverrides={userOverrides} setFeatures={handleSetFeatures} setFeatureOverrides={handleSetOverrides} showErrors={showErrorFields}/>}
+                        {(modelStage === ModelStage.MissingFeatures || modelStage === ModelStage.ReadyForResubmit || modelStage === ModelStage.Result) && <FeaturesDisplay features={predictionFeatures} featureOverrides={userOverrides} date={modelDate!} setFeatures={handleSetFeatures} setFeatureOverrides={handleSetOverrides} setDate={handleChangeDate} showErrors={showErrorFields}/>}
                         <div className="model-buttons">
                             {modelStage !== ModelStage.SelectingDate && <ModelButton startModel={handleStartModel} resubmitModel={handleResubmitModel} errorFields={showErrorFields} currentStage={modelStage} />}
                             {modelStage !== ModelStage.Standby && <ExitModelButton onExit={handleExitModel}/>}
