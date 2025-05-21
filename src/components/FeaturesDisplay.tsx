@@ -12,13 +12,13 @@ export interface FeaturesDisplayProps {
     showErrors: boolean;
 };
 
-enum FeatureFormat {
+export enum FeatureFormat {
     Integer,
     Decimal,
     Percentage
 }
 
-enum FeatureUnit {
+export enum FeatureUnit {
     Feet,
     Fahrenheit,
     Celcius,
