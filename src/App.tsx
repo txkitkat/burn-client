@@ -75,6 +75,7 @@ function App() {
             newOverrides[feature.index] = feature.value.toString();
         });
 
+        console.log(newOverrides);
         setUserOverrides(newOverrides);
         setModelStage(ModelStage.Loading);
         handleSubmitModel(undefined, newOverrides);
@@ -109,15 +110,17 @@ function App() {
     const handleSubmitModel = async (date?: Date, overrides?: (string | null)[]) => {
         await getModelPrediction(modelLocationLatitude!, modelLocationLongitude!, modelDate || date!, getOverrideValues(overrides || userOverrides), testingFeatureInput).then((prediction: IPrediction) => {
             console.log(prediction);
-            setPredictionFeatures(prediction.features);
             if (prediction.success && hasAllFeatures(prediction.features)) {
+                console.log("Success!");
+                setPredictionFeatures(prediction.features);
                 setPredictionAcreage(prediction.acreage);
                 setPredictionConfidence(prediction.confidence);
                 setModelStage(ModelStage.Result);
             }
             else {
-                const missingFeatures = getMissingFeatures(prediction.features);
-                console.log(missingFeatures);
+                console.log("Missing features");
+                console.log(getMissingFeatures(prediction.features));
+                setMissingFeatures(getMissingFeatures(prediction.features));
                 setModelStage(ModelStage.MissingFeatures);
             }
         });
@@ -160,7 +163,7 @@ function App() {
                     <Filters setFireData={setFireData} setStatistics={setStatistics} setCountyRefresh={setCountyRefresh}
                       updateBurnWindow={updateBurnWindow} resetBurnWindow={resetBurnWindow} setCounties={setCounties}/>
                     {modelStage === ModelStage.SelectingDate && <DateEntry selectDate={handleSelectDate} /> /* Keeping this one separate for its screen-spanning */}
-                    {modelStage === ModelStage.MissingFeatures && <MissingFeaturesDialog missingFeatures={missingFeatures} onSubmit={handleSubmitMissingFeatures}/>}
+                    {modelStage === ModelStage.MissingFeatures && <MissingFeaturesDialog missingFeatures={missingFeatures} handleSubmit={handleSubmitMissingFeatures} handleCancel={handleExitModel}/>}
                 </Route>
                 <Route path="/about">
                     <About/>

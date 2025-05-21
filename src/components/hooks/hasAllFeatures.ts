@@ -13,28 +13,24 @@ export function hasAllFeatures(features: IFeatureType | undefined | null): boole
 export function getMissingFeatures(features: IFeatureType | undefined | null): MissingFeature[] {
   console.log(features);
   const requiredFields: [keyof IFeatureType, string, string, FeatureFormat, FeatureUnit][] = getFeatureSpecs();
-  if (features === undefined || features === null) {
-    return requiredFields.map(([attribute, name, tooltip, format, unit], index) => {
-      return {
-        index,
-        attribute,
-        name,
-        tooltip,
-        format,
-        unit
+
+  return requiredFields
+    .map(([attribute, name, tooltip, format, unit], index) => {
+      const value = features?.[attribute];
+      const isMissing = value === undefined || value === null || (typeof value === "number" && isNaN(value));
+
+      if (isMissing) {
+        return {
+          index,
+          attribute,
+          name,
+          tooltip,
+          format,
+          unit
+        };
       }
-    });
-  }
-  else {
-    return requiredFields.map(([attribute, name, tooltip, format, unit], index) => {
-      return {
-        index,
-        attribute,
-        name,
-        tooltip,
-        format,
-        unit
-      }
-    }).filter((x): x is MissingFeature => x !== null);
-  }
+
+      return null;
+    })
+    .filter((x): x is MissingFeature => x !== null);
 }

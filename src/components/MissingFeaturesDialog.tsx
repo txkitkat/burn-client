@@ -1,23 +1,12 @@
 import { useState, ChangeEvent } from "react";
 import { FeatureFormat, FeatureUnit } from "./FeaturesDisplay";
 import IFeatureType from "../types/featureType";
-
-export interface MissingFeature {
-    index: number;
-    attribute: keyof IFeatureType;
-    name: string;
-    tooltip: string;
-    format: FeatureFormat;
-    unit: FeatureUnit;
-}
-
-export interface InputtedFeature extends MissingFeature {
-    value: number;
-}
+import MissingFeature, { InputtedFeature } from "../types/missingFeature";
 
 interface MissingFeaturesDialogProps {
     missingFeatures: MissingFeature[];
-    onSubmit: (features: InputtedFeature[]) => void;
+    handleSubmit: (features: InputtedFeature[]) => void;
+    handleCancel: () => void;
 }
 
 const getUnitString = (unit: FeatureUnit): string => {
@@ -61,14 +50,14 @@ export default function MissingFeaturesDialog(props: MissingFeaturesDialogProps)
             features.push({ ...feature, value: num });
         }
 
-        props.onSubmit(features);
+        props.handleSubmit(features);
     };
 
     return (
         <div style={styles.container}>
             <div style={styles.formContainer}>
                 <h2>Enter Missing Features</h2>
-                <p>Some features for the selected date and location couldn't be found. Please enter these features' values.</p>
+                <div style={{ marginBottom: '1rem'}}>Some features for the selected date and location couldn't be found. Please enter these features' values.</div>
 
                 {props.missingFeatures.map(({ index, name, tooltip, unit }) => (
                     <div key={index} style={{ marginBottom: '1rem' }}>
@@ -86,7 +75,10 @@ export default function MissingFeaturesDialog(props: MissingFeaturesDialogProps)
                     </div>
                 ))}
 
-                <button onClick={handleSubmit} style={styles.button}>Submit</button>
+                <div>
+                    <button onClick={handleSubmit} style={styles.button}>Submit</button>
+                    <button onClick={props.handleCancel} style={styles.cancelButton}>Cancel</button>
+                </div>
             </div>
         </div>
     );
@@ -107,27 +99,47 @@ const styles: { [key: string]: React.CSSProperties } = {
     },
     formContainer: {
         backgroundColor: '#fff',
-        padding: '20px',
+        padding: '5px',
+        paddingLeft: '10px',
+        paddingRight: '10px',
         borderRadius: '8px',
         boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
         textAlign: 'center',
-        maxWidth: '400px',
-        width: '90%',
+        maxWidth: '25%',
+        maxHeight: '60%',
+        overflowY: 'auto',
+        scrollbarGutter: 'stable both-edges',
+        width: '100%',
+        fontSize: '0.85rem',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center'
     },
     input: {
-        padding: '10px',
+        padding: '5px',
         marginLeft: '10px',
         borderRadius: '5px',
         border: '1px solid #ccc',
-        width: '150px',
+        width: '100px',
     },
     button: {
-        marginTop: '20px',
+        marginTop: '5px',
         padding: '10px 20px',
         borderRadius: '5px',
         border: 'none',
         backgroundColor: '#007BFF',
         color: 'white',
+        cursor: 'pointer',
+        marginRight: '10px',
+        marginBottom: '10px',
+    },
+    cancelButton: {
+        marginTop: '5px',
+        padding: '10px 20px',
+        borderRadius: '5px',
+        border: 'none',
+        backgroundColor: '#D0D0D0',
+        color: 'black',
         cursor: 'pointer',
     },
 };

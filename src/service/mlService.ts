@@ -56,7 +56,7 @@ const partialPrediction: IPrediction = {
 export async function getModelPrediction(latitude: number, longitude: number, date: Date, overrideFeatures: (number | null)[], testing: boolean = false): Promise<IPrediction> {
     const query = mlHost?.toString() + "/predict";
     console.log(query);
-    
+    console.log(overrideFeatures);
     return await axios.post(query!, {
                 latitude,
                 longitude,
@@ -66,19 +66,19 @@ export async function getModelPrediction(latitude: number, longitude: number, da
                 userData: overrideFeatures
             }).then((response: AxiosResponse<any>) => {
                 console.log(response);
-            const data: ModelResponse = JSON.parse(response.data);
+                const data: ModelResponse = response.data;
 
-            if (response.status === 200 && data && 'predicted_acreage' in data && typeof data.predicted_acreage === 'number' && 'confidence' in data && typeof data.confidence === 'number' && 'features' in data && 'success' in data && typeof data.success === 'boolean') {
-                console.log("Here!");
-                return { acreage: data.predicted_acreage, confidence: data.confidence, features: data.features!, success: data.success };
+                if (response.status === 200 && data && 'predicted_acreage' in data && typeof data.predicted_acreage === 'number' && 'confidence' in data && typeof data.confidence === 'number' && 'features' in data && 'success' in data && typeof data.success === 'boolean') {
+                    console.log("Here!");
+                    return { acreage: data.predicted_acreage, confidence: data.confidence, features: data.features!, success: data.success };
+                }
+                else {
+                    // Throw an error here, but for now return a static value.
+                    console.log("Uh-oh!");
+                    return testing ? partialPrediction : sampleCompletePrediction;
+                }
             }
-            else {
-                // Throw an error here, but for now return a static value.
-                console.log("Uh-oh!");
-                return testing ? partialPrediction : sampleCompletePrediction;
-            }
-        })
-        .catch((error: AxiosError) => {
+        ).catch((error: AxiosError) => {
             // We'll need to show an error here. But for now, we'll return a static value.
             console.log(error);
             return testing ? partialPrediction : sampleCompletePrediction;
