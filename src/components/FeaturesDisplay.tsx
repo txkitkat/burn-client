@@ -5,8 +5,10 @@ import "./FeaturesDisplay.css"
 export interface FeaturesDisplayProps {
     features?: IFeatureType;
     featureOverrides: (string | null)[];
+    date: Date;
     setFeatures: (features: IFeatureType) => void;
     setFeatureOverrides: (featureOverrides: (string | null)[]) => void;
+    setDate: (date: Date) => void;
     showErrors: boolean;
 };
 
@@ -104,7 +106,15 @@ export default function FeaturesDisplay(props: FeaturesDisplayProps) {
     }
 
     return (
-        <div className="features_box"> 
+        <div className="features_box">
+            <div className="date-line">
+                <label className="date-label">Select Date: </label>
+                <input
+                    type="date"
+                    value={props.date.toISOString().split("T")[0]}
+                    onChange={(e) => props.setDate(new Date(e.target.value))}
+                />
+            </div>
             {getCurrentFeatures(props.features!)?.map(([attribute, label, value, tooltip, format, unit], index) => {
                 return <p className="feature_text">
                     <input type="checkbox" checked={props.featureOverrides[index] !== null} onChange={() => handleCheck(value!, index, format)} />
